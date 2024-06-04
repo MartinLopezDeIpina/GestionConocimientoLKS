@@ -1,0 +1,20 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Tarea from '../components/Tarea.astro';
+import TaskList from '../components/TaskList';
+import AddTask from '../components/AddTask.jsx';
+---
+
+<Layout title="Welcome to Astro.">
+	<main>
+		<h1>Tareas</h1>
+		<TaskList client:load/>
+	</main>
+</Layout>
+<style>
+	main{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+</style>
