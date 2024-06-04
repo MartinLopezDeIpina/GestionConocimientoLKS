@@ -1,16 +1,19 @@
+from sqlalchemy import ForeignKey, PrimaryKeyConstraint
+from sqlalchemy.orm import relationship
+
 from database import db
 
 
-class Task(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(80), nullable=False)
-    description = db.Column(db.String(120), nullable=False)
-    done = db.Column(db.Boolean, default=False)
+class NodoArbol(db.Model):
+    nodoID = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(250), nullable=False)
 
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'title': self.title,
-            'description': self.description,
-            'done': self.done
-        }
+
+class RelacionesNodo(db.Model):
+    ascendente_id = db.Column(db.Integer, ForeignKey('nodo_arbol.nodoID'))
+    descendente_id = db.Column(db.Integer, ForeignKey('nodo_arbol.nodoID'))
+
+    nodo_ascendiente_id = relationship('NodoArbol', foreign_keys=[ascendente_id])
+    nodo_descendiente_id = relationship('NodoArbol', foreign_keys=[descendente_id])
+
+    __table_args__ = (PrimaryKeyConstraint('ascendente_id', 'descendente_id'), )

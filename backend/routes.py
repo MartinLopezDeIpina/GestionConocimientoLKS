@@ -1,44 +1,157 @@
-from flask import jsonify, request
+import csv
+import os
+
+from flask import Response
+from treelib import Tree
 
 from database import db
-from models import Task
-
-from sqlalchemy.exc import SQLAlchemyError
+from models import NodoArbol, RelacionesNodo
 
 
 def init_routes(app):
+    # Sólo para probar
+    @app.route('/api/add_csv')
+    def store_tree_from_csv():
+        file_path = os.path.join(app.static_folder, 'conocimientos.csv')
 
-    @app.route('/api/get_tasks')
-    def get_tasks():
-        tasks = Task.query.all()
-        return jsonify([task.to_dict() for task in tasks])
+        # Keep track of the last node at each depth level
+        last_node_at_depth = {}
 
-    @app.route('/api/post_task', methods=['POST'])
-    def post_task():
-        task = Task()
-        task.title = request.json['title']
-        task.description = request.json['description']
-        task.done = False
-        db.session.add(task)
-        try:
-            db.session.commit()
-        except SQLAlchemyError:
-            db.session.rollback()
-            return jsonify({'code': 500, 'message': 'Database error occurred'})
-        print(f'Task created: {task}')
-        return jsonify({'code': 200, 'message': 'Task created successfully'})
+        with open(file_path, 'r') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                # Iterate over each cell in the row
+                for i in range(len(row)):
+                    node = row[i]
 
-    @app.route('/api/delete_task/<int:ident>', methods=['POST'])
-    def delete_task(ident):
-        task = Task.query.get(ident)
-        if task is None:
-            return jsonify({'code': 404, 'message': 'Task not found'})
-        db.session.delete(task)
-        try:
-            db.session.commit()
-        except SQLAlchemyError:
-            db.session.rollback()
-            return jsonify({'code': 500, 'message': 'Database error occurred'})
-        print(f'Task deleted: {task}')
-        return jsonify({'code': 200, 'message': 'Task deleted successfully'})
+                    # Skip empty cells
+                    if not node:
+                        continue
 
+                    parent = last_node_at_depth.get(i - 1)
+
+                    nodo = NodoArbol(nombre=node)
+                    #nodo = NodoArbol.query.order_by(-NodoArbol.nombre).first()
+                    db.session.add(nodo)
+                    db.session.commit()
+
+                    # If the node is not the root node, create a relationship with its parent
+                    if parent:
+                        parent_nodo = NodoArbol.query.filter_by(nombre=parent).first()
+                        relacion = RelacionesNodo(ascendente_id=parent_nodo.nodoID, descendente_id=nodo.nodoID)
+                        db.session.add(relacion)
+                        db.session.commit()
+
+                    # Update the last node at the current depth level
+                    last_node_at_depth[i] = node
+
+    @app.route('/api/delete')
+    def delete_tree():
+        nodos = NodoArbol.query.all()
+        relaciones = RelacionesNodo.query.all()
+
+        for relacion in relaciones:
+            db.session.delete(relacion)
+
+        for nodo in nodos:
+            db.session.delete(nodo)
+
+        db.session.commit()
+        return 'Tree deleted'
+
+    @app.route('/api/tree')
+    def print_tree():
+        nodos = NodoArbol.query.all()
+        relaciones = RelacionesNodo.query.all()
+
+        nodo_dict = {nodo.nodoID: nodo for nodo in nodos}
+
+        tree = Tree()
+
+        tree.create_node(nodos[0].nombre, nodos[0].nodoID)
+
+        add_node_to_tree(tree, nodos[0], relaciones, nodo_dict)
+
+        print(tree.show(stdout=False, sorting=False))
+        tree_str = tree.show(stdout=False, sorting=False)
+        #return tree.to_json(with_data=False)
+        return '<pre>' + tree_str + '</pre>'
+
+    def add_node_to_tree(tree, nodo, relaciones, nodo_dict):
+        relaciones_nodo = [relacion for relacion in relaciones if relacion.ascendente_id == nodo.nodoID]
+        for relacion in relaciones_nodo:
+            descendente = nodo_dict[relacion.descendente_id]
+            tree.create_node(descendente.nombre, descendente.nodoID, parent=nodo.nodoID)
+            add_node_to_tree(tree, descendente, relaciones, nodo_dict)
+
+
+    @app.route('/api/add_node/<nombre>/<int:ascendente_id>', methods=['GET', 'POST'])
+    def add_node(nombre, ascendente_id):
+        nodo_padre = NodoArbol.query.get(ascendente_id)
+        if nodo_padre is None:
+            return Response('Ascendente no existe', status=400)
+
+        nodo = NodoArbol(nombre=nombre)
+        db.session.add(nodo)
+        db.session.commit()
+
+        relacion = RelacionesNodo(ascendente_id=ascendente_id, descendente_id=nodo.nodoID)
+        db.session.add(relacion)
+        db.session.commit()
+
+        return Response('Nodo agregado', status=200)
+
+    @app.route('/api/delete_node/<int:nodo_id>', methods=['GET', 'POST'])
+    def delete_node(nodo_id):
+        nodo = NodoArbol.query.get(nodo_id)
+        if nodo is None:
+            return Response('Nodo no existe', status=400)
+
+        delete_relaciones_ascendentes(nodo_id)
+        delete_relaciones_descendentes(nodo_id)
+
+        db.session.delete(nodo)
+        db.session.commit()
+
+        return Response('Nodo eliminado', status=200)
+
+    def delete_relaciones_ascendentes(nodo_id):
+        relaciones = RelacionesNodo.query.filter_by(ascendente_id=nodo_id).all()
+        for relacion in relaciones:
+            delete_node(relacion.descendente_id)
+            db.session.delete(relacion)
+
+    def delete_relaciones_descendentes(nodo_id):
+        relaciones = RelacionesNodo.query.filter_by(descendente_id=nodo_id).all()
+        for relacion in relaciones:
+            db.session.delete(relacion)
+
+    @app.route('/api/move_node/<int:nodo_id>/<int:ascendente_id>', methods=['GET', 'POST'])
+    def move_node(nodo_id, ascendente_id):
+        nodo = NodoArbol.query.get(nodo_id)
+        if nodo is None:
+            return Response('Nodo no existe', status=400)
+
+        nodo_padre = NodoArbol.query.get(ascendente_id)
+        if nodo_padre is None:
+            return Response('Ascendente no existe', status=400)
+
+        if nodo_recursive(nodo_id, ascendente_id):
+            return Response('No se puede mover el nodo, nodo recursivo', status=400)
+
+        delete_relaciones_descendentes(nodo_id)
+        relacion = RelacionesNodo(ascendente_id=ascendente_id, descendente_id=nodo_id)
+
+        db.session.add(relacion)
+        db.session.commit()
+
+        return Response('Nodo movido', status=200)
+
+    def nodo_recursive(nodo_id, ascendente_id):
+        if nodo_id == ascendente_id:
+            return True
+        relaciones = RelacionesNodo.query.filter_by(ascendente_id=nodo_id).all()
+        for relacion in relaciones:
+            if nodo_recursive(relacion.descendente_id, ascendente_id):
+                return True
+        return False
