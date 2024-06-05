@@ -1,44 +1,34 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import SortableTree, {
   addNodeUnderParent,
   removeNodeAtPath,
   changeNodeAtPath,
   toggleExpandedForAll
-} from "react-sortable-tree";
-import "react-sortable-tree/style.css";
+} from "@nosferatu500/react-sortable-tree";
+import "@nosferatu500/react-sortable-tree/style.css";
+import '../../public/styles/tree.css';
 
-const seed = [
-  {
-    id: "123",
-    title: "Company",
-    subtitle: "zzz",
-    isDirectory: true,
-    expanded: true,
-    children: [
-      { id: "456", title: "Human Resource", subtitle: "zzz" },
-      {
-        id: "789",
-        title: "Bussiness",
-        subtitle: "zzz",
-        expanded: true,
-        children: [
-          {
-            id: "234",
-            title: "Store A",
-            subtitle: "zzz"
-          },
-          { id: "567", title: "Store B", subtitle: "zzz" }
-        ]
-      }
-    ]
-  }
-];
 
 function Tree() {
   const [searchString, setSearchString] = useState("");
   const [searchFocusIndex, setSearchFocusIndex] = useState(0);
   const [searchFoundCount, setSearchFoundCount] = useState(null);
-  const [treeData, setTreeData] = useState(seed);
+  const [treeData, setTreeData] = useState({});
+
+
+  useEffect(() => {
+    async function fetchData(){
+        await fetch('http://localhost:5000/api/json_tree')
+        .then(response => response.json())
+        .then(data => {setTreeData(data)
+        console.log(data)
+        })
+        .catch(error => console.error('Error:', error));
+    }
+    fetchData();
+  }, []); 
+
+
 
   const inputEl = useRef();
 
@@ -212,13 +202,9 @@ function Tree() {
   const getNodeKey = ({ treeIndex }) => treeIndex;
 
   return (
-    <div>
+    <div className="divTreeAndControls">
       <div style={{ flex: "0 0 auto", padding: "0 15px" }}>
-        <h3>Full Node Drag Theme</h3>
         <input ref={inputEl} type="text" />
-        <br />
-        <button onClick={createNode}>Create Node</button>
-        <br />
         <button onClick={expandAll}>Expand All</button>
         <button onClick={collapseAll}>Collapse All</button>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -263,7 +249,7 @@ function Tree() {
         </form>
       </div>
 
-      <div style={{ height: "100vh" }}>
+      <div className="divTree" style={{ height: "100vh" }}>
         <SortableTree
           treeData={treeData}
           onChange={(treeData) => updateTreeData(treeData)}
@@ -309,7 +295,7 @@ function Tree() {
             ],
             style: {
               height: "50px"
-            }
+            },
           })}
         />
       </div>

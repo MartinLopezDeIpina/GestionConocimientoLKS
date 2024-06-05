@@ -91,7 +91,7 @@ def init_routes(app):
         json = {}
         add_node_to_json(json, nodos[0], relaciones, nodo_dict)
 
-        return json
+        return [json]
 
     def add_node_to_json(json, nodo, relaciones, nodo_dict):
         relaciones_nodo = [relacion for relacion in relaciones if relacion.ascendente_id == nodo.nodoID]
@@ -101,10 +101,12 @@ def init_routes(app):
             child = {}
             add_node_to_json(child, descendente, relaciones, nodo_dict)
             children.append(child)
-        json['name'] = nodo.nombre
+        json['title'] = nodo.nombre
         json['id'] = nodo.nodoID
-        json['children'] = children
-
+        if relaciones_nodo:
+            json['children'] = children
+            json['expanded'] = True
+            json['isDirectory'] = True
 
     @app.route('/api/add_node/<nombre>/<int:ascendente_id>', methods=['GET', 'POST'])
     def add_node(nombre, ascendente_id):
@@ -178,5 +180,36 @@ def init_routes(app):
             if nodo_recursive(relacion.descendente_id, ascendente_id):
                 return True
         return False
+
+    @app.route('/api/seed')
+    def seed():
+        seed_data = [
+            {
+                "id": "123",
+                "title": "company",
+                "subtitle": "zzz",
+                "isdirectory": True,
+                "expanded": False,
+                "children": [
+                    {"id": "456", "title": "human resource", "subtitle": "zzz"},
+                    {
+                        "id": "789",
+                        "title": "bussiness",
+                        "subtitle": "zzz",
+                        "expanded": False,
+                        "children": [
+                            {
+                                "id": "234",
+                                "title": "store a",
+                                "subtitle": "zzz"
+                            },
+                            {"id": "567", "title": "store b", "subtitle": "zzz"}
+                        ]
+                    }
+                ]
+            }
+        ]
+
+        return seed_data
 
 

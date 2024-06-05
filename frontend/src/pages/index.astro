@@ -1,15 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Tarea from '../components/Tarea.astro';
-import TaskList from '../components/TaskList';
-import AddTask from '../components/AddTask.jsx';
-import Tree from '../components/TreeLibrary.jsx';
+import Tree from '../components/Tree.jsx';
+import '../../public/styles/tree.css'
 ---
 
 <Layout title="Welcome to Astro.">
 	<main>
 		<h1>Árbol de conocimientos</h1>
-		<Tree client:load/>
+			<Tree client:load/>
 	</main>
 </Layout>
 <style>
