@@ -102,7 +102,7 @@ def init_routes(app):
             add_node_to_json(child, descendente, relaciones, nodo_dict)
             children.append(child)
         json['name'] = nodo.nombre
-        json['nodeId'] = nodo.nodoID
+        json['id'] = nodo.nodoID
         json['children'] = children
 
 
