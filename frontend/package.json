@@ -13,6 +13,7 @@
     "@astrojs/check": "^0.7.0",
     "@astrojs/react": "^3.4.0",
     "astro": "^4.9.2",
+    "react-treebeard": "^3.2.4",
     "typescript": "^5.4.5"
   }
 }

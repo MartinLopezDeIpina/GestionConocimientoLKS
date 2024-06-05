@@ -7,7 +7,6 @@ from treelib import Tree
 from database import db
 from models import NodoArbol, RelacionesNodo
 
-
 def init_routes(app):
     # Sólo para probar
     @app.route('/api/add_csv')
@@ -74,7 +73,6 @@ def init_routes(app):
 
         print(tree.show(stdout=False, sorting=False))
         tree_str = tree.show(stdout=False, sorting=False)
-        #return tree.to_json(with_data=False)
         return '<pre>' + tree_str + '</pre>'
 
     def add_node_to_tree(tree, nodo, relaciones, nodo_dict):
@@ -83,6 +81,29 @@ def init_routes(app):
             descendente = nodo_dict[relacion.descendente_id]
             tree.create_node(descendente.nombre, descendente.nodoID, parent=nodo.nodoID)
             add_node_to_tree(tree, descendente, relaciones, nodo_dict)
+
+    @app.route('/api/json_tree')
+    def json_tree():
+        nodos = NodoArbol.query.all()
+        relaciones = RelacionesNodo.query.all()
+        nodo_dict = {nodo.nodoID: nodo for nodo in nodos}
+
+        json = {}
+        add_node_to_json(json, nodos[0], relaciones, nodo_dict)
+
+        return json
+
+    def add_node_to_json(json, nodo, relaciones, nodo_dict):
+        relaciones_nodo = [relacion for relacion in relaciones if relacion.ascendente_id == nodo.nodoID]
+        children = []
+        for relacion in relaciones_nodo:
+            descendente = nodo_dict[relacion.descendente_id]
+            child = {}
+            add_node_to_json(child, descendente, relaciones, nodo_dict)
+            children.append(child)
+        json['name'] = nodo.nombre
+        json['nodeId'] = nodo.nodoID
+        json['children'] = children
 
 
     @app.route('/api/add_node/<nombre>/<int:ascendente_id>', methods=['GET', 'POST'])
@@ -152,6 +173,10 @@ def init_routes(app):
             return True
         relaciones = RelacionesNodo.query.filter_by(ascendente_id=nodo_id).all()
         for relacion in relaciones:
+
+
             if nodo_recursive(relacion.descendente_id, ascendente_id):
                 return True
         return False
+
+
