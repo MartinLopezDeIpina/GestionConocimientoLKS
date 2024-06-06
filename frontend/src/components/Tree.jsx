@@ -319,9 +319,13 @@ function Tree() {
                 >
                     Edit
                 </button>
-                <button label="Delete" onClick={(event) => removeNode(rowInfo)}>
-                  Remove
-                </button>
+                {
+                    rowInfo.parentNode != null && (
+                        <button label="Delete" onClick={(event) => removeNode(rowInfo)}>
+                            Remove
+                        </button>
+                    )
+                }
                 <button
                   label="Alert"
                   onClick={(event) => alertNodeInfo(rowInfo)}
