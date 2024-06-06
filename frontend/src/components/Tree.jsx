@@ -203,6 +203,10 @@ function Tree() {
 
   const getNodeKey = ({ treeIndex }) => treeIndex;
 
+  function getInputWidth(length){
+    return length * 1.2 + 1;
+  }
+
   return (
     <div className="divTreeAndControls">
       <div style={{ flex: "0 0 auto", padding: "0 15px" }}>
@@ -275,9 +279,9 @@ function Tree() {
             // title: rowInfo.node.label,
             // subtitle: rowInfo.node.subTitle,
             title: (
-                <input
+                <input className="nodeInput"
+                style={{ width: `${getInputWidth(rowInfo.node.title.length)}ch` }}
                 ref={nodeRefs.current[rowInfo.node.id]}
-                style={{ fontSize: '1.1rem', fontWeight: 'bold' }}
                 defaultValue={rowInfo.node.title}
                 readOnly={!isEditing}
                 onMouseDown={(event) => event.stopPropagation()}
@@ -289,6 +293,9 @@ function Tree() {
 
                     // Make the input field not editable
                     setIsEditing(false);
+                }}
+                onChange={(event) => {
+                    nodeRefs.current[rowInfo.node.id].current.style.width = `${getInputWidth(event.target.value.length)}ch`;
                 }}
                 />
             ),
