@@ -290,7 +290,7 @@ function Tree() {
                 <input className="nodeInput"
                 style={{ width: `${getInputWidth(rowInfo.node.title.length)}ch` }}
                 ref={nodeRefs.current[rowInfo.node.id]}
-                defaultValue={rowInfo.node.title}
+                value={rowInfo.node.title}
                 readOnly={!isEditing}
                 onMouseDown={(event) => event.stopPropagation()}
                 onBlur={(event) => {
