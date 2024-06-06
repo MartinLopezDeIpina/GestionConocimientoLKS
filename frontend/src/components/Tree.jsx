@@ -14,6 +14,8 @@ function Tree() {
   const [searchFocusIndex, setSearchFocusIndex] = useState(0);
   const [searchFoundCount, setSearchFoundCount] = useState(null);
   const [treeData, setTreeData] = useState({});
+  const [isEditing, setIsEditing] = useState(false);
+  const nodeRefs = useRef({});
 
 
   useEffect(() => {
@@ -262,25 +264,53 @@ function Tree() {
             );
           }}
           canDrag={({ node }) => !node.dragDisabled}
-          generateNodeProps={(rowInfo) => ({
+          generateNodeProps={(rowInfo) => {
+
+            if (!nodeRefs.current[rowInfo.node.id]) {
+                nodeRefs.current[rowInfo.node.id] = React.createRef();
+            }
+
+            return {
+
             // title: rowInfo.node.label,
             // subtitle: rowInfo.node.subTitle,
+            title: (
+                <input
+                ref={nodeRefs.current[rowInfo.node.id]}
+                style={{ fontSize: '1.1rem', fontWeight: 'bold' }}
+                defaultValue={rowInfo.node.title}
+                readOnly={!isEditing}
+                onMouseDown={(event) => event.stopPropagation()}
+                onBlur={(event) => {
+                    const newTitle = event.target.value;
+
+                    // Update the title in your state
+                    updateNode({ ...rowInfo, node: { ...rowInfo.node, title: newTitle } });
+
+                    // Make the input field not editable
+                    setIsEditing(false);
+                }}
+                />
+            ),
             buttons: [
               <div>
-                <button
-                  label="Add Sibling"
-                  onClick={(event) => addNodeSibling(rowInfo)}
-                >
-                  Add Sibling
-                </button>
                 <button
                   label="Add Child"
                   onClick={(event) => addNodeChild(rowInfo)}
                 >
                   Add Child
                 </button>
-                <button label="Update" onClick={(event) => updateNode(rowInfo)}>
-                  Update
+                <button
+                    label="Edit"
+                    onClick={(event) => {
+                        event.stopPropagation();
+
+                        setIsEditing(true);
+
+                        nodeRefs.current[rowInfo.node.id].current.focus();
+                    }}
+                >
+                    Edit
                 </button>
                 <button label="Delete" onClick={(event) => removeNode(rowInfo)}>
                   Remove
@@ -296,7 +326,7 @@ function Tree() {
             style: {
               height: "50px"
             },
-          })}
+          }}}
         />
       </div>
     </div>
