@@ -143,14 +143,22 @@ function Tree() {
   }
 
   function removeNode(rowInfo) {
-    const { path } = rowInfo;
-    setTreeData(
-      removeNodeAtPath({
-        treeData,
-        path,
-        getNodeKey
-      })
-    );
+    fetch(`http://localhost:5000/api/delete_node/${rowInfo.node.id}`,{
+        method: 'DELETE'
+    })
+    .then(response => response.json())
+    .then(data => { 
+        if(data.status === 200){
+            const { path } = rowInfo;
+            setTreeData(
+                removeNodeAtPath({
+                  treeData,
+                  path,
+                  getNodeKey
+                })
+              );
+        }
+     })
   }
 
   function updateTreeData(treeData) {

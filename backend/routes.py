@@ -1,7 +1,7 @@
 import csv
 import os
 
-from flask import Response
+from flask import Response, jsonify
 from treelib import Tree
 
 from database import db
@@ -124,7 +124,7 @@ def init_routes(app):
 
         return Response('Nodo agregado', status=200)
 
-    @app.route('/api/delete_node/<int:nodo_id>', methods=['GET', 'POST'])
+    @app.route('/api/delete_node/<int:nodo_id>', methods=['GET', 'DELETE'])
     def delete_node(nodo_id):
         nodo = NodoArbol.query.get(nodo_id)
         if nodo is None:
@@ -136,7 +136,7 @@ def init_routes(app):
         db.session.delete(nodo)
         db.session.commit()
 
-        return Response('Nodo eliminado', status=200)
+        return jsonify({'message' : 'Nodo eliminado', 'status' : 200})
 
     def delete_relaciones_ascendentes(nodo_id):
         relaciones = RelacionesNodo.query.filter_by(ascendente_id=nodo_id).all()
