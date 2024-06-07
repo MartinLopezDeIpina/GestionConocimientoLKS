@@ -181,6 +181,17 @@ def init_routes(app):
                 return True
         return False
 
+    @app.route('/api/update_node/<int:nodo_id>/<nombre>', methods=['GET', 'PUT'])
+    def update_node(nodo_id, nombre):
+        nodo = NodoArbol.query.get(nodo_id)
+        if nodo is None:
+            return Response('Nodo no existe', status=400)
+
+        nodo.nombre = nombre
+        db.session.commit()
+
+        return jsonify({'message': 'Nodo actualizado', 'status': 200})
+
     @app.route('/api/seed')
     def seed():
         seed_data = [

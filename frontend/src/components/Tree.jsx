@@ -16,6 +16,7 @@ function Tree() {
   const [treeData, setTreeData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const nodeRefs = useRef({});
+  const [oldName, setOldName] = useState(null);
 
 
   useEffect(() => {
@@ -65,19 +66,42 @@ function Tree() {
     const { title } = node;
     const { children } = node;
 
+    const nodeID = node.id;
+
     let newTree = changeNodeAtPath({
-      treeData,
-      path,
-      getNodeKey,
-      newNode: {
-        children,
-        title: title
-      }
+        treeData,
+        path,
+        getNodeKey,
+        newNode: {
+            children,
+            title: title,
+            id: nodeID
+        }
     });
 
     setTreeData(newTree);
-
     inputEl.current.value = "";
+  }
+
+  function tryToPersistNewTitleOrRevertToOld(rowInfo) {
+
+    const newTitle = rowInfo.node.title;
+    const nodeID = rowInfo.node.id;
+
+    fetch(`http://localhost:5000/api/update_node/${nodeID}/${newTitle}`, {
+        method: 'PUT'
+    })
+    .then(response => response.json())
+    .then(data => { 
+      if(data.status !== 200){
+        revertNodeTitleToOld(rowInfo);
+      }
+    });
+  }
+
+  function revertNodeTitleToOld(rowInfo) {
+    rowInfo.node.title = oldName;
+    updateNode(rowInfo);
   }
 
   function addNodeChild(rowInfo) {
@@ -297,7 +321,7 @@ function Tree() {
                 readOnly={!isEditing}
                 onMouseDown={(event) => event.stopPropagation()}
                 onBlur={(event) => {
-                    const newTitle = event.target.value;
+                    tryToPersistNewTitleOrRevertToOld(rowInfo);
 
                     setIsEditing(false);
                 }}
@@ -323,6 +347,7 @@ function Tree() {
                     onClick={(event) => {
                         event.stopPropagation();
 
+                        setOldName(rowInfo.node.title);
                         setIsEditing(true);
 
                         nodeRefs.current[rowInfo.node.id].current.focus();
