@@ -299,13 +299,13 @@ function Tree() {
                 onBlur={(event) => {
                     const newTitle = event.target.value;
 
-                    // Update the title in your state
-                    updateNode({ ...rowInfo, node: { ...rowInfo.node, title: newTitle } });
-
-                    // Make the input field not editable
                     setIsEditing(false);
                 }}
                 onChange={(event) => {
+                    const newTitle = event.target.value;
+
+                    updateNode({ ...rowInfo, node: { ...rowInfo.node, title: newTitle } });
+
                     nodeRefs.current[rowInfo.node.id].current.style.width = `${getInputWidth(event.target.value.length)}ch`;
                 }}
                 />
