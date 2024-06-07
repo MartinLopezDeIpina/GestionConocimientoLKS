@@ -88,7 +88,7 @@ function Tree() {
 
   function addNodeChild(rowInfo) {
     let { path } = rowInfo;
-
+    const parentNodeID = rowInfo.node.id;
     const value = inputEl.current.value;
     // const value = inputEls.current[treeIndex].current.value;
 
@@ -98,19 +98,28 @@ function Tree() {
       return;
     }
 
-    let newTree = addNodeUnderParent({
-      treeData: treeData,
-      parentKey: path[path.length - 1],
-      expandParent: true,
-      getNodeKey,
-      newNode: {
-        title: value
-      }
-    });
 
-    setTreeData(newTree.treeData);
+    fetch(`http://localhost:5000/api/add_node/${value}/${parentNodeID}`,{
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => { 
+        if(data.status === 200){
+          let newTree = addNodeUnderParent({
+            treeData: treeData,
+            parentKey: path[path.length - 1],
+            expandParent: true,
+            getNodeKey,
+            newNode: {
+              title: value,
+              id: data.nodoID 
+            }
+          });
+          setTreeData(newTree.treeData);
+          inputEl.current.value = "";
+        }
+      });
 
-    inputEl.current.value = "";
     // inputEls.current[treeIndex].current.value = "";
   }
 

@@ -108,7 +108,7 @@ def init_routes(app):
             json['expanded'] = True
             json['isDirectory'] = True
 
-    @app.route('/api/add_node/<nombre>/<int:ascendente_id>', methods=['GET', 'POST'])
+    @app.route('/api/add_node/<nombre>/<int:ascendente_id>', methods=['POST'])
     def add_node(nombre, ascendente_id):
         nodo_padre = NodoArbol.query.get(ascendente_id)
         if nodo_padre is None:
@@ -122,7 +122,7 @@ def init_routes(app):
         db.session.add(relacion)
         db.session.commit()
 
-        return Response('Nodo agregado', status=200)
+        return jsonify(message='Nodo agregado', status=200, nodoID=nodo.nodoID)
 
     @app.route('/api/delete_node/<int:nodo_id>', methods=['GET', 'DELETE'])
     def delete_node(nodo_id):
