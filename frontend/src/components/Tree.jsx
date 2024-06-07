@@ -62,14 +62,8 @@ function Tree() {
 
   function updateNode(rowInfo) {
     const { node, path } = rowInfo;
+    const { title } = node;
     const { children } = node;
-
-    const value = inputEl.current.value;
-
-    if (value === "") {
-      inputEl.current.focus();
-      return;
-    }
 
     let newTree = changeNodeAtPath({
       treeData,
@@ -77,7 +71,7 @@ function Tree() {
       getNodeKey,
       newNode: {
         children,
-        title: value
+        title: title
       }
     });
 
