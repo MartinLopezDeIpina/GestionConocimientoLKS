@@ -149,7 +149,7 @@ def init_routes(app):
         for relacion in relaciones:
             db.session.delete(relacion)
 
-    @app.route('/api/move_node/<int:nodo_id>/<int:ascendente_id>', methods=['GET', 'POST'])
+    @app.route('/api/move_node/<int:nodo_id>/<int:ascendente_id>', methods=['GET', 'PUT'])
     def move_node(nodo_id, ascendente_id):
         nodo = NodoArbol.query.get(nodo_id)
         if nodo is None:

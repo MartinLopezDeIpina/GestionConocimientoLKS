@@ -17,6 +17,7 @@ function Tree() {
   const [isEditing, setIsEditing] = useState(false);
   const nodeRefs = useRef({});
   const [oldName, setOldName] = useState(null);
+  const [prevTreeData, setPrevTreeData] = useState(null);
 
 
   useEffect(() => {
@@ -102,6 +103,18 @@ function Tree() {
   function revertNodeTitleToOld(rowInfo) {
     rowInfo.node.title = oldName;
     updateNode(rowInfo);
+  }
+
+  function tryToPersistNodeMovement(nodeID, parentNodeID){
+    fetch(`http://localhost:5000/api/move_node/${nodeID}/${parentNodeID}`,{
+        method: 'PUT'
+    })
+    .then(response => response.json())
+    .then(data => { 
+        if(data.status !== 200){
+          setTreeData(prevTreeData);
+        }
+    });
   }
 
   function addNodeChild(rowInfo) {
@@ -293,7 +306,13 @@ function Tree() {
       <div className="divTree" style={{ height: "100vh" }}>
         <SortableTree
           treeData={treeData}
-          onChange={(treeData) => updateTreeData(treeData)}
+          onChange={(newTreeData) => {
+            setPrevTreeData(newTreeData);
+            updateTreeData(newTreeData)
+          }}
+          onMoveNode={({ node, nextParentNode, path }) => {
+            tryToPersistNodeMovement(node.id, nextParentNode.id);
+          }}
           searchQuery={searchString}
           searchFocusOffset={searchFocusIndex}
           searchFinishCallback={(matches) => {
