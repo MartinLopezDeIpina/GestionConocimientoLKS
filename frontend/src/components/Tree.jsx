@@ -7,6 +7,9 @@ import SortableTree, {
 } from "@nosferatu500/react-sortable-tree";
 import "@nosferatu500/react-sortable-tree/style.css";
 import '../../public/styles/tree.css';
+import AddSVG from './SVGs/AddSVG.jsx';
+import DeleteSVG from './SVGs/DeleteSVG.jsx';
+import EditSVG from "./SVGs/EditSVG.jsx";
 
 
 function Tree() {
@@ -361,14 +364,14 @@ function Tree() {
                 />
             ),
             buttons: [
-              <div>
-                <button
+              <div className="divButtons">
+                <button className="buttonNode"
                   label="Add Child"
                   onClick={(event) => addNodeChild(rowInfo)}
                 >
-                  Add Child
+                  <AddSVG/>
                 </button>
-                <button
+                <button className="buttonNode"
                     label="Edit"
                     onClick={(event) => {
                         event.stopPropagation();
@@ -379,21 +382,15 @@ function Tree() {
                         nodeRefs.current[rowInfo.node.id].current.focus();
                     }}
                 >
-                    Edit
+                  <EditSVG/>
                 </button>
                 {
                     rowInfo.parentNode != null && (
-                        <button label="Delete" onClick={(event) => removeNode(rowInfo)}>
-                            Remove
+                        <button className="buttonNode" label="Delete" onClick={(event) => removeNode(rowInfo)}>
+                          <DeleteSVG/>
                         </button>
                     )
                 }
-                <button
-                  label="Alert"
-                  onClick={(event) => alertNodeInfo(rowInfo)}
-                >
-                  Info
-                </button>
               </div>
             ],
             style: {
