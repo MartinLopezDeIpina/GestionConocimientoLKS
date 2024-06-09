@@ -24,8 +24,10 @@ function Tree() {
     async function fetchData(){
         await fetch('http://localhost:5000/api/json_tree')
         .then(response => response.json())
-        .then(data => {setTreeData(data)
-        console.log(data)
+        .then(data => {
+          setTreeData(data)
+          setPrevTreeData(data)
+          console.log(data)
         })
         .catch(error => console.error('Error:', error));
     }
@@ -307,11 +309,15 @@ function Tree() {
         <SortableTree
           treeData={treeData}
           onChange={(newTreeData) => {
-            setPrevTreeData(newTreeData);
             updateTreeData(newTreeData)
           }}
           onMoveNode={({ node, nextParentNode, path }) => {
             tryToPersistNodeMovement(node.id, nextParentNode.id);
+          }}
+          onDragStateChanged={({isDragging}) => {
+            if (isDragging) {
+              setPrevTreeData(treeData);
+            }
           }}
           searchQuery={searchString}
           searchFocusOffset={searchFocusIndex}

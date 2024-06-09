@@ -151,6 +151,7 @@ def init_routes(app):
 
     @app.route('/api/move_node/<int:nodo_id>/<int:ascendente_id>', methods=['GET', 'PUT'])
     def move_node(nodo_id, ascendente_id):
+
         nodo = NodoArbol.query.get(nodo_id)
         if nodo is None:
             return Response('Nodo no existe', status=400)
@@ -168,7 +169,8 @@ def init_routes(app):
         db.session.add(relacion)
         db.session.commit()
 
-        return Response('Nodo movido', status=200)
+        return jsonify({'message': 'Nodo movido', 'status': 200})
+
 
     def nodo_recursive(nodo_id, ascendente_id):
         if nodo_id == ascendente_id:
