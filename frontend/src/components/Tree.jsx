@@ -52,11 +52,6 @@ function Tree() {
     }, 0);
   }, [lastAddedNodeId]); // Add lastAddedNodeId as a dependency
 
-
-  const inputEl = useRef();
-
-  // console.log(treeData);
-
   function updateNode(rowInfo) {
     const { node, path } = rowInfo;
     const { title } = node;
@@ -76,7 +71,6 @@ function Tree() {
     });
 
     setTreeData(newTree);
-    inputEl.current.value = "";
   }
 
   function tryToPersistNewTitleOrRevertToOld(rowInfo) {
@@ -115,19 +109,7 @@ function Tree() {
   function addNodeChild(rowInfo) {
     let { path } = rowInfo;
     const parentNodeID = rowInfo.node.id;
-    let value = inputEl.current.value;
-    // const value = inputEls.current[treeIndex].current.value;
-
-    /*if (value === "") {
-      inputEl.current.focus();
-      // inputEls.current[treeIndex].current.focus();
-      return;
-    }*/
-    if (value === ""){
-        value = " ";
-    }
-   
-
+    const value = " ";
 
     return fetch(`http://localhost:5000/api/add_node/${value}/${parentNodeID}`,{
         method: 'POST'
@@ -148,11 +130,8 @@ function Tree() {
           setLastAddedNodeId(data.nodoID);
           setIsEditing(true);
           setTreeData(newTree.treeData);
-          //inputEl.current.value = "";
         }
       });
-
-    // inputEls.current[treeIndex].current.value = "";
   }
 
   function removeNode(rowInfo) {
@@ -218,7 +197,6 @@ function Tree() {
   return (
     <div className="divTreeAndControls">
       <div style={{ flex: "0 0 auto", padding: "0 15px" }}>
-        <input ref={inputEl} type="text" />
         <button onClick={expandAll}>Expand All</button>
         <button onClick={collapseAll}>Collapse All</button>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
