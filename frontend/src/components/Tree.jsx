@@ -21,6 +21,7 @@ function Tree() {
   const nodeRefs = useRef({});
   const [oldName, setOldName] = useState(null);
   const [prevTreeData, setPrevTreeData] = useState(null);
+  const [lastAddedNodeId, setLastAddedNodeId] = useState(null);
 
 
   useEffect(() => {
@@ -37,35 +38,24 @@ function Tree() {
     fetchData();
   }, []); 
 
+  useEffect(() => {
+    if(lastAddedNodeId === null){
+      return;
+    }
+
+    // Delay function execution until after the component has finished rendering
+    setTimeout(() => {
+      const newNodeRef = nodeRefs.current[lastAddedNodeId];
+      if(newNodeRef && newNodeRef.current) {
+        newNodeRef.current.focus(); 
+      }
+    }, 0);
+  }, [lastAddedNodeId]); // Add lastAddedNodeId as a dependency
 
 
   const inputEl = useRef();
 
   // console.log(treeData);
-
-  function createNode() {
-    const value = inputEl.current.value;
-
-    if (value === "") {
-      inputEl.current.focus();
-      return;
-    }
-
-    let newTree = addNodeUnderParent({
-      treeData: treeData,
-      parentKey: null,
-      expandParent: true,
-      getNodeKey,
-      newNode: {
-        id: "123",
-        title: value
-      }
-    });
-
-    setTreeData(newTree.treeData);
-
-    inputEl.current.value = "";
-  }
 
   function updateNode(rowInfo) {
     const { node, path } = rowInfo;
@@ -125,17 +115,21 @@ function Tree() {
   function addNodeChild(rowInfo) {
     let { path } = rowInfo;
     const parentNodeID = rowInfo.node.id;
-    const value = inputEl.current.value;
+    let value = inputEl.current.value;
     // const value = inputEls.current[treeIndex].current.value;
 
-    if (value === "") {
+    /*if (value === "") {
       inputEl.current.focus();
       // inputEls.current[treeIndex].current.focus();
       return;
+    }*/
+    if (value === ""){
+        value = " ";
     }
+   
 
 
-    fetch(`http://localhost:5000/api/add_node/${value}/${parentNodeID}`,{
+    return fetch(`http://localhost:5000/api/add_node/${value}/${parentNodeID}`,{
         method: 'POST'
     })
     .then(response => response.json())
@@ -151,39 +145,13 @@ function Tree() {
               id: data.nodoID 
             }
           });
+          setLastAddedNodeId(data.nodoID);
+          setIsEditing(true);
           setTreeData(newTree.treeData);
-          inputEl.current.value = "";
+          //inputEl.current.value = "";
         }
       });
 
-    // inputEls.current[treeIndex].current.value = "";
-  }
-
-  function addNodeSibling(rowInfo) {
-    let { path } = rowInfo;
-
-    const value = inputEl.current.value;
-    // const value = inputEls.current[treeIndex].current.value;
-
-    if (value === "") {
-      inputEl.current.focus();
-      // inputEls.current[treeIndex].current.focus();
-      return;
-    }
-
-    let newTree = addNodeUnderParent({
-      treeData: treeData,
-      parentKey: path[path.length - 2],
-      expandParent: true,
-      getNodeKey,
-      newNode: {
-        title: value
-      }
-    });
-
-    setTreeData(newTree.treeData);
-
-    inputEl.current.value = "";
     // inputEls.current[treeIndex].current.value = "";
   }
 
@@ -226,19 +194,6 @@ function Tree() {
   function collapseAll() {
     expand(false);
   }
-
-  const alertNodeInfo = ({ node, path, treeIndex }) => {
-    const objectString = Object.keys(node)
-      .map((k) => (k === "children" ? "children: Array" : `${k}: '${node[k]}'`))
-      .join(",\n   ");
-
-    global.alert(
-      "Info passed to the icon and button generators:\n\n" +
-        `node: {\n   ${objectString}\n},\n` +
-        `path: [${path.join(", ")}],\n` +
-        `treeIndex: ${treeIndex}`
-    );
-  };
 
   const selectPrevMatch = () => {
     setSearchFocusIndex(
@@ -367,7 +322,9 @@ function Tree() {
               <div className="divButtons">
                 <button className="buttonNode"
                   label="Add Child"
-                  onClick={(event) => addNodeChild(rowInfo)}
+                  onClick={(event) => { 
+                    addNodeChild(rowInfo);
+                  }}
                 >
                   <AddSVG/>
                 </button>
