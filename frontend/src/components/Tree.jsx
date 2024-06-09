@@ -314,6 +314,7 @@ function Tree() {
           onMoveNode={({ node, nextParentNode, path }) => {
             tryToPersistNodeMovement(node.id, nextParentNode.id);
           }}
+          canDrop={({ nextParent }) => !!nextParent}
           onDragStateChanged={({isDragging}) => {
             if (isDragging) {
               setPrevTreeData(treeData);
