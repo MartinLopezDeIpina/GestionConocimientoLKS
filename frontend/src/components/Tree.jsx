@@ -240,7 +240,6 @@ function Tree() {
 
           <button
             type="button"
-            disabled={!searchFoundCount}
             onClick={selectPrevMatch}
           >
             &lt;
@@ -248,7 +247,6 @@ function Tree() {
 
           <button
             type="submit"
-            disabled={!searchFoundCount}
             onClick={selectNextMatch}
           >
             &gt;
