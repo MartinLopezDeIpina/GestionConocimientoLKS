@@ -1,12 +1,23 @@
 
-.divTreeAndControls{
+.controlsAndTreeDiv{
     width: 1000px;
+    align-items: start;
+}
+.controlsDiv{
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 80vh;
+    justify-content: start;
+    justify-items: space-between;
+    align-items: center;
+    gap: 100px;
+    margin-bottom: 10px;
+    padding: 20px;
+    background-color: var(--color-surface-200);
+    border-radius: 10px;
 }
 .divTree{
+    overflow-y: auto;
+    height: 72vh;
+    bottom: 0;
 }
 
 .nodeInput{
@@ -34,4 +45,69 @@
     transform-origin: center;
 }
 .buttonNode:hover{
+}
+.expandButton{
+    background-color: var(--color-surface-600);
+    border-radius: 5px;
+    border: 0px;
+    padding: 5px;
+    padding-inline: 10px;
+    font-weight: bold;
+    border: 1px solid transparent;
+}
+.expandButton:hover{
+    border: 1px solid var(--color-primary-100);
+}
+.expandButton:active{
+    background-color: var(--color-surface-500);
+}
+.expandButtonsDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.searchLabel{
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    margin-right: 10px;
+}
+#find-box{
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    background-color: var(--color-surface-400);
+    color: white;
+    border-radius: 5px;
+    margin-left: 5px;
+    padding: 5px;
+}
+.searchButton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px ;
+    background-color: var(--color-surface-600);
+    border-radius: 5px;
+    border: 0px;
+}
+.searchButton:hover{
+    background-color: var(--color-surface-500);
+}
+.searchButton:active{
+    background-color: var(--color-surface-400);
+}   
+.searchForm{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-right: 25px;
+}
+.searchButtonsDiv{
+    display: flex;
+    justify-content: center;
+    gap: 5px;
 }

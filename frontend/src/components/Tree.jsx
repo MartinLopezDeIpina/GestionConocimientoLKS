@@ -10,6 +10,8 @@ import '../../public/styles/tree.css';
 import AddSVG from './SVGs/AddSVG.jsx';
 import DeleteSVG from './SVGs/DeleteSVG.jsx';
 import EditSVG from "./SVGs/EditSVG.jsx";
+import PreviousSVG from "./SVGs/PreviousSVG.jsx";
+import NextSVG from "./SVGs/NextSVG.jsx";
 
 
 function Tree() {
@@ -195,20 +197,20 @@ function Tree() {
   }
 
   return (
-    <div className="divTreeAndControls">
-      <div style={{ flex: "0 0 auto", padding: "0 15px" }}>
-        <button onClick={expandAll}>Expand All</button>
-        <button onClick={collapseAll}>Collapse All</button>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <form
-          style={{ display: "inline-block" }}
+    <div className="controlsAndTreeDiv">
+      <div className="controlsDiv" >
+        <div className="expandButtonsDiv">
+          <button className="expandButton" onClick={expandAll}>Expand All</button>
+          <button className="expandButton" onClick={collapseAll}>Collapse All</button>
+        </div>
+        <form className="searchForm"
           onSubmit={(event) => {
             event.preventDefault();
           }}
         >
-          <label htmlFor="find-box">
+          <label htmlFor="find-box" className="searchLabel">
             Search:&nbsp;
-            <input
+            <input className="searchInput"
               id="find-box"
               type="text"
               value={searchString}
@@ -216,19 +218,23 @@ function Tree() {
             />
           </label>
 
-          <button
-            type="button"
-            onClick={selectPrevMatch}
-          >
-            &lt;
-          </button>
+          <div className="searchButtonsDiv">
+            <button
+              className="searchButton"
+              type="button"
+              onClick={selectPrevMatch}
+            >
+              <PreviousSVG/>
+            </button>
 
-          <button
-            type="submit"
-            onClick={selectNextMatch}
-          >
-            &gt;
-          </button>
+            <button
+              className="searchButton"
+              type="submit"
+              onClick={selectNextMatch}
+            >
+              <NextSVG/>
+            </button>
+          </div>
 
           <span>
             &nbsp;
@@ -239,7 +245,7 @@ function Tree() {
         </form>
       </div>
 
-      <div className="divTree" style={{ height: "100vh" }}>
+      <div className="divTree">
         <SortableTree
           treeData={treeData}
           onChange={(newTreeData) => {

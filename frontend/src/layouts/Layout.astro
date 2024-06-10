@@ -1,4 +1,8 @@
 ---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../../public/styles/global.css';
+
 interface Props {
 	title: string;
 }
@@ -7,7 +11,7 @@ const { title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content="Astro description" />
@@ -16,9 +20,24 @@ const { title } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
+	
 	<body>
+		<Header/>
 		<slot />
 	</body>
 </html>
 <style is:global>
+	body {
+		margin: 0px;
+	}
+	* {
+		font-family: sans-serif;
+	}
+	::-webkit-scrollbar {
+		display: none;
+	}
+	html {
+		-ms-overflow-style: none;  /* IE and Edge */
+		scrollbar-width: none;  /* Firefox */
+	}
 </style>
