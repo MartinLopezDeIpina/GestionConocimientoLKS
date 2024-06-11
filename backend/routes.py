@@ -5,9 +5,11 @@ from itertools import islice
 from flask import Response, jsonify
 from treelib import Tree
 
+import utils
 from LLMHandler import LLMHandler
 from database import db
 from models import NodoArbol, RelacionesNodo
+from utils import llm_json_tree
 
 
 def init_routes(app):
@@ -121,6 +123,10 @@ def init_routes(app):
             json['expanded'] = True
             json['isDirectory'] = True
 
+    @app.route('/api/get_llm_json_tree')
+    def get_llm_json_tree():
+        return utils.llm_json_tree()
+
     @app.route('/api/add_node/<nombre>/<int:ascendente_id>', methods=['POST'])
     def add_node(nombre, ascendente_id):
         nodo_padre = NodoArbol.query.get(ascendente_id)
@@ -209,5 +215,10 @@ def init_routes(app):
     @app.route('/api/llm_test/<string>')
     def llm_test(string):
         llmHandler = LLMHandler()
-        return llmHandler.handle(input_data=f"{string}")
+        return llmHandler.handle_example(input_data=f"{string}")
+
+    @app.route('/api/llm_test2/')
+    def llm_test2():
+        llmHandler = LLMHandler()
+        return llmHandler.handle(input_data=f"{"something"}")
 
