@@ -1,3 +1,5 @@
+@use "sass:math";
+
 $row-padding: 2px;
 $hover-padding: 3px;
 
@@ -129,7 +131,7 @@ $hover-padding: 3px;
 
   height: 100%;
   width: 44px;
-  background: #d9d9d9 url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MiIgaGVpZ2h0PSI0MiI+PGcgc3Ryb2tlPSIjRkZGIiBzdHJva2Utd2lkdGg9IjIuOSIgPjxwYXRoIGQ9Ik0xNCAxNS43aDE0LjQiLz48cGF0aCBkPSJNMTQgMjEuNGgxNC40Ii8+PHBhdGggZD0iTTE0IDI3LjFoMTQuNCIvPjwvZz4KPC9zdmc+') no-repeat center;
+  background: green url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MiIgaGVpZ2h0PSI0MiI+PGcgc3Ryb2tlPSIjRkZGIiBzdHJva2Utd2lkdGg9IjIuOSIgPjxwYXRoIGQ9Ik0xNCAxNS43aDE0LjQiLz48cGF0aCBkPSJNMTQgMjEuNGgxNC40Ii8+PHBhdGggZD0iTTE0IDI3LjFoMTQuNCIvPjwvZz4KPC9zdmc+') no-repeat center;
   border: solid #aaa 1px;
   box-shadow: 0 2px 2px -2px;
   cursor: move;
@@ -185,7 +187,7 @@ $hover-padding: 3px;
     animation: pointFade $spin-animation-time infinite ease-in-out both;
   }
 
-  @for $i from 1 through (($point-count + 1) / 2) {
+  @for $i from 1 through round(($point-count + 1) / 2) {
     &:nth-of-type(#{$i}) {
       transform: rotate(360deg / $point-count * ($i - 1));
     }
@@ -197,7 +199,7 @@ $hover-padding: 3px;
     &:nth-of-type(#{$i}),
     &:nth-of-type(#{$i + $point-count / 2}) {
       &:before {
-        animation-delay: - $spin-animation-time + ($spin-animation-time / $point-count * 2 * ($i - 1));
+        animation-delay: - $spin-animation-time + math.div($spin-animation-time * 2 * ($i - 1), $point-count);
       }
     }
   }

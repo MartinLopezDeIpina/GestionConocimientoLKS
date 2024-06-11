@@ -1,0 +1,474 @@
+GENERAL,GRUPOS,SUBGRUPOS,,
+,,,,
+N1,N2,N3,N4,N5
+Financiero,,,,
+DDP,,,,
+Legal,,,,
+Consultoria de gestión,,,,
+Sistemas,,,,
+Consultoría tecnológica,,,,
+,Desarrollo,,,
+,,Lenguajes de programación,,
+,,,Java,
+,,,Kotlin,
+,,,Dart (Flutter),
+,,,PL/SQL,
+,,,JavaScript,
+,,,TypeScript,
+,,,Python,
+,,,C,
+,,,C++,
+,,,C#,
+,,,VB,
+,,,NetCore,
+,,,.NET Framework,
+,,,Go (Golang),
+,,,SQL,
+,,,PHP,
+,,Frameworks backend,,
+,,,JBoss Seam,
+,,,CDI,
+,,,Hibernate,
+,,,Entity Framework,
+,,,Boost,
+,,,Spring Boot,
+,,,Spring Framework,
+,,,Node.js,
+,,,GO kit,
+,,,Gin Web Framework,
+,,,JSF,
+,,,Apache Struts,
+,,Frameworks frontend,,
+,,,HTML5,
+,,,CSS3,
+,,,Sass,
+,,,Less,
+,,,Bootstrap,
+,,,Tailwind CSS,
+,,,ReactJs,
+,,,Vue.js,
+,,,Angular,
+,,,Webpack,
+,,,Next.js,
+,,,Nuxt.js,
+,,,HTML+Angular (Ionic),
+,,,HTML+ React (React native),
+,,,Strapi CMS Headless,
+,,,Node.js,
+,,,React,
+,,,AspNet,
+,,,WPF,
+,,,WinForms,
+,,,AccessForms,
+,,,Qt,
+,,,PreAct,
+,,,Material UI,
+,,Constructores,,
+,,,Maven,
+,,,Gradle,
+,,,Keil,
+,,,CMake,
+,,,Make,
+,,,NPM,
+,,GenIA,,
+,,,Prompting,
+,,,RAG,
+,,,Vecto DB,
+,,,fine-tunning,
+,,,LangChain,
+,,,LangSmith,
+,,,LangGraph,
+,,,Multi-agents,
+,,,Multi-modal,
+,Bases de datos y Almacenamiento,,,
+,,SQL,,
+,,,Oracle,
+,,,MySQL,
+,,,PostgreSQL,
+,,,SQL Server,
+,,,InfluxDB base de datos de series temporales,
+,,,SQLite,
+,,,Maria DB,
+,,,IBM Db2 Database,
+,,,H2,
+,,,Apache Derby,
+,,No-SQL,,
+,,,Couch DB,
+,,,Couchbase,
+,,,Cassandra,
+,,,Mongo DB,
+,,,Apache HBase,
+,,,Hazelcast,
+,,,Memcached,
+,,Caché y Mensajería,,
+,,,Redis,
+,,Motores de Búsqueda,,
+,,,Elastic Search,
+,Gestión de proyectos,,,
+,,Metodologías,,
+,,,Scrum,
+,,,DevOps,
+,,,Kanban,
+,,Herramientas de gestión de proyectos,,
+,,,Jira,
+,,,Confluence,
+,,,Trello,
+,,,Redmine,
+,,Análisis y documentación,,
+,,,Análisis de requisitos,
+,,,Documentación de propuestas,
+,,,Historias de Usuario,
+,,,Casos de uso,
+,,Prototipado y Diseño,,
+,,,UML,
+,,,Figma,
+,,Comunicación con el cliente,,
+,,,Reuniones con el cliente,
+,,,Consultoría,
+,,,Gestión de proyectos,
+,,,Presentaciones a clientes,
+,,Gestión comercial,,
+,,,Propuestas de proyectos,
+,,,Propuestas de licitaciones,
+,DevSecOps,,,
+,,Herramientas CI,,
+,,,Jenkins,
+,,,Git Lab CI/CD,
+,,,GitHub Actions,
+,,,,Uso
+,,,,Administración
+,,VCS (Version Control System),,
+,,,Git,
+,,,Gitlab,
+,,,,Uso
+,,,,Administración
+,,,GitHub,
+,,,BitBucket,
+,,,SVN,
+,,Branching,,
+,,,Gitflow,
+,,,GitlabFlow,
+,,,Trunk based,
+,,Contenedores y Orquestación,,
+,,,Docker,
+,,,Docker Compose,
+,,,Kubernetes,
+,,,Docker Hub,
+,,,Nexus,
+,,,LXC,
+,,,Kubernetes Ingres,
+,,,Istio service mesh,
+,,,Github Packages,
+,,Log y Monitoreo,,
+,,,Apache Log4j,
+,,,Simple Logging Facade for Java (SLF4J),
+,,,java.util.logging (JUL),
+,,,Logstash,
+,,,Beats,
+,,,ELK Stack,
+,,,Kibana,
+,,,Grafana,
+,,,Prometheus,
+,,,Nagios,
+,,,Dynatrace,
+,,,Jaeger,
+,,Calidad de código y Seguridad en el desarrollo,,
+,,,Sonarqube,
+,,,Dependency-check,
+,,Testing Unitario/Integración,,
+,,,JUnit,
+,,,Jest,
+,,,UI Automator,
+,,,TDD,
+,,,Técnicas de caja blanca,
+,,Testing funcional,,
+,,,Selenium,
+,,,Playwright,
+,,,Cucumber,
+,,,Espresso,
+,,,Crashlytics,
+,,,BDD,
+,,,Tecnicas caja negra,
+,,,Postman,
+,,Testing performance,,
+,,,JMeter,
+,,,Octoperf,
+,,,Blazemeter,
+,,,Técnicas y procedimientos,
+,Sistemas Distribuidos – Embedidos,,,
+,,STM microcontroladores,,
+,,Instaladores y empaquetadores,,
+,,,Yocto,
+,,,Inno Setup,
+,,,Install Master,
+,,,VS Installer,
+,,Integración de sistemas,Integración CANBUS,
+,,,Buildroot,
+,Movilidad,,,
+,,,,
+,Arquitecturas de Servicios Web,,,
+,,API,,
+,,,REST,
+,,,SOAP,
+,,,GraphQL,
+,,,HTTP,
+,,,Websocket,
+,,,CoAP,
+,,,JSON-RPC,
+,,,,
+,,Especificaciones y Estándares,,
+,,,OpenAPI,
+,,,WSDL,
+,,,gRPC,
+,,,ProtocolBuffer,
+,,,Apache Thrift,
+,,,JSON,
+,,,JSON Schema,
+,,,XML,
+,,,XML Schema,
+,,,YML,
+,,,Apache Avro,
+,,Frameworks y Librerías,,
+,,,Express.js,
+,,,FastAPI,
+,,Mensajeria,,
+,,,NATS,
+,,,RabbitMQ,
+,,,Apache Kafka,
+,,,"Mensajeria Mqtt (Mosquito, etc)",
+,,,ActiveMQ,
+,,,Hazelcast,
+,,,Canfluent,
+,,Portales,,
+,,,Liferay,
+,,,Strapi CMS Headless,
+,,Integraciones,,
+,,,Integración con MOVEX,
+,,,Integración con M3,
+,,,Integración con SAP,
+,,,Integración con MsDynamics,
+,,Identificación & transmision de la identidad,,
+,,,CAS,
+,,,OAUTH,
+,,,JWT,
+,,,Keycloak,
+,Infraestructura,,,
+,,Servidores Web,,
+,,,Nginx,
+,,,Apache HTTP Server,
+,,Balanceadores de carga,,
+,,,HAProxy,
+,,Sistemas Operativos,,
+,,,Linux,
+,,Infraestructura como Código (IaC),,
+,,,Terraform,
+,,,Ansible,
+,,,Puppet,
+,,,Shell,
+,,Redes y Servidores,,
+,,,DNS,
+,,,DHCP,
+,,,VPN,
+,,,NAT,
+,,,Segmentación de redes,
+,,,Tablas de enrutamiento,
+,,,OpenVPN,
+,,,NGINX,
+,,,Apache http,
+,,,Firewall,
+,,Almacenamiento y Sistemas de Archivos,,
+,,,Ficheros,
+,,,Samba,
+,,,FTP,
+,,,Hadoop Distributed File System ( HDFS ),
+,Sistemas Cloud – Iot,,,
+,,MQTT,,
+,,EMQX,,
+,,Eclipse Mosquitto,,
+,,Eclipse Paho,,
+,,FreeRTOS,,
+,,Análisis y Procesamiento de datos,,
+,,,Drools,
+,,,WSO2 Complex Event Processor,
+,,,Apache Storm,
+,,,Apache Flink,
+,,,Apache Spark,
+,,,Google TensorFlow,
+,,,,
+,,,,
+,,Google Cloud,,
+,,,Pub/Sub,
+,,,App Engine,
+,,AWS (Amazon Web Services),,
+,,,Desarrollo de Aplicaciones,AWS CodeCommit
+,,,,AWS CodeBuild
+,,,,AWS CodeDeploy
+,,,,AWS CodePipeline
+,,,,AWS CodeArtifact
+,,,,AWS Cloud Development Kit (CDK)
+,,,,AWS CloudFormation
+,,,Computación en la Nube,Amazon Elastic Compute Cloud (EC2)
+,,,,Amazon Machine Images (AMI)
+,,,,Amazon ECS + EC2
+,,,,Amazon ECS + Fargate
+,,,,Amazon EKS + EC2
+,,,,Amazon EKS + Fargate
+,,,,Amazon Route 53
+,,,,Amazon VPC
+,,,,Security Group
+,,,,Network access control list (NACL)
+,,,,NAT gateway
+,,,,Internet Gateway
+,,,,Elastic Load Balancing (ELB)
+,,,,AWS Site-to-Site VPN
+,,,,AWS Transit Gateway
+,,,,AWS App Mesh
+,,,Seguridad,AWS Identity and Access Management (IAM)
+,,,,Policies and permissions in IAM
+,,,,AWS IAM Identity Center
+,,,,Amazon Cognito
+,,,,AWS Security Token Service (STS)
+,,,,Amazon GuardDuty
+,,,,AWS Shield
+,,,,AWS Security Hub
+,,,,AWS Certificate Manager (ACM)
+,,,,AWS Key Management Service (AWS KMS)
+,,,,AWS Secrets Manager
+,,,,AWS Systems Manager Parameter Store
+,,,,AWS AppConfig
+,,,,AWS WAF
+,,,,AWS Network Firewall
+,,,Bases de Datos,Amazon RDS
+,,,,Amazon Aurora
+,,,,Amazon DynamoDB
+,,,,Amazon DocumentDB
+,,,,Amazon Redshift
+,,,,Amazon OpenSearch
+,,,,Amazon ElastiCache
+,,,,AWS Database Migration Service (AWS DMS)
+,,,Almacenamiento,Amazon S3
+,,,,Amazon EBS
+,,,Internet de las Cosas (IoT),AWS IoT Core
+,,,,AWS IoT Rule
+,,,,AWS IoT Core Shadow
+,,,,AWS IoT Core FleetIndexing
+,,,,AWS IoT Device Manager
+,,,,AWS IoT Greengrass
+,,,,AWS IoT Core Jobs
+,,,,AWS IoT Device Defender
+,,,Monitoreo y Registro,Amazon CloudWatch Logs
+,,,,Amazon CloudWatch Metrics
+,,,,Amazon CloudWatch Alarms
+,,,,AWS CloudTrail
+,,,,AWS X-Ray
+,,,,Amazon Managed Grafana
+,,,Distribución de Contenido,Amazon CloudFront
+,,,Gestión de Servicios y Automatización,AWS Control Tower
+,,,,AWS Config
+,,,,Políticas de control de servicios (SCP)
+,,,,AWS Organizations
+,,,,Account Factory
+,,,Gestión de Servicios y Automatización,AWS Backup
+,,,Análisis de Datos y Procesamiento,Amazon Athena
+,,,,Kinesis Data Analytics
+,,,,Glue
+,,,,SageMaker
+,,,,Amazon EMR
+,,,,Amazon MSK
+,,,,Amazon MQ
+,,,,Amazon Kinesis Data Streams
+,,,,Amazon Data Firehose
+,,,Computación sin Servidor (Serverless),AWS Lambda
+,,,,AWS Step Functions
+,,,Mensajería y Notificaciones,Amazon Simple Notification Service (SNS)
+,,,,Amazon Simple Queue Service (SQS)
+,,,,Amazon EventBridge
+,,,,Amazon Simple Email Service (SES)
+,Azure,,,
+,,,,
+,Oficina Técnica,,,
+,,QA,,
+,,,Gestion de la calidad del código,
+,,,Sonarqube,
+,,,,Instalación
+,,,,Administacion
+,,,,Consultoría
+,,,Sonarcloud,
+,,,,Administración
+,,,Gestión del testing,
+,,,,Diseño de casos de prueba
+,,,,Ejecución de las pruebas
+,,,,Gestión de defectos
+,,,,Metodologías de pruebas
+,,Seguridad,,
+,,,Dependency-check,
+,,,,Admnistración
+,,,,Consultoría
+,,,ZAP Proxy,
+,,,,Uso
+,,,,Administración API
+,,,,Consultoría
+,,,Análisis de Vulnerabilidades,
+,,,,Vulnerabilidades de código
+,,,,Vulnerabilidades en sistemas
+,,,,Consultoría
+,,,Pentesting,
+,,,,Aplicaciones
+,,,,Sistemas
+,,Arquitectura de SW,,
+,,,Servidores de aplicaciones,
+,,,,Tomcat
+,,,,Weblogic
+,,,,JbossAS
+,,,,WildFly
+,,,Microservicios,
+,,,,Spring
+,,,,Contenedores Kubernetes
+,,,Desarrollo de Identificacion/Autorización,
+,,,,CAS
+,,,,Keycloak
+,,Implantación DevSecOps,,
+,,,Consultoria DevSecOps,
+,,,Jira - On Prem,
+,,,,Instalación
+,,,,Administración
+,,,,Consultoría
+,,,Jira Cloud,
+,,,,Administración
+,,,,Consultoría
+,,,Confluence,
+,,,,Instalación
+,,,,Administración
+,,,,Consultoría
+,,,Jenkins,
+,,,,Instalacion
+,,,,
+,,,,
+,,,Git Lab CI/CD,
+,,,,Administración
+,,,,
+,,,GitHub Actions,
+,,,,Administración
+,,,Gitlab,
+,,,,Instalación
+,,,,Administración
+,,,Nexus,
+,,,,Administracion
+,,,Contenedores de compilacion,
+,,,Pipelines,
+,,,,Jenkinsfile
+,,,,Gitlab (YML)
+,,,,GitHub
+,,,Azure DevOps,Pipelines
+,,,,Repos
+,,,,Artifacts
+,,Espacio Europeo de Datos,,
+,,,IDSA,
+,,,EDC,
+,,Workflows,,
+,,,OptimaJet,
+,,,Elsa,
+,,Comunicacion Tiempo real,,
+,,,SignalR (.NET),
+,,Asistencia a la programación IA,,
+,,,Copilot,

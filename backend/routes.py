@@ -1,5 +1,6 @@
 import csv
 import os
+from itertools import islice
 
 from flask import Response, jsonify
 from treelib import Tree
@@ -7,18 +8,28 @@ from treelib import Tree
 from database import db
 from models import NodoArbol, RelacionesNodo
 
+
 def init_routes(app):
     # Sólo para probar
     @app.route('/api/add_csv')
     def store_tree_from_csv():
-        file_path = os.path.join(app.static_folder, 'conocimientos.csv')
+        file_path = os.path.join(app.static_folder, 'conocimientosLKS.csv')
 
         # Keep track of the last node at each depth level
         last_node_at_depth = {}
 
-        with open(file_path, 'r') as file:
+        nodoRaiz = NodoArbol.query.filter_by(nombre='LKS').first()
+
+        if nodoRaiz is None:
+            nodoRaiz = NodoArbol(nombre='LKS')
+            db.session.add(nodoRaiz)
+            db.session.commit()
+
+        last_node_at_depth[0] = nodoRaiz
+
+        with open(file_path, 'r', encoding='utf-8') as file:
             reader = csv.reader(file)
-            for row in reader:
+            for row in islice(reader, 3, None):
                 # Iterate over each cell in the row
                 for i in range(len(row)):
                     node = row[i]
@@ -27,22 +38,23 @@ def init_routes(app):
                     if not node:
                         continue
 
-                    parent = last_node_at_depth.get(i - 1)
+                    parent = last_node_at_depth.get(i-1)
 
                     nodo = NodoArbol(nombre=node)
                     #nodo = NodoArbol.query.order_by(-NodoArbol.nombre).first()
                     db.session.add(nodo)
                     db.session.commit()
 
-                    # If the node is not the root node, create a relationship with its parent
-                    if parent:
-                        parent_nodo = NodoArbol.query.filter_by(nombre=parent).first()
-                        relacion = RelacionesNodo(ascendente_id=parent_nodo.nodoID, descendente_id=nodo.nodoID)
-                        db.session.add(relacion)
-                        db.session.commit()
+                    if parent is None:
+                        relacion = RelacionesNodo(ascendente_id=nodoRaiz.nodoID, descendente_id=nodo.nodoID)
+                    else:
+                        relacion = RelacionesNodo(ascendente_id=parent.nodoID, descendente_id=nodo.nodoID)
+
+                    db.session.add(relacion)
+                    db.session.commit()
 
                     # Update the last node at the current depth level
-                    last_node_at_depth[i] = node
+                    last_node_at_depth[i] = nodo
 
     @app.route('/api/delete')
     def delete_tree():
