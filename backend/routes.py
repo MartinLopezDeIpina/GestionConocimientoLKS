@@ -5,6 +5,7 @@ from itertools import islice
 from flask import Response, jsonify
 from treelib import Tree
 
+from LLMHandler import LLMHandler
 from database import db
 from models import NodoArbol, RelacionesNodo
 
@@ -183,7 +184,6 @@ def init_routes(app):
 
         return jsonify({'message': 'Nodo movido', 'status': 200})
 
-
     def nodo_recursive(nodo_id, ascendente_id):
         if nodo_id == ascendente_id:
             return True
@@ -206,35 +206,8 @@ def init_routes(app):
 
         return jsonify({'message': 'Nodo actualizado', 'status': 200})
 
-    @app.route('/api/seed')
-    def seed():
-        seed_data = [
-            {
-                "id": "123",
-                "title": "company",
-                "subtitle": "zzz",
-                "isdirectory": True,
-                "expanded": False,
-                "children": [
-                    {"id": "456", "title": "human resource", "subtitle": "zzz"},
-                    {
-                        "id": "789",
-                        "title": "bussiness",
-                        "subtitle": "zzz",
-                        "expanded": False,
-                        "children": [
-                            {
-                                "id": "234",
-                                "title": "store a",
-                                "subtitle": "zzz"
-                            },
-                            {"id": "567", "title": "store b", "subtitle": "zzz"}
-                        ]
-                    }
-                ]
-            }
-        ]
-
-        return seed_data
-
+    @app.route('/api/llm_test/<string>')
+    def llm_test(string):
+        llmHandler = LLMHandler()
+        return llmHandler.handle(input_data=f"{string}")
 
