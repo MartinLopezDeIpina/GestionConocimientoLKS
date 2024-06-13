@@ -22,6 +22,7 @@ def add_node_to_json_llm_format(json, nodo, relaciones, nodo_dict):
         child = {}
         add_node_to_json_llm_format(child, descendente, relaciones, nodo_dict)
         children.append(child)
-    json['skill'] = nodo.nombre
+    json["skill"] = nodo.nombre
+    json["id"] = nodo.nodoID
     if relaciones_nodo:
-        json['sub_skill'] = children
+        json["sub_skill"] = children

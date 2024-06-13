@@ -10,6 +10,8 @@ from LLMHandler import LLMHandler
 from database import db
 from models import NodoArbol, RelacionesNodo
 from utils import llm_json_tree
+import json
+from pydantic_core import from_json
 
 
 def init_routes(app):
@@ -212,13 +214,17 @@ def init_routes(app):
 
         return jsonify({'message': 'Nodo actualizado', 'status': 200})
 
-    @app.route('/api/llm_test/<string>')
-    def llm_test(string):
+    @app.route('/api/llm_test/<nombre_fichero>')
+    def llm_test(nombre_fichero):
+        file_path = os.path.join(app.static_folder, 'CV', nombre_fichero+'.txt')
+        input_data = readDataFromFile(file_path)
         llmHandler = LLMHandler()
-        return llmHandler.handle_example(input_data=f"{string}")
+        return llmHandler.handle(input_data=input_data)
 
-    @app.route('/api/llm_test2/')
-    def llm_test2():
-        llmHandler = LLMHandler()
-        return llmHandler.handle(input_data=f"{"something"}")
+    def readDataFromFile(file):
+        with open(file, 'r', encoding='utf-8') as f:
+            return f.read()
 
+    @app.route('/api/llm_json_tree_substring/<listaids>')
+    def get_subtree(listaids):
+        return utils.get_subtree(listaids)

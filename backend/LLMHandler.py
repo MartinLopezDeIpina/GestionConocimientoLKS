@@ -1,163 +1,140 @@
 import json
+import re
 
 from flask import jsonify
+from pydantic_core import from_json
 
 import utils
 from config import Config
-from langchain_openai import OpenAI
+from langchain_openai import ChatOpenAI
 from langchain_core.prompts.few_shot import FewShotPromptTemplate, FewShotChatMessagePromptTemplate
 from langchain_core.prompts.prompt import PromptTemplate
-
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.messages import SystemMessage
+from langchain.globals import set_debug
+from langchain_core.output_parsers import JsonOutputParser
 
 class LLMHandler:
 
     def __init__(self):
-        self.openai = OpenAI(api_key=Config.OPENAI_API_KEY)
-
-    def handle_example(self, input_data):
-        good_examples = [
-            {
-                "input": "I coded python for 5 years and java for 3 years. I am a software developer.",
-                "output": "Java, Python"
-            },
-            {
-                "input": "In my career, I have worked with Java, Python, and C++.",
-                "output": "Java, Python, C++"
-            },
-            {
-                "input": "I have experience with Java, Python, C++, and Flask",
-                "output": "Java, Python, C++, Flask"
-            }
-        ]
-        bad_examples = [
-            {
-                "input": "I have worked with Java, Python, and C++.",
-                "output": "Java, Python",
-                "expected_output": "Java, Python, C++",
-                "explanation": "The output should include C++"
-            },
-            {
-                "input": "I have experience with Java, Python, C++, and Flask",
-                "output": "Java, Flask",
-                "expected_output": "Java, Python, C++, Flask",
-                "explanation": "The output should include Python and C++"
-            }
-        ]
-        knowledge_areas = "Java,Python,C++,Flask"
-
-        good_examples_prompt_template = PromptTemplate(
-            input_variables=["input", "output"],
-            template="Input: {input}\nOutput: {output}"
-        )
-
-        good_examples_prompt = FewShotPromptTemplate(
-            input_variables=["knowledge_areas"],
-            examples=good_examples,
-            example_prompt=good_examples_prompt_template,
-            prefix=f"""
-            Given the user input, provide a list of knowledge areas that the user has experience with.
-            \nThese are examples knowledge areas: {knowledge_areas} 
-            \nThese are examples of good responses:
-            """,
-            suffix=" "
-        )
-
-        print(good_examples_prompt.format(knowledge_areas=knowledge_areas))
-
-        user_prompt = PromptTemplate(
-            input_variables=["input"], template="Input: {input} \nOutput:"
-        )
-
-        completion = self.openai.chat.completions.create(
-            model=Config.LLM_MODEL,
-            messages=[
-                {"role": "system", "content": good_examples_prompt.format(knowledge_areas=knowledge_areas)},
-                {"role": "user", "content": user_prompt.format(input=input_data)}
-            ],
-            temperature=0
-        )
-
-        print(json.dumps(completion.dict(), indent=4))
-
-        return jsonify(completion.dict())
+        self.llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0, verbose=True)
+        set_debug(True)
 
     def handle(self, input_data):
 
-        knwowledge_tree = json.dumps(utils.llm_json_tree().json, indent=5)
-        knwowledge_tree = knwowledge_tree.replace('{', '{{').replace('}', '}}')
+        knowledge_tree = utils.llm_json_tree()
+        knowledge_tree = knowledge_tree.json
+        knowledge_tree = json.dumps(knowledge_tree, ensure_ascii=False)
+
 
         good_examples = [
             {
                 "input":
                 """
 My experience includes 5 years of coding in Python and 3 years of coding in Java. I am a software developer.
-I have experience with Java, Python, C++, and Flask. 
+I have experience with Java, Python, C++, and Node. 
                 """,
-                "output": """
+                "output": """ 
 {
-  "skill": "LKS",
-  "sub_skill": [
-    {
-      "skill": "Consultoría tecnológica",
-      "sub_skill": [
-        {
-          "skill": "Desarrollo",
-          "sub_skill": [
-            {
-              "skill": "Lenguajes de programación",
-              "sub_skill": [
-                {
-                  "skill": "Java"
-                }
-              ]
-            }
-         ]
-        }
-     ]
-    }
-  ]
+    "id": [10,16,18,34]
 }
                 """
             }
-
         ]
 
-        good_examples_prompt_template = PromptTemplate(
-            input_variables=["input", "output"],
-            template="Input: {input}\nOutput: {output}"
+        for example in good_examples:
+            example["output"] = self.remove_spaces_inside_quotes(example["output"].replace('\n', ''))
+
+        good_examples_prompt_template = ChatPromptTemplate.from_messages(
+            [
+                "{input} \nOutput: {output}"
+            ]
         )
 
-        good_examples_prompt = FewShotPromptTemplate(
-            input_variables=["knowledge_tree", "input"],
+        good_examples_prompt = FewShotChatMessagePromptTemplate(
             examples=good_examples,
             example_prompt=good_examples_prompt_template,
-            prefix=f"""
-Given the knowledge tree of the company LKS and a worker's curriculum, provide a subtree of the knowledge tree
-that the worker has experience with. The returned subtree must be a subset of the knowledge tree of the company LKS, with the
-same structure and format. Use the example's format to provide the output.
-\nThis is the knowledge tree of the company LKS: {knwowledge_tree}
-\nThese are examples of good responses:
-            """,
-            suffix="User's input: {input} \nOutput:"
         )
 
-        print(good_examples_prompt.format(knowledge_tree=knwowledge_tree))
+        system_prompt = PromptTemplate(
+            input_variables=["knowledge_tree"],
+            template="""
+Given the knowledge tree of the company LKS and a worker's curriculum, provide an array with the identifiers that represent the subtree of the knowledge tree  
+that the worker has experience with. The returned subtree must be a subset of the knowledge tree of the company LKS, there must not be skills that don't belong to the tree,
+and there must not be skills that the worker doesn't have experience with.
+For example, the subtree: 
+{{
+  "id": 1,
+  "skill": "LKS",
+  "sub_skill": [
+    {{
+      "id": 7,
+      "skill": "Consultoría tecnológica",
+      "sub_skill": [
+        {{
+          "id": 8,
+          "skill": "Desarrollo",
+          "sub_skill": [
+            {{
+              "id": 9,
+              "skill": "Lenguajes de programación",
+              "sub_skill": [
+                {{
+                  "id": 10,
+                  "skill": "Java"
+                }},
+                {{
+                  "id": 16,
+                  "skill": "Python"
+                }}
+              ]
+            }}
+         ]
+        }}
+     ]
+    }}
+  ]
+}}
+Stands for the following list: 
+{{
+    "id": [10,16]
+}}
+There is no need to include id's 9,8,7,1, since they are alredy included with it's children.
+Ouput must only contain the required list in required JSON format.
+Use the example's format to provide the output, and use the tree's real id's.
+\nThis is the knowledge tree of the company LKS: {knwowledge_tree}
+            """
+        )
 
+        user_prompt = PromptTemplate(
+            input_variables=["input"], template="""
+\nInput:\n{input}
+\nOutput:
+"""
+        )
 
-        llm = OpenAI(model="gpt-3.5-turbo-instruct", temperature=0)
-        llm_chain = good_examples_prompt_template.format(input=input_data, knwowledge_tree=knwowledge_tree) | llm
+        prompt = ChatPromptTemplate.from_messages([
+            SystemMessage(
+                content=system_prompt.format(knwowledge_tree=knowledge_tree)
+            ),
+            SystemMessage(
+                content="These are examples of good responses:\n"
+                + good_examples_prompt.format()
+            ),
+            user_prompt.format(input=input_data)
+        ])
 
-       # completion = self.openai.chat.completions.create(
-       #     model=Config.LLM_MODEL,
-       #     messages=[
-       #         {"role": "system", "content": good_examples_prompt.format(knowledge_areas=knowledge_areas)},
-       #         {"role": "user", "content": user_prompt.format(input=input_data)}
-       #     ],
-       #     temperature=0
-       # )
+        #print(prompt.format())
+        #return 'done'
 
-       # print(json.dumps(completion.dict(), indent=4))
-#
-#        return jsonify(completion.dict())
+        llm_chain = prompt | self.llm
+        output = llm_chain.invoke(input={"input": input_data})
+        output_content = output.content
+        print(output_content)
+        parsed_json = from_json(output_content, allow_partial=True)
+        print(parsed_json)
+        return parsed_json
 
+    def remove_spaces_inside_quotes(self, text):
+        return re.sub(r'"[^"]*"', lambda m: m.group().replace(' ', ''), text)
 

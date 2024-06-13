@@ -1,0 +1,83 @@
+Nombre Completo: Juan Pérez García
+Dirección: Calle Falsa 123, 28080 Madrid, España
+Teléfono: +34 600 123 456
+Correo Electrónico: juan.perez@email.com
+LinkedIn: linkedin.com/in/juanperez
+GitHub: github.com/juanperez
+Resumen Profesional
+
+Ingeniero de Software con 5 años de experiencia en el desarrollo de aplicaciones web y móviles. Experto en múltiples lenguajes de programación, incluyendo JavaScript, Python y Java, con un sólido conocimiento en frameworks como React, Angular y Django. Proactivo, con habilidades en la resolución de problemas y experiencia en metodologías ágiles. Busco contribuir mis conocimientos y habilidades en una empresa innovadora y en crecimiento.
+Experiencia Profesional
+
+Ingeniero de Software Senior
+TechSolutions S.L. – Madrid, España
+Enero 2021 – Presente
+
+    Liderar un equipo de 5 desarrolladores en proyectos de desarrollo de software.
+    Diseñar y desarrollar aplicaciones web utilizando React y Node.js.
+    Implementar APIs RESTful y servicios backend en Python (Django).
+    Mejorar la eficiencia del código y reducir los tiempos de carga mediante la optimización del rendimiento.
+    Colaborar con equipos de diseño y producto para definir especificaciones y requisitos del proyecto.
+    Implementar metodologías ágiles (Scrum) para gestionar el desarrollo de proyectos.
+
+Ingeniero de Software
+Innovatech Ltd. – Barcelona, España
+Julio 2018 – Diciembre 2020
+
+    Desarrollar y mantener aplicaciones móviles en Android y iOS utilizando React Native.
+    Participar en la migración de una aplicación monolítica a una arquitectura basada en microservicios.
+    Colaborar con el equipo de DevOps para implementar pipelines CI/CD.
+    Realizar revisiones de código y mentorizar a desarrolladores junior.
+    Crear y mantener documentación técnica y manuales de usuario.
+
+Desarrollador de Software
+SoftSolutions S.A. – Valencia, España
+Junio 2016 – Junio 2018
+
+    Desarrollar aplicaciones web utilizando Angular y Node.js.
+    Colaborar en el diseño y desarrollo de bases de datos SQL y NoSQL.
+    Integrar servicios de terceros y APIs en aplicaciones existentes.
+    Realizar pruebas unitarias y de integración para asegurar la calidad del software.
+    Participar en reuniones de planificación y revisión de sprint.
+
+Educación
+
+Máster en Ingeniería de Software
+Universidad Politécnica de Madrid – Madrid, España
+2015 – 2016
+
+Grado en Ingeniería Informática
+Universidad de Valencia – Valencia, España
+2011 – 2015
+Habilidades Técnicas
+
+    Lenguajes de Programación: JavaScript, Python, Java, C#
+    Frameworks y Librerías: React, Angular, Django, Node.js, Spring
+    Bases de Datos: MySQL, PostgreSQL, MongoDB
+    Herramientas DevOps: Docker, Kubernetes, Jenkins, Git
+    Metodologías: Scrum, Kanban, Agile
+    Otros: RESTful APIs, Microservicios, CI/CD, AWS, Azure
+
+Idiomas
+
+    Español: Nativo
+    Inglés: Avanzado (C1)
+
+Proyectos Destacados
+
+Plataforma de E-commerce
+
+    Desarrollé una plataforma de comercio electrónico utilizando React y Node.js, que permitió a la empresa aumentar sus ventas en un 30%.
+
+Aplicación de Gestión de Tareas
+
+    Implementé una aplicación móvil para la gestión de tareas con React Native, mejorando la productividad de los usuarios en un 25%.
+
+Certificaciones
+
+    Certified Scrum Master (CSM)
+    AWS Certified Solutions Architect – Associate
+
+Referencias
+
+Disponibles a solicitud.
