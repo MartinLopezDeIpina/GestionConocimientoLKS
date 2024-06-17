@@ -6,12 +6,12 @@ LinkedIn: linkedin.com/in/juanperez
 GitHub: github.com/juanperez
 Resumen Profesional
 
-Ingeniero de Software con 5 años de experiencia en el desarrollo de aplicaciones web y móviles. Experto en múltiples lenguajes de programación, incluyendo JavaScript, Python y Java, con un sólido conocimiento en frameworks como React, Angular y Django. Proactivo, con habilidades en la resolución de problemas y experiencia en metodologías ágiles. Busco contribuir mis conocimientos y habilidades en una empresa innovadora y en crecimiento.
+Ingeniero de Software con 7 años de experiencia en el desarrollo de aplicaciones web y móviles. Experto en múltiples lenguajes de programación, incluyendo JavaScript, Python y Java, con un sólido conocimiento en frameworks como React, Angular y Django. Proactivo, con habilidades en la resolución de problemas y experiencia en metodologías ágiles. Busco contribuir mis conocimientos y habilidades en una empresa innovadora y en crecimiento.
 Experiencia Profesional
 
 Ingeniero de Software Senior
 TechSolutions S.L. – Madrid, España
-Enero 2021 – Presente
+Enero 2021 – 2023
 
     Liderar un equipo de 5 desarrolladores en proyectos de desarrollo de software.
     Diseñar y desarrollar aplicaciones web utilizando React y Node.js.

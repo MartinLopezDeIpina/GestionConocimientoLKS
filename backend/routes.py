@@ -220,7 +220,7 @@ def init_routes(app):
         file_path = os.path.join(app.static_folder, 'CV', nombre_fichero+'.txt')
         input_data = utils.read_data_from_file(file_path)
         llmHandler = LLMHandler()
-        return llmHandler.handle(input_data=input_data)
+        return llmHandler.handle_knowledges(input_data=input_data)
 
 
     @app.route('/api/llm_json_tree_substring/<listaids>')
@@ -239,3 +239,14 @@ def init_routes(app):
     def add_milvus_files():
         return modelTools.index_resources()
 
+    @app.route('/api/get_knowledge_level/<cv_file>/<skills_file>')
+    def get_knowledge_level(cv_file, skills_file):
+        llm = LLMHandler()
+
+        cv_path = os.path.join(app.static_folder, 'CV', cv_file+'.txt')
+        cv_data = utils.read_data_from_file(cv_path)
+
+        skills_path = os.path.join(app.static_folder, 'CV', skills_file+'.json')
+        skills_data = utils.read_data_from_file(skills_path)
+
+        return llm.handle_knowledge_level(cv_data, skills_data)

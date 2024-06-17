@@ -1,0 +1,31 @@
+{
+  "ids": [
+    {"id": 10, "name": "Java"},
+    {"id": 14, "name": "JavaScript"},
+    {"id": 15, "name": "TypeScript"},
+    {"id": 16, "name": "Python"},
+    {"id": 19, "name": "C#"},
+    {"id": 32, "name": "Spring Boot"},
+    {"id": 33, "name": "Spring Framework"},
+    {"id": 46, "name": "ReactJS"},
+    {"id": 48, "name": "Angular"},
+    {"id": 52, "name": "HTML + React(React native)"},
+    {"id": 55, "name": "Node.js"},
+    {"id": 84, "name": "MySQL"},
+    {"id": 85, "name": "PostgreSQL"},
+    {"id": 97, "name": "Mongo DB"},
+    {"id": 107, "name": "Scrum"},
+    {"id": 109, "name": "Kanban"},
+    {"id": 133, "name": "Jenkins"},
+    {"id": 139, "name": "Git"},
+    {"id": 140, "name": "Gitlab"},
+    {"id": 151, "name": "Docker"},
+    {"id": 153, "name": "Kubernetes"},
+    {"id": 209, "name": "REST"},
+    {"id": 297, "name": "AWS (Amazon Web Services)"},
+    {"id": 432, "name": "Spring"},
+    {"id": 433, "name": "Contenedores Kubernetes"},
+    {"id": 450, "name": "Jenkins"},
+    {"id": 463, "name": "Jenkinsfile"}
+  ]
+}

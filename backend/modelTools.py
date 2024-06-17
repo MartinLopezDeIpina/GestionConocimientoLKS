@@ -22,7 +22,7 @@ def get_similar_info(input_data):
     similar_resources = milvusTools.search_similar_resources(0, embed, RESULTS=3)
     info = ""
     for result in similar_resources:
-        info += "\n\nINFO CHUNK: " + result[0].page_content
+        info += "\n\nScale metric example: " + result[0].page_content
 
     return info
 

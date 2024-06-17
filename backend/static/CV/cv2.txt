@@ -6,12 +6,19 @@ LinkedIn: linkedin.com/in/anamartinez
 GitHub: github.com/anamartinez
 Resumen Profesional
 
-Ingeniera de Software con 5 años de experiencia en el desarrollo de soluciones tecnológicas innovadoras. Experta en el diseño y la implementación de aplicaciones web y backend, con conocimientos avanzados en Java, Python y JavaScript. Firme defensora de las metodologías ágiles y la mejora continua, con una sólida capacidad para trabajar en equipo y gestionar proyectos complejos. Busco una oportunidad para aplicar mis habilidades en un entorno desafiante y colaborativo.
+Ingeniera de Software con 8 años de experiencia en el desarrollo de soluciones tecnológicas innovadoras. Experta en el diseño y la implementación de aplicaciones web y backend, con conocimientos avanzados en Java, Python y JavaScript, con un dominio absoluto de Angular y Spring Boot. Firme defensora de las metodologías ágiles y la mejora continua, con una sólida capacidad para trabajar en equipo y gestionar proyectos complejos. Busco una oportunidad para aplicar mis habilidades en un entorno desafiante y colaborativo.
 Experiencia Profesional
+Ingeniera de Software Senior
+Google España – Barcelona, España
+Febrero 2023 – 2030
+
+    Desarrollo Angular y Spring Boot.
+    Implementación de soluciones backend usando Java en Spring Framework.
+    Uso de Javascript y Typescript para el desarrollo de aplicaciones web en Angular.
 
 Ingeniera de Software Senior
 DigitalTech S.L. – Barcelona, España
-Febrero 2022 – Presente
+Febrero 2022 – 2023
 
     Liderar el desarrollo de aplicaciones web escalables utilizando Angular y Spring Boot.
     Implementar soluciones de backend eficientes y seguras en Python (Flask).
@@ -79,6 +86,9 @@ Certificaciones
 
     AWS Certified Developer – Associate
     Google Cloud Professional Cloud Developer
+    Google Developer Certification – Mobile Web Specialist (Angular)
+    Certified Angular Developer
+    Pluralsight Angular Certification
 
 Referencias
 
