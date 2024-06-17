@@ -51,7 +51,7 @@ Universidad de Valencia – Valencia, España
 2011 – 2015
 Habilidades Técnicas
 
-    Lenguajes de Programación: JavaScript, Python, Java, C#
+    Lenguajes de Programación: JavaScript, TypeScript, Python, Java, C#
     Frameworks y Librerías: React, Angular, Django, Node.js, Spring
     Bases de Datos: MySQL, PostgreSQL, MongoDB
     Herramientas DevOps: Docker, Kubernetes, Jenkins, Git

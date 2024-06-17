@@ -39,13 +39,51 @@ I have experience with Java, Python, C++, and Node.
                 "output": """ 
 {
     "ids": [
-    {id:10,skill:"Java"},
-    {id:16,skill:"Python"},
-    {id:18,skill:"C++"},
-    {id:34,skill:"Node"}
+    {id:10,name:"Java"},
+    {id:16,name:"Python"},
+    {id:18,name:"C++"},
+    {id:34,name:"Node"}
     ]
 }
                 """
+            },
+            {
+                "input":
+                    f"""
+                    {utils.read_data_from_file(os.path.join(Config.STATIC_FOLDER, 'CV', 'cv1.txt'))}
+                    """,
+                "output": """
+{
+    "ids": [
+    {id:10,name:"Java"},
+    {id:14,name:"JavaScript"},
+    {id:15,name:"TypeScript"},
+    {id:16,name:"Python"},
+    {id:19,name:"C#"},
+    {id:32,name:"Spring Boot"},
+    {id:33,name:"Spring Framework"},
+    {id:46,name:"ReactJS"},
+    {id:48,name:"Angular"},
+    {id:55,name:"Node.js"},
+    {id:84,name:"MySQL"},
+    {id:85,name:"PostgreSQL"},
+    {id:97,name:"Mongo DB"},
+    {id:107,name:"Scrum"},
+    {id:109,name:"Kanban"},
+    {id:133,name:"Jenkins"},
+    {id:139,name:"Git"},
+    {id:151,name:"Docker"},
+    {id:153,name:"Kubernetes"},
+    {id:209,name:"REST"},
+    {id:297,name:"AWS (Amazon Web Services)"},
+    {id:395,name:"Azure"},
+    {id:432,name:"Spring"},
+    {id:433,name:"Contenedores Kubernetes"},    
+    {id:450,name:"Jenkins"},
+    {id:463,name:"Jenkinsfile"}
+    ]
+}
+                    """
             }
         ]
 
@@ -69,6 +107,8 @@ I have experience with Java, Python, C++, and Node.
 Given the knowledge tree of the company LKS and a worker's curriculum, provide an array with the identifiers that represent the subtree of the knowledge tree  
 that the worker has experience with. The returned subtree must be a subset of the knowledge tree of the company LKS, there must not be skills that don't belong to the tree,
 and there must not be skills that the worker doesn't have experience with.
+It is considered that a worker has experience with a skill if it is mentioned as a skill in the worker's curriculum.
+If a it has a proyect in which the worker used a skill, it is considered that the worker has experience with that skill.
 For example, the subtree: 
 {{
   "id": 1,
@@ -106,10 +146,10 @@ Stands for the following list:
 {{
     "id": [10,16]
 }}
-There is no need to include id's 9,8,7,1, since they are alredy included with it's children.
-Ouput must only contain the required list in required JSON format.
+There is no need to include id's 9,8,7,1, since they are already included with it's children.
+Output must only contain the required list in required JSON format.
 Use the example's format to provide the output, and use the tree's real id's.
-\nThis is the knowledge tree of the company LKS: {knwowledge_tree}
+\nThis is the knowledge tree of the company LKS: {knowledge_tree}
             """
         )
 
@@ -122,7 +162,7 @@ Use the example's format to provide the output, and use the tree's real id's.
 
         prompt = ChatPromptTemplate.from_messages([
             SystemMessage(
-                content=system_prompt.format(knwowledge_tree=knowledge_tree)
+                content=system_prompt.format(knowledge_tree=knowledge_tree)
             ),
             SystemMessage(
                 content="These are examples of good responses:\n"
