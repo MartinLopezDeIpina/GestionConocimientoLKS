@@ -6,6 +6,8 @@ from flask_cors import CORS
 from config import Config
 from database import db
 
+import modelTools as modelTools
+
 app = Flask(__name__)
 app.config.from_object(Config)
 
@@ -20,4 +22,5 @@ migrate.init_app(app, db)
 init_routes(app)
 
 if __name__ == '__main__':
+    #modelTools.index_resources()
     app.run()

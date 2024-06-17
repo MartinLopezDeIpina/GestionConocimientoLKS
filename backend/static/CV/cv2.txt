@@ -1,1 +1,85 @@
-Me llamo martín y sé programar python
+Nombre Completo: Ana Martínez López
+Dirección: Avenida de la Paz 45, 08002 Barcelona, España
+Teléfono: +34 600 789 123
+Correo Electrónico: ana.martinez@email.com
+LinkedIn: linkedin.com/in/anamartinez
+GitHub: github.com/anamartinez
+Resumen Profesional
+
+Ingeniera de Software con 5 años de experiencia en el desarrollo de soluciones tecnológicas innovadoras. Experta en el diseño y la implementación de aplicaciones web y backend, con conocimientos avanzados en Java, Python y JavaScript. Firme defensora de las metodologías ágiles y la mejora continua, con una sólida capacidad para trabajar en equipo y gestionar proyectos complejos. Busco una oportunidad para aplicar mis habilidades en un entorno desafiante y colaborativo.
+Experiencia Profesional
+
+Ingeniera de Software Senior
+DigitalTech S.L. – Barcelona, España
+Febrero 2022 – Presente
+
+    Liderar el desarrollo de aplicaciones web escalables utilizando Angular y Spring Boot.
+    Implementar soluciones de backend eficientes y seguras en Python (Flask).
+    Coordinar con equipos multidisciplinarios para garantizar la entrega de proyectos en tiempo y forma.
+    Realizar optimización de bases de datos y mejora del rendimiento de las consultas SQL.
+    Participar en la planificación estratégica de proyectos y la toma de decisiones técnicas.
+    Adoptar y promover prácticas DevOps para mejorar la integración y el despliegue continuos.
+
+Ingeniera de Software
+InnovApps S.A. – Madrid, España
+Marzo 2019 – Enero 2022
+
+    Desarrollar aplicaciones móviles híbridas utilizando Ionic y Angular.
+    Crear y mantener servicios backend en Java y Node.js.
+    Colaborar en la creación de interfaces de usuario intuitivas y atractivas.
+    Realizar pruebas automatizadas y de integración para asegurar la calidad del software.
+    Gestionar la configuración y el despliegue de aplicaciones en entornos cloud (AWS).
+    Participar en revisiones de código y sesiones de retroalimentación.
+
+Desarrolladora de Software Junior
+NextGen Technologies – Sevilla, España
+Julio 2016 – Febrero 2019
+
+    Desarrollar módulos y componentes frontend con React.
+    Implementar servicios RESTful y API en Node.js.
+    Colaborar en el diseño y desarrollo de bases de datos relacionales y no relacionales.
+    Realizar debugging y resolución de problemas de software.
+    Participar activamente en reuniones de sprint y planificación de proyectos.
+
+Educación
+
+Máster en Ingeniería de Software
+Universidad de Barcelona – Barcelona, España
+2016 – 2017
+
+Grado en Ingeniería Informática
+Universidad de Sevilla – Sevilla, España
+2012 – 2016
+Habilidades Técnicas
+
+    Lenguajes de Programación: Java, Python, JavaScript, TypeScript
+    Frameworks y Librerías: Angular, React, Spring Boot, Flask, Node.js
+    Bases de Datos: MySQL, PostgreSQL, MongoDB
+    Herramientas DevOps: Docker, Kubernetes, Jenkins, GitLab
+    Metodologías: Scrum, Kanban, Agile
+    Otros: RESTful APIs, Microservicios, CI/CD, AWS, GCP
+
+Idiomas
+
+    Español: Nativo
+    Inglés: Avanzado (C1)
+    Francés: Intermedio (B1)
+
+Proyectos Destacados
+
+Sistema de Gestión de Inventarios
+
+    Diseñé e implementé un sistema de gestión de inventarios basado en la web utilizando Angular y Spring Boot, lo que permitió a la empresa mejorar la precisión del inventario en un 40%.
+
+Aplicación de Reserva de Eventos
+
+    Desarrollé una aplicación móvil híbrida para la reserva de eventos con Ionic y Node.js, incrementando la participación en eventos en un 50%.
+
+Certificaciones
+
+    AWS Certified Developer – Associate
+    Google Cloud Professional Cloud Developer
+
+Referencias
+
+Disponibles a solicitud.

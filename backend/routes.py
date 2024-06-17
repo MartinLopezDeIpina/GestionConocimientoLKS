@@ -12,6 +12,7 @@ from models import NodoArbol, RelacionesNodo
 from utils import llm_json_tree
 import json
 from pydantic_core import from_json
+import modelTools as modelTools
 
 
 def init_routes(app):
@@ -217,14 +218,20 @@ def init_routes(app):
     @app.route('/api/llm_test/<nombre_fichero>')
     def llm_test(nombre_fichero):
         file_path = os.path.join(app.static_folder, 'CV', nombre_fichero+'.txt')
-        input_data = readDataFromFile(file_path)
+        input_data = utils.read_data_from_file(file_path)
         llmHandler = LLMHandler()
         return llmHandler.handle(input_data=input_data)
 
-    def readDataFromFile(file):
-        with open(file, 'r', encoding='utf-8') as f:
-            return f.read()
 
     @app.route('/api/llm_json_tree_substring/<listaids>')
     def get_subtree(listaids):
         return utils.get_subtree(listaids)
+
+    @app.route('/api/count_parents_of_leafs')
+    def count_parents_of_leafs():
+        return str(utils.count_parents_of_leafs())
+
+    @app.route('/api/get_similar_info/<input_data>')
+    def get_similar_info(input_data):
+        return modelTools.get_similar_info(input_data)
+

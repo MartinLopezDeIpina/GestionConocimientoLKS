@@ -1,0 +1,714 @@
+[
+  {
+    "skill_area": "AWS",
+    "levels": [
+       {
+          "level": 1,
+          "name": "Novice",
+          "description": {
+            "experience": "Limited practical experience with AWS services.",
+            "technical_skills": "Basic familiarity with AWS Console and some services.",
+            "certifications": "No AWS certifications.",
+            "specialization_depth": "General knowledge without specialization.",
+            "innovation_leadership": "Relies on existing patterns without significant innovation or leadership."
+          }
+        },
+        {
+          "level": 2,
+          "name": "Beginner",
+          "description": {
+            "experience": "Around 1-2 years of hands-on experience with AWS services.",
+            "technical_skills": "Can deploy standard AWS services but may need guidance for more complex tasks.",
+            "certifications": "Holds foundational or associate-level certifications.",
+            "specialization_depth": "Beginning to specialize in one or two AWS domains.",
+            "innovation_leadership": "Can contribute to new ideas within a team context but lacks broader influence."
+          }
+        },
+        {
+          "level": 3,
+          "name": "Intermediate",
+          "description": {
+            "experience": "Approximately 3-5 years of hands-on experience with AWS.",
+            "technical_skills": "Proficient in architecting scalable solutions on AWS. Able to automate deployments.",
+            "certifications": "Possesses one or more professional-level certifications.",
+            "specialization_depth": "Deep understanding and specialization in multiple AWS domains.",
+            "innovation_leadership": "Demonstrates innovation in leveraging AWS services. Provides leadership in guiding teams."
+          }
+        },
+        {
+          "level": 4,
+          "name": "Advanced",
+          "description": {
+            "experience": "Around 5-7 years of extensive hands-on experience with diverse AWS services.",
+            "technical_skills": "Advanced expertise in architecting complex, multi-region AWS solutions.",
+            "certifications": "Holds advanced or specialty certifications (e.g., AWS Certified Solutions Architect – Professional).",
+            "specialization_depth": "Extensive specialization across multiple AWS domains.",
+            "innovation_leadership": "Leads innovation initiatives. Influences AWS best practices at organizational level."
+          }
+        },
+        {
+          "level": 5,
+          "name": "Expert",
+          "description": {
+            "experience": "Over 10 years of extensive hands-on experience with AWS.",
+            "technical_skills": "Mastery of a wide range of AWS services. Designs and implements state-of-the-art solutions.",
+            "certifications": "Holds top-tier certifications and possibly vendor-specific recognitions.",
+            "specialization_depth": "Recognized expert in multiple AWS domains. Sets industry standards.",
+            "innovation_leadership": "Drives industry-leading innovations. Provides thought leadership globally."
+          }
+        },
+      {
+        "backend_frameworks": {
+          "levels": [
+            {
+              "level": 1,
+              "name": "Junior Developer",
+              "description": {
+                "experience": "Limited practical experience with the backend framework.",
+                "technical_skills": "Basic understanding of framework components and usage.",
+                "certifications": "No certifications.",
+                "specialization_depth": "General knowledge without specialization.",
+                "innovation_leadership": "Relies on existing patterns without significant innovation or leadership."
+              }
+            },
+            {
+              "level": 2,
+              "name": "Developer",
+              "description": {
+                "experience": "Around 1-2 years of hands-on experience with the backend framework.",
+                "technical_skills": "Can develop basic features and components using the framework.",
+                "certifications": "Holds basic or entry-level certifications related to the framework.",
+                "specialization_depth": "Beginning to specialize in one or two modules or components of the framework.",
+                "innovation_leadership": "Can propose basic improvements or adaptations within a team context."
+              }
+            },
+            {
+              "level": 3,
+              "name": "Senior Developer",
+              "description": {
+                "experience": "Approximately 3-5 years of hands-on experience with the backend framework.",
+                "technical_skills": "Proficient in designing and implementing complex features using the framework.",
+                "certifications": "Possesses intermediate-level certifications in the framework.",
+                "specialization_depth": "Deep understanding and specialization in multiple modules or components of the framework.",
+                "innovation_leadership": "Demonstrates innovation in applying the framework to solve complex problems. Provides leadership in implementing best practices."
+              }
+            },
+            {
+              "level": 4,
+              "name": "Lead Developer",
+              "description": {
+                "experience": "Around 5-7 years of extensive hands-on experience with the backend framework.",
+                "technical_skills": "Expertise in optimizing and scaling applications using the framework. Able to architect large-scale solutions.",
+                "certifications": "Holds advanced or specialty certifications in the framework.",
+                "specialization_depth": "Extensive specialization across multiple advanced modules or components of the framework.",
+                "innovation_leadership": "Leads initiatives for advancing the framework usage and best practices at organizational level."
+              }
+            },
+            {
+              "level": 5,
+              "name": "Chief Architect",
+              "description": {
+                "experience": "Over 10 years of extensive hands-on experience with the backend framework.",
+                "technical_skills": "Mastery of all aspects of the framework. Designs and implements state-of-the-art solutions.",
+                "certifications": "Holds top-tier certifications and possibly vendor-specific recognitions in the framework.",
+                "specialization_depth": "Recognized expert in all modules or components of the framework. Sets industry standards.",
+                "innovation_leadership": "Drives industry-leading innovations in the framework. Provides thought leadership globally."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "frontend_frameworks": {
+          "levels": [
+            {
+              "level": 1,
+              "name": "Junior Developer",
+              "description": {
+                "experience": "Limited practical experience with frontend frameworks.",
+                "technical_skills": "Basic understanding of framework components and usage.",
+                "certifications": "No certifications.",
+                "specialization_depth": "General knowledge without specialization.",
+                "innovation_leadership": "Relies on existing patterns without significant innovation or leadership."
+              }
+            },
+            {
+              "level": 2,
+              "name": "Developer",
+              "description": {
+                "experience": "Around 1-2 years of hands-on experience with frontend frameworks.",
+                "technical_skills": "Can develop basic features and components using the framework.",
+                "certifications": "Holds basic or entry-level certifications related to frontend development.",
+                "specialization_depth": "Beginning to specialize in one or two modules or components of the framework.",
+                "innovation_leadership": "Can propose basic improvements or adaptations within a team context."
+              }
+            },
+            {
+              "level": 3,
+              "name": "Senior Developer",
+              "description": {
+                "experience": "Approximately 3-5 years of hands-on experience with frontend frameworks.",
+                "technical_skills": "Proficient in designing and implementing complex features using the framework.",
+                "certifications": "Possesses intermediate-level certifications in frontend development.",
+                "specialization_depth": "Deep understanding and specialization in multiple modules or components of the framework.",
+                "innovation_leadership": "Demonstrates innovation in applying the framework to solve complex UI/UX problems. Provides leadership in implementing best practices."
+              }
+            },
+            {
+              "level": 4,
+              "name": "Lead Developer",
+              "description": {
+                "experience": "Around 5-7 years of extensive hands-on experience with frontend frameworks.",
+                "technical_skills": "Expertise in optimizing frontend performance and user experience. Can architect large-scale frontend applications.",
+                "certifications": "Holds advanced or specialty certifications in frontend development.",
+                "specialization_depth": "Extensive specialization across multiple advanced modules or components of the framework.",
+                "innovation_leadership": "Leads initiatives for advancing frontend development practices and frameworks at organizational level."
+              }
+            },
+            {
+              "level": 5,
+              "name": "Chief Architect",
+              "description": {
+                "experience": "Over 10 years of extensive hands-on experience with frontend frameworks.",
+                "technical_skills": "Mastery of all aspects of frontend development. Designs and implements state-of-the-art frontend solutions.",
+                "certifications": "Holds top-tier certifications and possibly vendor-specific recognitions in frontend development.",
+                "specialization_depth": "Recognized expert in all modules or components of frontend frameworks. Sets industry standards.",
+                "innovation_leadership": "Drives industry-leading innovations in frontend development. Provides thought leadership globally."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "devops_technologies": {
+          "levels": [
+            {
+              "level": 1,
+              "name": "Junior DevOps Engineer",
+              "description": {
+                "experience": "Limited practical experience with DevOps technologies.",
+                "technical_skills": "Basic understanding of CI/CD pipelines and basic scripting.",
+                "certifications": "No specific DevOps certifications.",
+                "specialization_depth": "General knowledge without specialization.",
+                "innovation_leadership": "Relies on existing patterns without significant innovation or leadership."
+              }
+            },
+            {
+              "level": 2,
+              "name": "DevOps Engineer",
+              "description": {
+                "experience": "Around 1-2 years of hands-on experience with DevOps technologies.",
+                "technical_skills": "Can set up and maintain CI/CD pipelines. Proficient in at least one configuration management tool.",
+                "certifications": "Holds basic or entry-level certifications related to DevOps (e.g., AWS Certified DevOps Engineer - Associate).",
+                "specialization_depth": "Beginning to specialize in one or two DevOps tools or practices.",
+                "innovation_leadership": "Can propose basic improvements or optimizations in CI/CD processes within a team context."
+              }
+            },
+            {
+              "level": 3,
+              "name": "Senior DevOps Engineer",
+              "description": {
+                "experience": "Approximately 3-5 years of hands-on experience with DevOps technologies.",
+                "technical_skills": "Proficient in designing and implementing complex CI/CD pipelines. Experienced in infrastructure as code (IaC).",
+                "certifications": "Possesses intermediate-level certifications in DevOps (e.g., AWS Certified DevOps Engineer - Professional).",
+                "specialization_depth": "Deep understanding and specialization in multiple DevOps tools and practices.",
+                "innovation_leadership": "Demonstrates innovation in automating and optimizing DevOps processes. Provides leadership in implementing DevOps best practices."
+              }
+            },
+            {
+              "level": 4,
+              "name": "Lead DevOps Engineer",
+              "description": {
+                "experience": "Around 5-7 years of extensive hands-on experience with DevOps technologies.",
+                "technical_skills": "Expertise in architecting scalable and resilient CI/CD solutions. Proficient in multiple IaC tools and cloud platforms.",
+                "certifications": "Holds advanced or specialty certifications in DevOps (e.g., Certified Kubernetes Administrator, Azure DevOps Engineer Expert).",
+                "specialization_depth": "Extensive specialization across multiple advanced DevOps tools and practices.",
+                "innovation_leadership": "Leads initiatives for advancing DevOps practices and tooling at organizational level. Mentors and guides junior DevOps engineers."
+              }
+            },
+            {
+              "level": 5,
+              "name": "Chief DevOps Architect",
+              "description": {
+                "experience": "Over 10 years of extensive hands-on experience with DevOps technologies.",
+                "technical_skills": "Mastery of all aspects of DevOps. Designs and implements enterprise-level CI/CD pipelines and infrastructure solutions.",
+                "certifications": "Holds top-tier certifications and possibly vendor-specific recognitions in DevOps.",
+                "specialization_depth": "Recognized expert in all DevOps tools and practices. Sets industry standards.",
+                "innovation_leadership": "Drives industry-leading innovations in DevOps methodologies and tooling. Provides thought leadership globally."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "genia": {
+          "levels": [
+            {
+              "level": 1,
+              "name": "Junior GenIA Developer",
+              "description": {
+                "experience": "Limited practical experience with GenIA technologies.",
+                "technical_skills": "Basic understanding of prompting and basic usage of RAG and VectorDB.",
+                "certifications": "No specific certifications in GenIA technologies.",
+                "specialization_depth": "General knowledge without specialization.",
+                "innovation_leadership": "Relies on existing patterns without significant innovation or leadership."
+              }
+            },
+            {
+              "level": 2,
+              "name": "GenIA Developer",
+              "description": {
+                "experience": "Around 1-2 years of hands-on experience with GenIA technologies.",
+                "technical_skills": "Can implement basic prompts and utilize RAG and VectorDB effectively.",
+                "certifications": "Holds basic or entry-level certifications related to GenIA (e.g., OpenAI certification).",
+                "specialization_depth": "Beginning to specialize in one or two components like prompting or RAG.",
+                "innovation_leadership": "Can propose basic improvements or optimizations in GenIA models within a team context."
+              }
+            },
+            {
+              "level": 3,
+              "name": "Senior GenIA Developer",
+              "description": {
+                "experience": "Approximately 3-5 years of hands-on experience with GenIA technologies.",
+                "technical_skills": "Proficient in designing and fine-tuning prompts, implementing complex RAG workflows, and managing VectorDB.",
+                "certifications": "Possesses intermediate-level certifications in GenIA technologies.",
+                "specialization_depth": "Deep understanding and specialization in multiple components like fine-tuning and LangChain.",
+                "innovation_leadership": "Demonstrates innovation in applying GenIA models to solve complex problems. Provides leadership in implementing best practices."
+              }
+            },
+            {
+              "level": 4,
+              "name": "Lead GenIA Developer",
+              "description": {
+                "experience": "Around 5-7 years of extensive hands-on experience with GenIA technologies.",
+                "technical_skills": "Expertise in architecting scalable GenIA solutions, optimizing performance, and integrating with enterprise systems.",
+                "certifications": "Holds advanced or specialty certifications in GenIA technologies.",
+                "specialization_depth": "Extensive specialization across multiple advanced components like LangChain and integrating GenIA with other AI platforms.",
+                "innovation_leadership": "Leads initiatives for advancing GenIA capabilities and frameworks at organizational level. Mentors and guides junior GenIA developers."
+              }
+            },
+            {
+              "level": 5,
+              "name": "Chief AI Architect",
+              "description": {
+                "experience": "Over 10 years of extensive hands-on experience with GenIA technologies.",
+                "technical_skills": "Mastery of all aspects of GenIA development. Designs and implements state-of-the-art GenIA solutions.",
+                "certifications": "Holds top-tier certifications and possibly vendor-specific recognitions in GenIA technologies.",
+                "specialization_depth": "Recognized expert in all GenIA components and methodologies. Sets industry standards.",
+                "innovation_leadership": "Drives industry-leading innovations in GenIA methodologies and applications. Provides thought leadership globally."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "build_automation_tools": {
+          "levels": [
+            {
+              "level": 1,
+              "name": "Junior Build Engineer",
+              "description": {
+                "experience": "Limited practical experience with build automation tools.",
+                "technical_skills": "Basic understanding of configuring and running builds using tools like Maven or Gradle.",
+                "certifications": "No specific certifications in build automation tools.",
+                "specialization_depth": "General knowledge without specialization.",
+                "innovation_leadership": "Relies on existing configurations without significant innovation or leadership."
+              }
+            },
+            {
+              "level": 2,
+              "name": "Build Engineer",
+              "description": {
+                "experience": "Around 1-2 years of hands-on experience with build automation tools.",
+                "technical_skills": "Can configure and optimize builds using Maven or Gradle. Familiar with dependency management and build scripting.",
+                "certifications": "Holds basic or entry-level certifications related to build automation tools.",
+                "specialization_depth": "Beginning to specialize in optimizing build processes or integrating with CI/CD pipelines.",
+                "innovation_leadership": "Can propose basic improvements or optimizations in build configurations within a team context."
+              }
+            },
+            {
+              "level": 3,
+              "name": "Senior Build Engineer",
+              "description": {
+                "experience": "Approximately 3-5 years of hands-on experience with build automation tools.",
+                "technical_skills": "Proficient in designing complex build configurations, setting up multi-module projects, and optimizing build performance.",
+                "certifications": "Possesses intermediate-level certifications in build automation tools.",
+                "specialization_depth": "Deep understanding and specialization in advanced build scripting, dependency management, and plugin development.",
+                "innovation_leadership": "Demonstrates innovation in automating build processes and optimizing CI/CD pipelines. Provides leadership in implementing best practices."
+              }
+            },
+            {
+              "level": 4,
+              "name": "Lead Build Architect",
+              "description": {
+                "experience": "Around 5-7 years of extensive hands-on experience with build automation tools.",
+                "technical_skills": "Expertise in architecting scalable and maintainable build systems. Proficient in build orchestration and integration with DevOps workflows.",
+                "certifications": "Holds advanced or specialty certifications in build automation tools.",
+                "specialization_depth": "Extensive specialization across multiple build automation tools and integration platforms.",
+                "innovation_leadership": "Leads initiatives for advancing build automation capabilities and frameworks at organizational level. Mentors and guides junior build engineers."
+              }
+            },
+            {
+              "level": 5,
+              "name": "Chief Build Architect",
+              "description": {
+                "experience": "Over 10 years of extensive hands-on experience with build automation tools.",
+                "technical_skills": "Mastery of all aspects of build automation. Designs and implements enterprise-level build systems and CI/CD pipelines.",
+                "certifications": "Holds top-tier certifications and possibly vendor-specific recognitions in build automation tools.",
+                "specialization_depth": "Recognized expert in all build automation tools and methodologies. Sets industry standards.",
+                "innovation_leadership": "Drives industry-leading innovations in build automation methodologies and tooling. Provides thought leadership globally."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "sql_databases": {
+          "levels": [
+            {
+              "level": 1,
+              "name": "Junior Database Administrator",
+              "description": {
+                "experience": "Limited practical experience with SQL databases.",
+                "technical_skills": "Basic understanding of SQL syntax and basic database management tasks.",
+                "certifications": "No specific certifications in SQL databases.",
+                "specialization_depth": "General knowledge without specialization.",
+                "innovation_leadership": "Relies on existing queries and scripts without significant innovation or leadership."
+              }
+            },
+            {
+              "level": 2,
+              "name": "Database Administrator",
+              "description": {
+                "experience": "Around 1-2 years of hands-on experience with SQL databases.",
+                "technical_skills": "Can design and implement basic database schemas, write complex queries, and perform routine maintenance tasks.",
+                "certifications": "Holds basic or entry-level certifications related to SQL databases (e.g., Microsoft SQL Server Certification).",
+                "specialization_depth": "Beginning to specialize in performance tuning, indexing strategies, and basic database security.",
+                "innovation_leadership": "Can propose basic improvements or optimizations in database performance within a team context."
+              }
+            },
+            {
+              "level": 3,
+              "name": "Senior Database Administrator",
+              "description": {
+                "experience": "Approximately 3-5 years of hands-on experience with SQL databases.",
+                "technical_skills": "Proficient in database design, optimization, and performance tuning. Experienced in database replication and clustering.",
+                "certifications": "Possesses intermediate-level certifications in SQL databases (e.g., Oracle Certified Professional, MySQL Database Administrator).",
+                "specialization_depth": "Deep understanding and specialization in advanced database administration tasks, such as disaster recovery planning and database scaling.",
+                "innovation_leadership": "Demonstrates innovation in designing scalable database architectures and optimizing database operations. Provides leadership in implementing best practices."
+              }
+            },
+            {
+              "level": 4,
+              "name": "Lead Database Architect",
+              "description": {
+                "experience": "Around 5-7 years of extensive hands-on experience with SQL databases.",
+                "technical_skills": "Expertise in architecting and managing large-scale database systems. Proficient in data warehousing and ETL processes.",
+                "certifications": "Holds advanced or specialty certifications in SQL databases (e.g., AWS Certified Database - Specialty, Oracle Certified Master).",
+                "specialization_depth": "Extensive specialization across multiple database platforms and technologies.",
+                "innovation_leadership": "Leads initiatives for advancing database technologies and frameworks at organizational level. Mentors and guides junior database administrators."
+              }
+            },
+            {
+              "level": 5,
+              "name": "Chief Data Architect",
+              "description": {
+                "experience": "Over 10 years of extensive hands-on experience with SQL databases.",
+                "technical_skills": "Mastery of all aspects of SQL database administration. Designs and implements enterprise-level database solutions.",
+                "certifications": "Holds top-tier certifications and possibly vendor-specific recognitions in SQL databases.",
+                "specialization_depth": "Recognized expert in all SQL database platforms and methodologies. Sets industry standards.",
+                "innovation_leadership": "Drives industry-leading innovations in database architectures, data management strategies, and performance optimization. Provides thought leadership globally."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "nosql_databases": {
+          "levels": [
+            {
+              "level": 1,
+              "name": "Junior NoSQL Developer",
+              "description": {
+                "experience": "Limited practical experience with NoSQL databases.",
+                "technical_skills": "Basic understanding of NoSQL concepts and basic CRUD operations.",
+                "certifications": "No specific certifications in NoSQL databases.",
+                "specialization_depth": "General knowledge without specialization.",
+                "innovation_leadership": "Relies on existing patterns without significant innovation or leadership."
+              }
+            },
+            {
+              "level": 2,
+              "name": "NoSQL Developer",
+              "description": {
+                "experience": "Around 1-2 years of hands-on experience with NoSQL databases.",
+                "technical_skills": "Can design and implement basic NoSQL schemas, perform data modeling, and optimize queries.",
+                "certifications": "Holds basic or entry-level certifications related to NoSQL databases.",
+                "specialization_depth": "Beginning to specialize in specific NoSQL database systems (e.g., MongoDB, Cassandra).",
+                "innovation_leadership": "Can propose basic improvements or optimizations in NoSQL database design and performance within a team context."
+              }
+            },
+            {
+              "level": 3,
+              "name": "Senior NoSQL Developer",
+              "description": {
+                "experience": "Approximately 3-5 years of hands-on experience with NoSQL databases.",
+                "technical_skills": "Proficient in designing scalable NoSQL database solutions, implementing complex data models, and optimizing performance.",
+                "certifications": "Possesses intermediate-level certifications in NoSQL databases.",
+                "specialization_depth": "Deep understanding and specialization in advanced NoSQL database features (e.g., sharding, replication strategies).",
+                "innovation_leadership": "Demonstrates innovation in applying NoSQL databases to solve complex data storage and retrieval challenges. Provides leadership in implementing best practices."
+              }
+            },
+            {
+              "level": 4,
+              "name": "Lead NoSQL Architect",
+              "description": {
+                "experience": "Around 5-7 years of extensive hands-on experience with NoSQL databases.",
+                "technical_skills": "Expertise in architecting and managing large-scale NoSQL database systems. Proficient in distributed data stores and integration with other data technologies.",
+                "certifications": "Holds advanced or specialty certifications in NoSQL databases.",
+                "specialization_depth": "Extensive specialization across multiple NoSQL database platforms and technologies.",
+                "innovation_leadership": "Leads initiatives for advancing NoSQL database capabilities and frameworks at organizational level. Mentors and guides junior NoSQL developers."
+              }
+            },
+            {
+              "level": 5,
+              "name": "Chief Data Architect - NoSQL",
+              "description": {
+                "experience": "Over 10 years of extensive hands-on experience with NoSQL databases.",
+                "technical_skills": "Mastery of all aspects of NoSQL database management and architecture. Designs and implements enterprise-level NoSQL solutions.",
+                "certifications": "Holds top-tier certifications and possibly vendor-specific recognitions in NoSQL databases.",
+                "specialization_depth": "Recognized expert in all NoSQL database platforms and methodologies. Sets industry standards.",
+                "innovation_leadership": "Drives industry-leading innovations in NoSQL database architectures, data modeling, and performance optimization. Provides thought leadership globally."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "project_management": {
+          "levels": [
+            {
+              "level": 1,
+              "name": "Junior Project Coordinator",
+              "description": {
+                "experience": "Limited practical experience in project management.",
+                "skills": "Basic understanding of project management concepts and basic coordination tasks.",
+                "certifications": "No specific certifications in project management.",
+                "leadership": "Relies on direction from senior project managers or team leads."
+              }
+            },
+            {
+              "level": 2,
+              "name": "Project Manager",
+              "description": {
+                "experience": "Around 1-2 years of hands-on experience in project management.",
+                "skills": "Can plan and execute small to medium-sized projects, manage timelines, and mitigate risks.",
+                "certifications": "Holds basic or entry-level certifications in project management (e.g., CAPM, PRINCE2 Foundation).",
+                "leadership": "Can lead small teams and make decisions independently within defined project scope."
+              }
+            },
+            {
+              "level": 3,
+              "name": "Senior Project Manager",
+              "description": {
+                "experience": "Approximately 3-5 years of hands-on experience in project management.",
+                "skills": "Proficient in managing complex projects, stakeholders, and budgets. Skilled in risk management and conflict resolution.",
+                "certifications": "Possesses intermediate-level certifications in project management (e.g., PMP, PRINCE2 Practitioner).",
+                "leadership": "Demonstrates leadership by mentoring junior project managers and influencing project outcomes."
+              }
+            },
+            {
+              "level": 4,
+              "name": "Program Manager",
+              "description": {
+                "experience": "Around 5-7 years of extensive hands-on experience in program management.",
+                "skills": "Expertise in managing multiple projects and programs simultaneously, aligning with organizational goals and strategies.",
+                "certifications": "Holds advanced or specialty certifications in program management (e.g., PgMP, MSP Practitioner).",
+                "leadership": "Leads strategic initiatives, oversees program governance, and drives continuous improvement in project management practices."
+              }
+            },
+            {
+              "level": 5,
+              "name": "Chief Project Officer",
+              "description": {
+                "experience": "Over 10 years of extensive hands-on experience in project and program management.",
+                "skills": "Mastery of all aspects of project and program management. Designs and implements enterprise-level project management frameworks.",
+                "certifications": "Holds top-tier certifications and possibly industry-specific recognitions in project and program management.",
+                "leadership": "Sets industry standards, drives innovation in project management methodologies, and provides strategic direction globally."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "mobile_development": {
+          "levels": [
+            {
+              "level": 1,
+              "name": "Junior Mobile Developer",
+              "description": {
+                "experience": "Limited practical experience in mobile app development.",
+                "skills": "Basic understanding of mobile development concepts and basic app development tasks.",
+                "certifications": "No specific certifications in mobile development.",
+                "platforms": "Familiarity with one mobile platform (iOS or Android)."
+              }
+            },
+            {
+              "level": 2,
+              "name": "Mobile Developer",
+              "description": {
+                "experience": "Around 1-2 years of hands-on experience in mobile app development.",
+                "skills": "Can develop and deploy simple to moderately complex mobile applications. Proficient in UI/UX design principles.",
+                "certifications": "Holds basic or entry-level certifications in mobile development (e.g., Associate Android Developer, iOS Developer Certification).",
+                "platforms": "Competence in developing for one primary mobile platform (iOS or Android)."
+              }
+            },
+            {
+              "level": 3,
+              "name": "Senior Mobile Developer",
+              "description": {
+                "experience": "Approximately 3-5 years of hands-on experience in mobile app development.",
+                "skills": "Proficient in developing complex mobile applications, integrating APIs, and optimizing performance across multiple devices.",
+                "certifications": "Possesses intermediate-level certifications in mobile development (e.g., Professional Android Developer, Certified iOS Developer).",
+                "platforms": "Experience in developing for both iOS and Android platforms."
+              }
+            },
+            {
+              "level": 4,
+              "name": "Lead Mobile Architect",
+              "description": {
+                "experience": "Around 5-7 years of extensive hands-on experience in mobile app development.",
+                "skills": "Expertise in architecting scalable mobile solutions, implementing cross-platform development strategies, and leading mobile development teams.",
+                "certifications": "Holds advanced or specialty certifications in mobile development (e.g., Mobile Solutions Architect, Xamarin Certified Developer).",
+                "platforms": "Specialization in cross-platform development frameworks and advanced mobile architecture."
+              }
+            },
+            {
+              "level": 5,
+              "name": "Chief Mobile Technology Officer",
+              "description": {
+                "experience": "Over 10 years of extensive hands-on experience in mobile app development.",
+                "skills": "Mastery of all aspects of mobile app development. Designs and implements enterprise-level mobile strategies and architectures.",
+                "certifications": "Holds top-tier certifications and possibly vendor-specific recognitions in mobile development.",
+                "platforms": "Recognized expert in mobile development across all major platforms. Sets industry standards.",
+                "leadership": "Drives innovation in mobile technologies, leads strategic mobile initiatives, and provides thought leadership globally."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "web_services_architecture": {
+          "levels": [
+            {
+              "level": 1,
+              "name": "Junior Web Services Developer",
+              "description": {
+                "experience": "Limited practical experience with web services architecture.",
+                "skills": "Basic understanding of RESTful API concepts and basic implementation skills (e.g., HTTP methods, JSON).",
+                "certifications": "No specific certifications in web services architecture.",
+                "specialization": "General knowledge without specialization in any specific web services framework."
+              }
+            },
+            {
+              "level": 2,
+              "name": "Web Services Developer",
+              "description": {
+                "experience": "Around 1-2 years of hands-on experience in web services development.",
+                "skills": "Can design and implement RESTful APIs, proficient in one or more web services frameworks (e.g., Spring Boot, Django).",
+                "certifications": "Holds basic or entry-level certifications related to web services (e.g., AWS Certified Developer - Associate, Microsoft Certified: Azure Developer Associate).",
+                "specialization": "Beginning to specialize in one web services framework, familiar with API versioning, authentication, and documentation."
+              }
+            },
+            {
+              "level": 3,
+              "name": "Senior Web Services Architect",
+              "description": {
+                "experience": "Approximately 3-5 years of hands-on experience in web services architecture.",
+                "skills": "Proficient in designing scalable and secure web service architectures, implementing advanced features like caching, rate limiting, and OAuth.",
+                "certifications": "Possesses intermediate-level certifications in web services architecture (e.g., AWS Certified Solutions Architect - Associate, Google Professional Cloud Developer).",
+                "specialization": "Deep understanding and specialization in web services design patterns, microservices architecture, and API management platforms."
+              }
+            },
+            {
+              "level": 4,
+              "name": "Lead Web Services Architect",
+              "description": {
+                "experience": "Around 5-7 years of extensive hands-on experience in web services architecture.",
+                "skills": "Expertise in architecting distributed systems, designing API-driven architectures, and integrating with enterprise systems.",
+                "certifications": "Holds advanced or specialty certifications in web services architecture (e.g., AWS Certified Solutions Architect - Professional, IBM Certified Application Developer).",
+                "specialization": "Extensive specialization across multiple web services frameworks, cloud platforms, and DevOps integration."
+              }
+            },
+            {
+              "level": 5,
+              "name": "Chief Web Services Officer",
+              "description": {
+                "experience": "Over 10 years of extensive hands-on experience in web services architecture.",
+                "skills": "Mastery of all aspects of web services architecture. Designs and implements enterprise-level web service strategies and API ecosystems.",
+                "certifications": "Holds top-tier certifications and possibly vendor-specific recognitions in web services architecture.",
+                "specialization": "Recognized expert in all major web services frameworks, cloud-native architectures, and API economy strategies. Sets industry standards."
+              }
+            }
+          ]
+        }
+      },
+      {
+        "azure_cloud_platform": {
+          "levels": [
+            {
+              "level": 1,
+              "name": "Junior Azure Developer",
+              "description": {
+                "experience": "Limited practical experience with Azure cloud platform.",
+                "skills": "Basic understanding of Azure services and basic proficiency in deploying applications to Azure.",
+                "certifications": "No specific certifications in Azure.",
+                "specialization": "General knowledge without specialization in any specific Azure service."
+              }
+            },
+            {
+              "level": 2,
+              "name": "Azure Developer",
+              "description": {
+                "experience": "Around 1-2 years of hands-on experience with Azure services.",
+                "skills": "Can design, develop, and deploy applications on Azure. Proficient in at least one Azure service (e.g., Azure App Service, Azure SQL Database).",
+                "certifications": "Holds basic or entry-level certifications related to Azure (e.g., Microsoft Certified: Azure Developer Associate).",
+                "specialization": "Beginning to specialize in one or more Azure services, familiar with Azure resource management and deployment automation."
+              }
+            },
+            {
+              "level": 3,
+              "name": "Senior Azure Architect",
+              "description": {
+                "experience": "Approximately 3-5 years of hands-on experience with Azure cloud platform.",
+                "skills": "Proficient in designing scalable and secure Azure-based solutions, implementing advanced Azure services like Azure Functions, Logic Apps, and Azure Kubernetes Service.",
+                "certifications": "Possesses intermediate-level certifications in Azure (e.g., Microsoft Certified: Azure Solutions Architect Expert).",
+                "specialization": "Deep understanding and specialization in Azure architecture patterns, hybrid cloud scenarios, and optimizing costs and performance."
+              }
+            },
+            {
+              "level": 4,
+              "name": "Lead Azure Solutions Architect",
+              "description": {
+                "experience": "Around 5-7 years of extensive hands-on experience with Azure cloud platform.",
+                "skills": "Expertise in designing and managing complex Azure solutions across multiple regions, integrating with on-premises and third-party systems.",
+                "certifications": "Holds advanced or specialty certifications in Azure (e.g., Microsoft Certified: Azure DevOps Engineer Expert, Azure Security Engineer Associate).",
+                "specialization": "Extensive specialization across Azure services, DevOps practices, and implementing Azure governance and compliance."
+              }
+            },
+            {
+              "level": 5,
+              "name": "Chief Azure Officer",
+              "description": {
+                "experience": "Over 10 years of extensive hands-on experience with Azure cloud platform.",
+                "skills": "Mastery of all aspects of Azure cloud solutions architecture. Designs and implements enterprise-level Azure strategies, including migration and transformation.",
+                "certifications": "Holds top-tier certifications and possibly vendor-specific recognitions in Azure (e.g., Microsoft Certified: Azure Expert).",
+                "specialization": "Recognized expert in Azure across all services and solutions, sets industry standards in Azure adoption and innovation."
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+]
