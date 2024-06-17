@@ -231,7 +231,11 @@ def init_routes(app):
     def count_parents_of_leafs():
         return str(utils.count_parents_of_leafs())
 
-    @app.route('/api/get_similar_info/<input_data>')
+    @app.route('/api/get_similar_info_from_vector/<input_data>')
     def get_similar_info(input_data):
         return modelTools.get_similar_info(input_data)
+
+    @app.route('/api/add_milvus_files')
+    def add_milvus_files():
+        return modelTools.index_resources()
 

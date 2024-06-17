@@ -1,4 +1,5 @@
 from langchain_community.vectorstores.milvus import Milvus
+from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.document_loaders.pdf import PyPDFLoader
 from langchain.text_splitter import CharacterTextSplitter
@@ -32,8 +33,11 @@ def index_json_resource(resource):
     """Indexes a resource by loading its content from a JSON file and adding it to a Milvus collection."""
     with open(os.path.join(REPO_BASE_FOLDER, str(resource.repository_id), resource.uri), 'r') as f:
         data = json.load(f)
+
+    documents = [Document(page_content=str(doc_dict)) for doc_dict in data]
+
     milvus = create_milvus_instance(resource.repository_id)
-    milvus.add_documents(data)
+    milvus.add_documents(documents)
 
 
 def delete_resource(resource):

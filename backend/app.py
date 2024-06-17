@@ -22,5 +22,4 @@ migrate.init_app(app, db)
 init_routes(app)
 
 if __name__ == '__main__':
-    #modelTools.index_resources()
     app.run()

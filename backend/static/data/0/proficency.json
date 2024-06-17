@@ -1,62 +1,64 @@
 [
   {
-    "skill_area": "AWS",
+    "AWS":{
     "levels": [
-       {
-          "level": 1,
-          "name": "Novice",
-          "description": {
-            "experience": "Limited practical experience with AWS services.",
-            "technical_skills": "Basic familiarity with AWS Console and some services.",
-            "certifications": "No AWS certifications.",
-            "specialization_depth": "General knowledge without specialization.",
-            "innovation_leadership": "Relies on existing patterns without significant innovation or leadership."
-          }
-        },
-        {
-          "level": 2,
-          "name": "Beginner",
-          "description": {
-            "experience": "Around 1-2 years of hands-on experience with AWS services.",
-            "technical_skills": "Can deploy standard AWS services but may need guidance for more complex tasks.",
-            "certifications": "Holds foundational or associate-level certifications.",
-            "specialization_depth": "Beginning to specialize in one or two AWS domains.",
-            "innovation_leadership": "Can contribute to new ideas within a team context but lacks broader influence."
-          }
-        },
-        {
-          "level": 3,
-          "name": "Intermediate",
-          "description": {
-            "experience": "Approximately 3-5 years of hands-on experience with AWS.",
-            "technical_skills": "Proficient in architecting scalable solutions on AWS. Able to automate deployments.",
-            "certifications": "Possesses one or more professional-level certifications.",
-            "specialization_depth": "Deep understanding and specialization in multiple AWS domains.",
-            "innovation_leadership": "Demonstrates innovation in leveraging AWS services. Provides leadership in guiding teams."
-          }
-        },
-        {
-          "level": 4,
-          "name": "Advanced",
-          "description": {
-            "experience": "Around 5-7 years of extensive hands-on experience with diverse AWS services.",
-            "technical_skills": "Advanced expertise in architecting complex, multi-region AWS solutions.",
-            "certifications": "Holds advanced or specialty certifications (e.g., AWS Certified Solutions Architect – Professional).",
-            "specialization_depth": "Extensive specialization across multiple AWS domains.",
-            "innovation_leadership": "Leads innovation initiatives. Influences AWS best practices at organizational level."
-          }
-        },
-        {
-          "level": 5,
-          "name": "Expert",
-          "description": {
-            "experience": "Over 10 years of extensive hands-on experience with AWS.",
-            "technical_skills": "Mastery of a wide range of AWS services. Designs and implements state-of-the-art solutions.",
-            "certifications": "Holds top-tier certifications and possibly vendor-specific recognitions.",
-            "specialization_depth": "Recognized expert in multiple AWS domains. Sets industry standards.",
-            "innovation_leadership": "Drives industry-leading innovations. Provides thought leadership globally."
-          }
-        },
+      {
+        "level": 1,
+        "name": "Novice",
+        "description": {
+          "experience": "Limited practical experience with AWS services.",
+          "technical_skills": "Basic familiarity with AWS Console and some services.",
+          "certifications": "No AWS certifications.",
+          "specialization_depth": "General knowledge without specialization.",
+          "innovation_leadership": "Relies on existing patterns without significant innovation or leadership."
+        }
+      },
+      {
+        "level": 2,
+        "name": "Beginner",
+        "description": {
+          "experience": "Around 1-2 years of hands-on experience with AWS services.",
+          "technical_skills": "Can deploy standard AWS services but may need guidance for more complex tasks.",
+          "certifications": "Holds foundational or associate-level certifications.",
+          "specialization_depth": "Beginning to specialize in one or two AWS domains.",
+          "innovation_leadership": "Can contribute to new ideas within a team context but lacks broader influence."
+        }
+      },
+      {
+        "level": 3,
+        "name": "Intermediate",
+        "description": {
+          "experience": "Approximately 3-5 years of hands-on experience with AWS.",
+          "technical_skills": "Proficient in architecting scalable solutions on AWS. Able to automate deployments.",
+          "certifications": "Possesses one or more professional-level certifications.",
+          "specialization_depth": "Deep understanding and specialization in multiple AWS domains.",
+          "innovation_leadership": "Demonstrates innovation in leveraging AWS services. Provides leadership in guiding teams."
+        }
+      },
+      {
+        "level": 4,
+        "name": "Advanced",
+        "description": {
+          "experience": "Around 5-7 years of extensive hands-on experience with diverse AWS services.",
+          "technical_skills": "Advanced expertise in architecting complex, multi-region AWS solutions.",
+          "certifications": "Holds advanced or specialty certifications (e.g., AWS Certified Solutions Architect – Professional).",
+          "specialization_depth": "Extensive specialization across multiple AWS domains.",
+          "innovation_leadership": "Leads innovation initiatives. Influences AWS best practices at organizational level."
+        }
+      },
+      {
+        "level": 5,
+        "name": "Expert",
+        "description": {
+          "experience": "Over 10 years of extensive hands-on experience with AWS.",
+          "technical_skills": "Mastery of a wide range of AWS services. Designs and implements state-of-the-art solutions.",
+          "certifications": "Holds top-tier certifications and possibly vendor-specific recognitions.",
+          "specialization_depth": "Recognized expert in multiple AWS domains. Sets industry standards.",
+          "innovation_leadership": "Drives industry-leading innovations. Provides thought leadership globally."
+        }
+      }
+    ]
+  }},
       {
         "backend_frameworks": {
           "levels": [
@@ -710,5 +712,3 @@
         }
       }
     ]
-  }
-]

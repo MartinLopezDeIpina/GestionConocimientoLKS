@@ -16,6 +16,7 @@ from langchain.globals import set_debug
 from langchain_core.output_parsers import JsonOutputParser
 import modelTools as modelTools
 
+
 class LLMHandler:
 
     def __init__(self):
@@ -23,9 +24,6 @@ class LLMHandler:
         set_debug(True)
 
     def handle(self, input_data):
-
-#        resource = {}
-#        similar_info = modelTools.get_similar_info(input_data)
 
         knowledge_tree = utils.llm_json_tree()
         knowledge_tree = knowledge_tree.json
@@ -274,6 +272,7 @@ Use the example's format to provide the output, and use the tree's real id's.
     parsed_json = from_json(output_content, allow_partial=True)
     print(parsed_json)
     return parsed_json
+
 
 def remove_spaces_inside_quotes(self, text):
     return re.sub(r'"[^"]*"', lambda m: m.group().replace(' ', ''), text)
