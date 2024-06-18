@@ -6,15 +6,12 @@ from flask import Response, jsonify
 from treelib import Tree
 
 import utils
-from LLM.DB.chromaTools import chromaTools
-from LLM.LLMHandler import LLMHandler
 from database import db
 from models import NodoArbol, RelacionesNodo
-from LLM.DB.modelTools import modelTools
 
 
 def init_routes(app):
-    # Sólo para probar
+
     @app.route('/api/add_csv')
     def store_tree_from_csv():
         file_path = os.path.join(app.static_folder, 'conocimientosLKS.csv')
@@ -213,45 +210,3 @@ def init_routes(app):
 
         return jsonify({'message': 'Nodo actualizado', 'status': 200})
 
-    @app.route('/api/llm_test/<nombre_fichero>')
-    def llm_test(nombre_fichero):
-        file_path = os.path.join(app.static_folder, 'CV', nombre_fichero+'.txt')
-        input_data = utils.read_data_from_file(file_path)
-        llmHandler = LLMHandler()
-        return llmHandler.handle_knowledges(input_data=input_data)
-
-    @app.route('/api/count_parents_of_leafs')
-    def count_parents_of_leafs():
-        return str(utils.count_parents_of_leafs())
-
-    @app.route('/api/get_similar_info_from_vector/<input_data>')
-    def get_similar_info(input_data):
-        model_tools = modelTools()
-        return model_tools.get_similar_info(input_data)
-
-    @app.route('/api/add_vector_files')
-    def add_vector_files():
-        model_tools = modelTools()
-        return model_tools.index_resources()
-
-    @app.route('/api/get_knowledge_level/<cv_file>/<skills_file>')
-    def get_knowledge_level(cv_file, skills_file):
-        llm = LLMHandler()
-
-        cv_path = os.path.join(app.static_folder, 'CV', cv_file+'.txt')
-        cv_data = utils.read_data_from_file(cv_path)
-
-        skills_path = os.path.join(app.static_folder, 'CV', skills_file+'.json')
-        skills_data = utils.read_data_from_file(skills_path)
-
-        return llm.handle_knowledge_level(cv_data, skills_data)
-
-    @app.route('/api/add_chroma_files')
-    def add_chroma_files():
-        model_tools = modelTools(chromaTools())
-        return model_tools.index_resources()
-
-    @app.route('/api/get_similar_info_from_vector_chroma/<input_data>')
-    def get_similar_info_chroma(input_data):
-        model_tools = modelTools(chromaTools())
-        return model_tools.get_similar_info(input_data)
