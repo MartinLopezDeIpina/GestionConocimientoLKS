@@ -5,6 +5,8 @@ import re
 from pydantic_core import from_json
 
 import utils
+from LLM.DB.chromaTools import chromaTools
+from LLM.DB.modelTools import modelTools
 from config import Config
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts.few_shot import FewShotChatMessagePromptTemplate
@@ -12,7 +14,6 @@ from langchain_core.prompts.prompt import PromptTemplate
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.messages import SystemMessage
 from langchain.globals import set_debug
-from LLM.DB import modelTools as modelTools
 
 
 class LLMHandler:
@@ -20,6 +21,9 @@ class LLMHandler:
     def __init__(self):
         self.llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0, verbose=True)
         set_debug(True)
+
+        chroma_tools = chromaTools()
+        self.modelTools = modelTools(chroma_tools)
 
     def handle_knowledges(self, input_data):
 
@@ -183,7 +187,7 @@ Use the example's format to provide the output, and use the tree's real id's.
     def handle_knowledge_level(self, input_data, knowledge_skills):
 
         curriculum_example1 = utils.read_data_from_file(os.path.join(Config.STATIC_FOLDER, 'CV', 'cv1.txt'))
-        proficency_info = modelTools.get_similar_info(input_data)
+        proficency_info = self.modelTools.get_similar_info(input_data)
 
         knowledge_skills = knowledge_skills.replace('\n', '')
         knowledge_skills = knowledge_skills.replace('{', '{{')

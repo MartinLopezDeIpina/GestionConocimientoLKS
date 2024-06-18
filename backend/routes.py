@@ -6,10 +6,11 @@ from flask import Response, jsonify
 from treelib import Tree
 
 import utils
+from LLM.DB.chromaTools import chromaTools
 from LLM.LLMHandler import LLMHandler
 from database import db
 from models import NodoArbol, RelacionesNodo
-from LLM.DB import modelTools as modelTools
+from LLM.DB.modelTools import modelTools
 
 
 def init_routes(app):
@@ -219,22 +220,19 @@ def init_routes(app):
         llmHandler = LLMHandler()
         return llmHandler.handle_knowledges(input_data=input_data)
 
-
-    @app.route('/api/llm_json_tree_substring/<listaids>')
-    def get_subtree(listaids):
-        return utils.get_subtree(listaids)
-
     @app.route('/api/count_parents_of_leafs')
     def count_parents_of_leafs():
         return str(utils.count_parents_of_leafs())
 
     @app.route('/api/get_similar_info_from_vector/<input_data>')
     def get_similar_info(input_data):
-        return modelTools.get_similar_info(input_data, 'milvus')
+        model_tools = modelTools()
+        return model_tools.get_similar_info(input_data)
 
-    @app.route('/api/add_milvus_files')
-    def add_milvus_files():
-        return modelTools.index_resources('milvus')
+    @app.route('/api/add_vector_files')
+    def add_vector_files():
+        model_tools = modelTools()
+        return model_tools.index_resources()
 
     @app.route('/api/get_knowledge_level/<cv_file>/<skills_file>')
     def get_knowledge_level(cv_file, skills_file):
@@ -250,8 +248,10 @@ def init_routes(app):
 
     @app.route('/api/add_chroma_files')
     def add_chroma_files():
-        return modelTools.index_resources('chroma')
+        model_tools = modelTools(chromaTools())
+        return model_tools.index_resources()
 
     @app.route('/api/get_similar_info_from_vector_chroma/<input_data>')
     def get_similar_info_chroma(input_data):
-        return modelTools.get_similar_info(input_data, 'chroma')
+        model_tools = modelTools(chromaTools())
+        return model_tools.get_similar_info(input_data)

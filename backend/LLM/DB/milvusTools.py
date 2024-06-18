@@ -5,61 +5,58 @@ from langchain_community.document_loaders.pdf import PyPDFLoader
 from langchain.text_splitter import CharacterTextSplitter
 import os
 import json
+
+from LLM.DB.vectorDB import vectorDB
 from config import Config
 
-REPO_BASE_FOLDER = Config.REPO_BASE_FOLDER
-COLLECTION_PREFIX = 'collection_'
-HOST = os.getenv("MILVUS_HOST", "localhost")
-PORT = os.getenv("MILVUS_PORT", 19530)
 
+class milvusTools(vectorDB):
 
-def create_milvus_instance(repository_id):
-    embeddings = OpenAIEmbeddings()
-    collection_name = COLLECTION_PREFIX + str(repository_id)
-    return Milvus(embeddings, collection_name=collection_name, connection_args={"host": HOST, "port": PORT}, auto_id=True)
+    def __init__(self):
+        super().__init__(host="localhost", port=19530)
 
+    def create_instance(self, repository_id):
+        embeddings = OpenAIEmbeddings()
+        collection_name = self.COLLECTION_PREFIX + str(repository_id)
+        return Milvus(embeddings, collection_name=collection_name, connection_args={"host": self.HOST, "port": self.PORT}, auto_id=True)
 
-def index_resource(resource):
-    """Indexes a resource by loading its content, splitting it into chunks, and adding it to a Milvus collection."""
-    loader = PyPDFLoader(os.path.join(REPO_BASE_FOLDER, str(resource.repository_id), resource.uri), extract_images=False)
-    pages = loader.load()
-    text_splitter = CharacterTextSplitter(chunk_size=10, chunk_overlap=0)
-    docs = text_splitter.split_documents(pages)
-    milvus = create_milvus_instance(resource.repository_id)
-    milvus.add_documents(docs)
+    def index_resource(self, resource):
+        """Indexes a resource by loading its content, splitting it into chunks, and adding it to a Milvus collection."""
+        loader = PyPDFLoader(os.path.join(self.REPO_BASE_FOLDER, str(resource.repository_id), resource.uri), extract_images=False)
+        pages = loader.load()
+        text_splitter = CharacterTextSplitter(chunk_size=10, chunk_overlap=0)
+        docs = text_splitter.split_documents(pages)
+        milvus = self.create_instance(resource.repository_id)
+        milvus.add_documents(docs)
 
+    def index_json_resource(self, resource):
+        """Indexes a resource by loading its content from a JSON file and adding it to a Milvus collection."""
+        with open(os.path.join(self.REPO_BASE_FOLDER, str(resource.repository_id), resource.uri), 'r') as f:
+            data = json.load(f)
 
-def index_json_resource(resource):
-    """Indexes a resource by loading its content from a JSON file and adding it to a Milvus collection."""
-    with open(os.path.join(REPO_BASE_FOLDER, str(resource.repository_id), resource.uri), 'r') as f:
-        data = json.load(f)
+        documents = [Document(page_content=str(doc_dict)) for doc_dict in data]
 
-    documents = [Document(page_content=str(doc_dict)) for doc_dict in data]
+        milvus = self.create_instance(resource.repository_id)
+        milvus.add_documents(documents)
 
-    milvus = create_milvus_instance(resource.repository_id)
-    milvus.add_documents(documents)
+    def delete_resource(self, resource):
+        """Deletes a resource from a Milvus collection based on its source."""
+        milvus = self.create_instance(resource.repository_id)
+        expr = f"source == '{self.REPO_BASE_FOLDER}/{resource.repository_id}/{resource.uri}'"
+        milvus.delete(expr=expr)
 
+    def search_similar_resources(self, repository_id, embed, RESULTS=5):
+        """Searches for similar resources in a Milvus collection based on an embedding."""
+        milvus = self.create_instance(repository_id)
+        similar_docs = milvus.similarity_search_with_score_by_vector(embed, RESULTS)
 
-def delete_resource(resource):
-    """Deletes a resource from a Milvus collection based on its source."""
-    milvus = create_milvus_instance(resource.repository_id)
-    expr = f"source == '{REPO_BASE_FOLDER}/{resource.repository_id}/{resource.uri}'"
-    milvus.delete(expr=expr)
+        similar_resources = []
 
+        for result in similar_docs:
+            similar_resources.append(result[0].page_content)
 
-def search_similar_resources(repository_id, embed, RESULTS=5):
-    """Searches for similar resources in a Milvus collection based on an embedding."""
-    milvus = create_milvus_instance(repository_id)
-    similar_docs = milvus.similarity_search_with_score_by_vector(embed, RESULTS)
+        return similar_resources
 
-    similar_resources = []
-
-    for result in similar_docs:
-        similar_resources.append(result[0].page_content)
-
-    return similar_resources
-
-
-def get_milvus_retriever(repository_id):
-    milvus = create_milvus_instance(repository_id)
-    return milvus.as_retriever()
+    def get_retriever(self, repository_id):
+        milvus = self.create_instance(repository_id)
+        return milvus.as_retriever()
