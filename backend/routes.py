@@ -6,13 +6,10 @@ from flask import Response, jsonify
 from treelib import Tree
 
 import utils
-from LLMHandler import LLMHandler
+from LLM.LLMHandler import LLMHandler
 from database import db
 from models import NodoArbol, RelacionesNodo
-from utils import llm_json_tree
-import json
-from pydantic_core import from_json
-import modelTools as modelTools
+from LLM.DB import modelTools as modelTools
 
 
 def init_routes(app):

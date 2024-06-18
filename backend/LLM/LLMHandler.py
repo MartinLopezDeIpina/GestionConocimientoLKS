@@ -2,19 +2,17 @@ import json
 import os
 import re
 
-from flask import jsonify
 from pydantic_core import from_json
 
 import utils
 from config import Config
 from langchain_openai import ChatOpenAI
-from langchain_core.prompts.few_shot import FewShotPromptTemplate, FewShotChatMessagePromptTemplate
+from langchain_core.prompts.few_shot import FewShotChatMessagePromptTemplate
 from langchain_core.prompts.prompt import PromptTemplate
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.messages import SystemMessage
 from langchain.globals import set_debug
-from langchain_core.output_parsers import JsonOutputParser
-import modelTools as modelTools
+from LLM.DB import modelTools as modelTools
 
 
 class LLMHandler:

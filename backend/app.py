@@ -6,8 +6,6 @@ from flask_cors import CORS
 from config import Config
 from database import db
 
-import modelTools as modelTools
-
 app = Flask(__name__)
 app.config.from_object(Config)
 
