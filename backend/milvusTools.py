@@ -50,7 +50,14 @@ def delete_resource(resource):
 def search_similar_resources(repository_id, embed, RESULTS=5):
     """Searches for similar resources in a Milvus collection based on an embedding."""
     milvus = create_milvus_instance(repository_id)
-    return milvus.similarity_search_with_score_by_vector(embed, RESULTS)
+    similar_docs = milvus.similarity_search_with_score_by_vector(embed, RESULTS)
+
+    similar_resources = []
+
+    for result in similar_docs:
+        similar_resources.append(result[0].page_content)
+
+    return similar_resources
 
 
 def get_milvus_retriever(repository_id):
