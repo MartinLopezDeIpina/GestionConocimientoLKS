@@ -14,12 +14,17 @@ from langchain_core.prompts.prompt import PromptTemplate
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.messages import SystemMessage
 from langchain.globals import set_debug
+from langchain.agents import AgentExecutor, create_react_agent
+from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain_openai import OpenAI
+from tavily import TavilyClient
+import logging
 
 
 class LLMHandler:
 
     def __init__(self):
-        self.llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0, verbose=True)
+        self.llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0, verbose=False)
         set_debug(True)
 
         chroma_tools = chromaTools()
@@ -318,6 +323,233 @@ if a worker has 10 years of experience but only 2 with a specific skill, conside
         parsed_json = from_json(output_content, allow_partial=True)
         print(parsed_json)
         return parsed_json
+
+
+    def handle_try_tavily_search(self, input_data):
+        tavily = TavilyClient(api_key=Config.TAVILY_API_KEY)
+        results = tavily.search(query=input_data)
+        print(results)
+        return results
+
+    async def handle_knowledge_metric_reaact(self, input_skill):
+        example_output = """
+          {
+            "experience_area":"AWS (Amazon Web Services)",
+            "levels": [
+              {
+                "level": 1,
+                "experience": "Limited practice with AWS services",
+                "technical_skills": "Familiarity with the AWS ecosystem and services. Experience with automation testing tools. Proficiency in a programming language. Knowledge of cloud architecture. Understanding of best practices.",
+              },
+              {
+                "level": 2,
+                "experience": "1-2 years of practical experience with AWS services",
+                "technical_skills": "Certificates like AWS Certified Solutions Architect - Associate, AWS Certified Developer - Associate, AWS Certified SysOps Administrator - Associate, AWS Certified DevOps Engineer - Professional, AWS Certified Solutions Architect - Professional. Hands-on experience with the AWS services their team uses, such as: Deployed and managed applications using EC2, S3, and RDS",
+              },
+              {
+                "level": 3,
+                "experience": "3-5 years of practical experience with AWS services",
+                "technical_skills": "Effective Communication and Team Collaboration. Comprehensive Cloud Engineering Knowledge: This includes practical experiences with AWS compute, storage, network, and database services. Scripting Skills: Proficiency in scripting languages such as Python, JavaScript, or Perl is important. Experience with Remote and Hybrid Work Models. Practical Experiences with AWS Services: This includes experiences with AWS compute, storage, network, and database services.",
+              },
+              {
+                "level": 4,
+                "experience": "6-10 years of practical experience with AWS services",
+                "technical_skills": "Advanced Effective Communication and Team Collaboration. Mastery of Remote and Hybrid Work Models. Deep Knowledge of AWS Cloud Skills and Services. Ability to Follow and Implement Learning Plans",
+              },
+              {
+                "level": 5,
+                "experience": "Over 10 years of practical experience with AWS services",
+                "technical_skills": "Familiarity with the AWS Ecosystem and Services: The worker should have an in-depth understanding of the AWS ecosystem and its various services. Experience with Automation Testing Tools: The worker should have extensive experience with automation testing tools, which are crucial for maintaining the quality of software in a cloud environment.",
+              },
+              ]
+        }
+                    """.replace('\n', '').replace('\t', '').replace('{', '{{').replace('}', '}}')
+
+
+        good_examples = [
+            {
+                "input": "AWS (Amazon Web Services)",
+                "thought_and_actions": """
+Thought 1: I need to know which are the new skills that each level of experience with AWS has and then add it to the output following the provided format.
+For that, I will need to search for each experience level the skills that a worker with that experience level has with AWS. Then, I will have to 
+evaluate in each case if the skills are new or if they are already included in the previous levels. After that, I will add the new skills to the output. 
+
+Thought 2: what are the technicals_skills of a level 1 (limited practice with AWS services) worker with AWS?
+Action 1: tavily_search_results_json
+Action Input: Skills in AWS a novice worker has
+Observation 1: the two results are:
+"Strong professional community. Good work-life balance. Skills you need for AWS. Familiarity with the AWS ecosystem and services. Experience with automation testing tools. Proficiency in a programming language. Knowledge of cloud architecture. Experience with agile development methodologies. Understanding of best practices."  
+"You can focus on the AWS Cloud skills and services that are most relevant, with options to search or filter by language, domain, and skill level.\n Dive deep on any role or solution with downloadable Ramp-Up Guides and/or follow suggested learning plans designed to build your knowledge and accomplish your career goals. You can learn efficiently by following a suggested learning plan for a specific domain or job role, or you can skip around—it's flexible. Skill Builder provides 500+ free digital courses, 25+ learning plans, and 19 Ramp-Up Guides to help you expand your knowledge. Skill Builder offers training from AWS experts on AWS services, so you can keep up with the pace of innovation."
+Thought 3: Based on the results, the 5 skills a novice worker with AWS has are:
+1. Familiarity with the AWS ecosystem and services
+2. Experience with automation testing tools
+3. Proficiency in a programming language
+4. Knowledge of cloud architecture
+5. Understanding of best practices
+
+Thought 4: what are the technicals_skills of a level 2 (1-2 years of practical experience with AWS services) worker with AWS?
+Action 2: tavily_search_results_json
+Action Input: Skills a worker with 1-2 years of practical experience with AWS services must have
+Observation 2: the two results are:
+"Here are some of the most popular AWS certifications to pursue for your resume: AWS Certified Solutions Architect - Associate. AWS Certified Developer - Associate. AWS Certified SysOps Administrator - Associate. AWS Certified DevOps Engineer - Professional. AWS Certified Solutions Architect - Professional."
+"Showcase your experience with specific AWS services. Hiring managers want to see that you have hands-on experience with the AWS services their team uses. Rather than simply listing 'AWS' as a skill, call out the specific services you've worked with, such as: Deployed and managed applications using EC2, S3, and RDS"
+Thought 5: Based on the results, a worker with 1-2 years of practical experience with AWS services must have the following skills:
+1. Certificates like AWS Certified Solutions Architect - Associate, AWS Certified Developer - Associate, AWS Certified SysOps Administrator - Associate, AWS Certified DevOps Engineer - Professional, AWS Certified Solutions Architect - Professional
+2. Hands-on experience with the AWS services their team uses, such as: Deployed and managed applications using EC2, S3, and RDS
+Action Input: 
+
+Thought 6: what are the technicals_skills of a level 3 (3-5 years of practical experience with AWS services) worker with AWS?
+Action 3: tavily_search_results_json
+Action Input: Skills a worker with 3-5 years of practical experience with AWS services must have
+Observation 3: the two results are:
+"Effective Communication and Team Collaboration. Effective communication and collaboration are indispensable skills for AWS Developers. The ability to articulate technical concepts to non-technical stakeholders, work closely with cross-functional teams, and contribute to a shared codebase is essential. In 2024, with remote and hybrid work models ..."
+"An AWS Cloud Engineer Resume should display comprehensive cloud engineering knowledge including practical experiences with AWS compute, storage, network, and database services. It should underline scripting skills in Python, JavaScript or Perl with specific examples of improvement in cloud applications or processes."
+Thought 7: Based on the results, a worker with 3-5 years of practical experience with AWS services must have the following skills:
+1. Effective Communication and Team Collaboration: The ability to articulate technical concepts to non-technical stakeholders, work closely with cross-functional teams, and contribute to a shared codebase is essential.
+2. Comprehensive Cloud Engineering Knowledge: This includes practical experiences with AWS compute, storage, network, and database services.
+3. Scripting Skills: Proficiency in scripting languages such as Python, JavaScript, or Perl is important
+4. Experience with Remote and Hybrid Work Models
+5. Practical Experiences with AWS Services: This includes experiences with AWS compute, storage, network, and database services.
+
+Thought 8: what are the technicals_skills of a level 4 (6-10 years of practical experience with AWS services) worker with AWS?
+Action 4: tavily_search_results_json
+Action Input: Skills a worker with 6-10 years of practical experience with AWS services must have
+Observation 4: the two results are:
+"Effective Communication and Team Collaboration. Effective communication and collaboration are indispensable skills for AWS Developers. The ability to articulate technical concepts to non-technical stakeholders, work closely with cross-functional teams, and contribute to a shared codebase is essential. In 2024, with remote and hybrid work models ..."
+"You can focus on the AWS Cloud skills and services that are most relevant, with options to search or filter by language, domain, and skill level.\n Dive deep on any role or solution with downloadable Ramp-Up Guides and/or follow suggested learning plans designed to build your knowledge and accomplish your career goals. You can learn efficiently by following a suggested learning plan for a specific domain or job role, or you can skip around—it's flexible. Skill Builder provides 500+ free digital courses, 25+ learning plans, and 19 Ramp-Up Guides to help you expand your knowledge. Skill Builder offers training from AWS experts on AWS services, so you can keep up with the pace of innovation."
+Thought 9: Based on the results, a worker with 6-10 years of practical experience with AWS services must have the following skills:
+1. Advanced Effective Communication and Team Collaboration
+2. Mastery of Remote and Hybrid Work Models
+3. Deep Knowledge of AWS Cloud Skills and Services
+4. Ability to Follow and Implement Learning Plans
+
+Thought 10: what are the technicals_skills of a level 5 (Over 10 years of practical experience with AWS services) worker with AWS?
+Action 5: tavily_search_results_json
+Action Input: Skills a worker with Over 10 years of practical experience with AWS services must have
+Observation 5: the two results are:
+"Strong professional community. Good work-life balance. Skills you need for AWS. Familiarity with the AWS ecosystem and services. Experience with automation testing tools. Proficiency in a programming language. Knowledge of cloud architecture. Experience with agile development methodologies. Understanding of best practices."
+"You can focus on the AWS Cloud skills and services that are most relevant, with options to search or filter by language, domain, and skill level.\n Dive deep on any role or solution with downloadable Ramp-Up Guides and/or follow suggested learning plans designed to build your knowledge and accomplish your career goals. You can learn efficiently by following a suggested learning plan for a specific domain or job role, or you can skip around—it's flexible. Skill Builder provides 500+ free digital courses, 25+ learning plans, and 19 Ramp-Up Guides to help you expand your knowledge. Skill Builder offers training from AWS experts on AWS services, so you can keep up with the pace of innovation."
+Thought 11: Based on the results, a worker with Over 10 years of practical experience with AWS services must have the following skills:
+1. Familiarity with the AWS Ecosystem and Services: The worker should have an in-depth understanding of the AWS ecosystem and its various services.  
+2. Experience with Automation Testing Tools: The worker should have extensive experience with automation testing tools, which are crucial for maintaining the quality of software in a cloud environment.
+
+
+                """,
+                "output": f"{example_output}"
+            }
+        ]
+
+        good_examples_prompt_template = ChatPromptTemplate.from_messages(
+            [
+                "{input}\n{thought_and_actions}\nOutput: {output}"
+            ]
+        )
+
+        good_examples_prompt = FewShotChatMessagePromptTemplate(
+            examples=good_examples,
+            example_prompt=good_examples_prompt_template,
+        )
+
+        good_examples_prompt = good_examples_prompt.format()
+
+
+
+        prompt_template = f"""
+Given a skill field, provide the experience levels and the technical skills required for each level of experience with the skill.
+There are 5 levels of experience with a skill. The ranges are as follows:
+1. Limited practice with the skill
+2. 1-2 years of experience
+3. 3-5 years of experience
+4. 6-10 years of experience
+5. Over 10 years of experience
+It is considered that a worker from level three has the skills of a worker from level three, two and one, and so on.
+It is very important that the output is in a valid JSON format, no line breaks should be included, just like in the example's output.
+Output must repeat the input skill with the experience levels and the technical skills required for each level of experience.
+Output must contain the specified years of experience in each experience field.
+
+It is essential to check the information for all the levels of experience to know the final answer.
+You must search for the information for each level of experience with the skill, if the information for the level is not clear, you might need to search for more specific information.
+You must also evaluate if the skills are new or if they are already included in the previous levels, and then also evaluate if the skills should be included in the output.
+The skills evaluation must be done after searching for the information for each level, don't forget to check it for the last skill too.
+
+You have access to the following tools: 
+{{tools}}
+
+Use the following format:
+
+Input: the skill field
+Thought: you should always think what to do
+Action: the action to take, should be one of [{{tool_names}}]
+Action Input: the input to the action
+Observation: the result of the action
+... (this Thought/Action/Action Input/Observation can repeat N times)
+Thought: I now know the final answer because I checked the information for all the levels of experience
+Final Answer: the final output JSON with the 5 levels of experience and the technical skills required for each level of experience
+
+These are examples of good responses:
+{good_examples_prompt}
+
+Begin!
+
+\nInput: {{input}}
+\nThoughts: {{agent_scratchpad}}
+        """
+
+        prompt = PromptTemplate(
+            input_variables=["tools", "tool_names", "agent_scratchpad", "input"],
+            template=prompt_template
+        )
+
+        tools = [TavilySearchResults(max_results=2)]
+
+        agent = create_react_agent(self.llm, tools=tools, prompt=prompt)
+
+        logging.basicConfig(level=logging.WARNING)
+
+        log = ""
+
+        agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=False, return_intermediate_results=True)
+
+        """async for chunk in agent_executor.astream(
+                {"input": input_skill, "good_examples": good_examples}
+        ):
+
+            # Agent Action
+            if "actions" in chunk:
+                for action in chunk["actions"]:
+                    log += f"Calling Tool: `{action.tool}` with input `{action.tool_input}`\n"
+                    print(f"Calling Tool: `{action.tool}` with input `{action.tool_input}`")
+            # Observation
+            elif "steps" in chunk:
+                for step in chunk["steps"]:
+                    log += f"Tool Result: `{step.observation}`\n"
+                    print(f"Tool Result: `{step.observation}`")
+            # Final result
+            elif "output" in chunk:
+                log += f'Final Output: {chunk["output"]}'
+                print(f'Final Output: {chunk["output"]}')
+            else:
+                raise ValueError()
+            print("---")
+
+        print(log)
+        
+        return 'done'"""
+
+
+
+        result = agent_executor.invoke({"input": input_skill})
+        result['output'] = result['output'].replace('\n', '')
+
+        print(result)
+        return result
+
+
+
+
+
+
+
 
 
 def remove_spaces_inside_quotes(text):

@@ -58,3 +58,16 @@ def add_chroma_files():
 def get_similar_info_chroma(input_data):
     model_tools = modelTools(chromaTools())
     return model_tools.get_similar_info(input_data)
+
+
+@llm_blueprint.route('tavily_search/<input_data>')
+def tavily_search(input_data):
+    llm = LLMHandler()
+    return llm.handle_try_tavily_search(input_data)
+
+
+@llm_blueprint.route('handle_knowledge_metric_reaact/<input_data>')
+async def handle_knowledge_metric_reaact(input_data):
+    llm = LLMHandler()
+    return await llm.handle_knowledge_metric_reaact(input_data)
+

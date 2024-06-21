@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_migrate import Migrate
 
+from auth.auth_routes import auth_blueprint
 from routes import init_routes
 from flask_cors import CORS
 
@@ -22,6 +23,7 @@ def create_app():
     migrate.init_app(current_app, db)
 
     init_routes(current_app)
+    current_app.register_blueprint(auth_blueprint)
     current_app.register_blueprint(llm_blueprint, url_prefix='/llm')
 
     return current_app
