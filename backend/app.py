@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 
 from auth.auth_routes import auth_blueprint
@@ -16,6 +17,8 @@ def create_app():
     current_app.config.from_object(Config)
 
     CORS(current_app)
+
+    JWTManager(current_app)
 
     db.init_app(current_app)
 
