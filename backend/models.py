@@ -17,3 +17,8 @@ class RelacionesNodo(db.Model):
     nodo_descendiente_id = relationship('NodoArbol', foreign_keys=[descendente_id])
 
     __table_args__ = (PrimaryKeyConstraint('ascendente_id', 'descendente_id'), )
+
+
+class Usuario(db.Model):
+    email = db.Column(db.String(250), primary_key=True)
+    nombre = db.Column(db.String(250), nullable=False)

@@ -16,7 +16,7 @@ def create_app():
     current_app = Flask(__name__)
     current_app.config.from_object(Config)
 
-    CORS(current_app)
+    CORS(current_app, supports_credentials=True)
 
     JWTManager(current_app)
 

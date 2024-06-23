@@ -12,6 +12,11 @@ from models import NodoArbol, RelacionesNodo
 
 def init_routes(app):
 
+    @app.route('/eliminarBD')
+    def eliminarBD():
+        db.drop_all()
+        return 'Base de datos eliminada'
+
     @app.route('/api/add_csv')
     def store_tree_from_csv():
         file_path = os.path.join(app.static_folder, 'conocimientosLKS.csv')

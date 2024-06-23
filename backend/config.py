@@ -21,8 +21,8 @@ class Config:
     API_IDENTIFIER = 'https://secure-python-flask-api'
     ALGORITHMS = ["RS256"]
 
-    GOOGLE_CLIENT_ID = os.environ['GOOGLE_CLIENT_ID']
-    GOOGLE_SECRET_KEY = os.environ['GOOGLE_SECRET_KEY']
+    GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
+    GOOGLE_SECRET_KEY = os.environ.get('GOOGLE_SECRET_KEY')
 
-    JWT_SECRET_KEY = os.environ['JWT_SECRET_KEY']
-    JWT_TOKEN_LOCATION='cookies'
+    JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
+    JWT_TOKEN_LOCATION = 'cookies'

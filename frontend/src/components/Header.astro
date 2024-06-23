@@ -10,7 +10,7 @@ let clientID = import.meta.env.GOOGLE_CLIENT_ID;
         <a href="/login">Login</a>
     </nav>
     <div class="divGoogleWrapper">
-        <GoogleOauthReact client:only clientId={clientID}/>
+        <GoogleOauthReact client:only="react" clientId={clientID}/>
     </div>
 </header>
 
@@ -28,6 +28,7 @@ let clientID = import.meta.env.GOOGLE_CLIENT_ID;
         padding-top: 5px;
         padding-bottom: 5px;
         border-radius: 5px;
+        font-weight: bold;
     }
     a:hover{
         transition: all 0.1s ease-in-out;

@@ -1,11 +1,12 @@
 import requests
 from flask import Blueprint, jsonify, request
-
 from auth.AuthError import AuthError
 from auth.auth import requires_auth
 from config import Config
 from flask_jwt_extended import create_access_token, JWTManager, jwt_required, get_jwt_identity
 
+from database import db
+from models import Usuario
 
 auth_blueprint = Blueprint('auth', __name__)
 
@@ -34,9 +35,28 @@ def login():
 
     jwt_token = create_access_token(identity=user_info['email'])  # create jwt token
     response = jsonify(user=user_info)
-    response.set_cookie('access_token_cookie', value=jwt_token, secure=True)
+    response.set_cookie('access_token_cookie', value=jwt_token, httponly=True, secure=True)
+
+    create_user_if_not_exists(user_info['email'], user_info['name'])
 
     return response, 200
+
+
+def create_user_if_not_exists(email, name):
+    user = Usuario.query.filter_by(email=email).first()
+    if not user:
+        user = Usuario(email=email, nombre=name)
+        db.session.add(user)
+        db.session.commit()
+
+
+@jwt_required()
+@auth_blueprint.route('/get_user_info/<email>', methods=['GET'])
+def get_user_info(email):
+    user = Usuario.query.filter_by(email=email).first()
+    if user:
+        return jsonify(name=user.nombre), 200
+    return jsonify(message='User not found'), 404
 
 
 # Protect a route with jwt_required, which will kick out requests
@@ -50,27 +70,11 @@ def protected():
     return jsonify(logged_in_as=current_user), 200
 
 
-@auth_blueprint.route('/login')
-def llm_test():
-    return 'login'
-
-
-@auth_blueprint.route("/user")
-@requires_auth
-def user_view():
-    """
-    Endpoint Usuario, solo puede ser accedido por un usuario autorizado
-    """
-    return jsonify(msg="Hello user!")
-
-
-@auth_blueprint.route("/admin")
-@requires_auth
-def admin_view():
-    """
-    Endpoint Admin, solo puede ser accedido por un admin
-    """
-    return jsonify(msg="Hello admin!")
+@auth_blueprint.route('/logout', methods=['POST'])
+def logout():
+    response = jsonify({"message": "Logout successful"})
+    response.delete_cookie('access_token_cookie')
+    return response, 200
 
 
 @auth_blueprint.errorhandler(AuthError)
