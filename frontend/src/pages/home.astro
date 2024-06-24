@@ -1,10 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import '../../public/styles/tree.css'
+import Dropzone from '../components/Dropzone.jsx'
 ---
 
 <Layout title="Welcome to Astro.">
 	<main>
+        <Dropzone client:only/>
 	</main>
 </Layout>
 <style>

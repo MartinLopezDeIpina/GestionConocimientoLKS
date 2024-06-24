@@ -57,7 +57,7 @@ export default function Auth() {
   const googleLogin = useGoogleLogin({
     flow: "auth-code",
     onSuccess: async (codeResponse) => {
-      var loginDetails = await getUserInfoAndCoockies(codeResponse);
+      let loginDetails = await getUserInfoAndCoockies(codeResponse);
       console.log(loginDetails);
       setLoggedIn(true);
       setUser(loginDetails.user);

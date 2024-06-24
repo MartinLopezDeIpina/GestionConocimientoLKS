@@ -1,0 +1,76 @@
+.dropzone{
+    background-color: var(--color-surface-400);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    padding: 25px 100px 25px 100px;
+}
+.activeDrag{
+    border: 3px dashed var(--color-primary-600);
+}
+.inactiveDrag{
+    border: 3px dashed var(--color-surface-600);
+}
+.dropzoneWrapper{
+    border-radius: 7px;
+    padding: 10px;
+    background-color: var(--color-surface-400);
+}
+.uploadSVG{
+    stroke: var(--color-surface-600);
+    width: 75px;
+    margin-top: -30px;
+}
+.selectFileButton{
+    background-color: var(--color-primary-700);
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px 10px 20px;
+    cursor: pointer;
+    color: var(--color-surface-100);
+    font-weight: bold;
+}
+.selectFileButton:hover{
+    background-color: var(--color-primary-600);
+    transition: 0.05s all ease-in-out;
+}
+.selectFileButton:active{
+    transform: scale(0.95);
+    transition: 0.05s all ease-in-out;
+}
+p{
+    color: var(--color-surface-700);
+    margin: 0;
+    font-weight: bold;
+}
+.acceptedFilesDiv{
+    display: flex;
+    justify-content: center;
+}
+.fileCard{
+    border-radius: 5px;
+    padding: 20px;
+    margin: 5px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.divInfoFile{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.deleteFileButton{
+    background-color: var(--color-cancel);
+    display: flex;
+    justify-content: center;
+    padding: 3px;
+    border-radius: 10px;
+    margin-left: 10px;
+    border: none;
+}
+.deleteFileButton:hover{
+
+    transform: scale(1.05);
+}

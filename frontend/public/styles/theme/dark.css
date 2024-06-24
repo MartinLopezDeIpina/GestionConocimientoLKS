@@ -6,6 +6,7 @@
      --color-primary-400:  #ff956b;
      --color-primary-500:  #ffa783;
      --color-primary-600:  #ffb99b;
+     --color-primary-700:  #ffcdc3;
     
      --color-surface-100:  #121212;
      --color-surface-200:  #282828;
@@ -13,6 +14,7 @@
      --color-surface-400:  #575757;
      --color-surface-500:  #717171;
      --color-surface-600:  #8b8b8b;
+     --color-surface-1000:  #ffffff;
     
     
      --color-surface-mixed-100:  #281a15;
@@ -21,6 +23,8 @@
      --color-surface-mixed-400:  #695d59;
      --color-surface-mixed-500:  #807672;
      --color-surface-mixed-600:  #99908d;
+
+     --color-cancel:#f15642;
     
     
     /** EXAMPLES */
