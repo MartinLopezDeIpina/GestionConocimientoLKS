@@ -26,14 +26,16 @@ function Dropzone(props) {
 
 
   const fileRejectionItems = fileRejections.map(({ file, errors }) => (
-    <li key={file.path}>
+    <div key={file.path}>
       {file.path} - {file.size} bytes
-      <ul>
+      <div className='divErrores'>
         {errors.map(e => (
-          <li key={e.code}>{e.message}</li>
+          <p key={e.code}>
+            {e.message}
+          </p>
         ))}
-      </ul>
-    </li>
+      </div>
+    </div>
   ));
 
   const deleteFile = (path) => {
