@@ -7,14 +7,16 @@ import SortableTree, {
 } from "@nosferatu500/react-sortable-tree";
 import "@nosferatu500/react-sortable-tree/style.css";
 import '../../public/styles/tree.css';
-import AddSVG from './SVGs/AddSVG.jsx';
-import DeleteSVG from './SVGs/DeleteSVG.jsx';
-import EditSVG from "./SVGs/EditSVG.jsx";
-import PreviousSVG from "./SVGs/PreviousSVG.jsx";
-import NextSVG from "./SVGs/NextSVG.jsx";
+import AddSVG from '../SVGs/AddSVG.jsx';
+import DeleteSVG from '../SVGs/DeleteSVG.jsx';
+import EditSVG from "../SVGs/EditSVG.jsx";
+import PreviousSVG from "../SVGs/PreviousSVG.jsx";
+import NextSVG from "../SVGs/NextSVG.jsx";
 
 
-function Tree() {
+function Tree({props}) {
+  const API_URL = props.API_URL;
+
   const [searchString, setSearchString] = useState("");
   const [searchFocusIndex, setSearchFocusIndex] = useState(0);
   const [searchFoundCount, setSearchFoundCount] = useState(null);
@@ -28,7 +30,7 @@ function Tree() {
 
   useEffect(() => {
     async function fetchData(){
-        await fetch('http://localhost:5000/api/json_tree')
+        await fetch(`${API_URL}/json_tree`)
         .then(response => response.json())
         .then(data => {
           setTreeData(data)
@@ -80,7 +82,7 @@ function Tree() {
     const newTitle = rowInfo.node.title;
     const nodeID = rowInfo.node.id;
 
-    fetch(`http://localhost:5000/api/update_node/${nodeID}/${newTitle}`, {
+    fetch(`${API_URL}/update_node/${nodeID}/${newTitle}`, {
         method: 'PUT'
     })
     .then(response => response.json())
@@ -97,7 +99,7 @@ function Tree() {
   }
 
   function tryToPersistNodeMovement(nodeID, parentNodeID){
-    fetch(`http://localhost:5000/api/move_node/${nodeID}/${parentNodeID}`,{
+    fetch(`${API_URL}/move_node/${nodeID}/${parentNodeID}`,{
         method: 'PUT'
     })
     .then(response => response.json())
@@ -113,7 +115,7 @@ function Tree() {
     const parentNodeID = rowInfo.node.id;
     const value = " ";
 
-    return fetch(`http://localhost:5000/api/add_node/${value}/${parentNodeID}`,{
+    return fetch(`${API_URL}/add_node/${value}/${parentNodeID}`,{
         method: 'POST'
     })
     .then(response => response.json())
@@ -137,7 +139,7 @@ function Tree() {
   }
 
   function removeNode(rowInfo) {
-    fetch(`http://localhost:5000/api/delete_node/${rowInfo.node.id}`,{
+    fetch(`${API_URL}/delete_node/${rowInfo.node.id}`,{
         method: 'DELETE'
     })
     .then(response => response.json())

@@ -1,14 +1,20 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Tree from '../components/tree/Tree.jsx';
+import TreeCall from '../components/tree/TreeCall.jsx';
 import '../../public/styles/tree.css'
-const URL = import.meta.env.BACKEND_URL;
-const API_URL = URL + '/api';
+
+const URL_BACKEND = import.meta.env.BACKEND_URL;
+const API_URL = URL_BACKEND + '/api_personal';
+console.log(API_URL);
+
+
+
 ---
 
 <Layout title="Welcome to Astro.">
 	<main>
-			<Tree BACKEND_URL={API_URL}  client:load/>
+        <TreeCall client:only API_URL={API_URL}/>
 	</main>
 </Layout>
 <style>

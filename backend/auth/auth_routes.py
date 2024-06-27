@@ -64,6 +64,7 @@ def get_user_info(email):
 @auth_blueprint.route("/protected", methods=["GET"])
 @jwt_required()
 def protected():
+    debug_request = request
     # Access the identity of the current user with get_jwt_identity
     jwt_token = request.cookies.get('access_token_cookie')  # Demonstration how to get the cookie
     current_user = get_jwt_identity()
@@ -75,6 +76,15 @@ def logout():
     response = jsonify({"message": "Logout successful"})
     response.delete_cookie('access_token_cookie')
     return response, 200
+
+
+@auth_blueprint.route('/api_personal/get_user_email', methods=['GET'])
+@jwt_required()
+def get_user_email():
+    print('get_user_email')
+    jwt_token = request.cookies.get('access_token_cookie')
+    current_user = get_jwt_identity()
+    return jsonify(email=current_user), 200
 
 
 @auth_blueprint.errorhandler(AuthError)
