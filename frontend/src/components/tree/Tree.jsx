@@ -6,7 +6,7 @@ import SortableTree, {
   toggleExpandedForAll
 } from "@nosferatu500/react-sortable-tree";
 import "@nosferatu500/react-sortable-tree/style.css";
-import '../../public/styles/tree.css';
+import '../../../public/styles/tree.css';
 import AddSVG from '../SVGs/AddSVG.jsx';
 import DeleteSVG from '../SVGs/DeleteSVG.jsx';
 import EditSVG from "../SVGs/EditSVG.jsx";
@@ -14,8 +14,8 @@ import PreviousSVG from "../SVGs/PreviousSVG.jsx";
 import NextSVG from "../SVGs/NextSVG.jsx";
 
 
-function Tree({props}) {
-  const API_URL = props.API_URL;
+function Tree({isPersonal, API_URL}) {
+  console.log(API_URL);
 
   const [searchString, setSearchString] = useState("");
   const [searchFocusIndex, setSearchFocusIndex] = useState(0);
