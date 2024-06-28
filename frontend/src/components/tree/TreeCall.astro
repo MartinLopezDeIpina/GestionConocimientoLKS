@@ -1,16 +1,13 @@
 ---
 
-import { useEffect } from "react";
 import Tree from "./Tree";
 
-console.log("Astro.props", Astro.props);
-const props = Astro.props.props;
-console.log("Astro.props.props", props);
-const BACKEND_URL = props.BACKEND_URL;
-console.log("Astro.props.BACKEND_URL", BACKEND_URL);
+
 
 let user_email;
 let API_URL;
+
+const { BACKEND_URL, isPersonalTree } = Astro.props;
 
 async function getUser(){
     let response = await fetch(`${BACKEND_URL}/protected`, {
@@ -31,13 +28,12 @@ async function fetchUserAndSetEmail() {
     user_email = userInfo.logged_in_as;
 }
 
-if(props.isPersonalTree){
+if(isPersonalTree){
     user_email = fetchUserAndSetEmail();
     API_URL = BACKEND_URL + '/api/personal/' + user_email;
 }else{
     API_URL = BACKEND_URL + '/api';
 }
-props.API_URL = API_URL;
 ---
 
-    <Tree isPersonal={props.isPersonal} API_URL={API_URL}/>
+<Tree client:only isPersonal={isPersonalTree} API_URL={API_URL}/>

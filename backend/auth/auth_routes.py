@@ -29,10 +29,6 @@ def login():
     }
     user_info = requests.get('https://www.googleapis.com/oauth2/v3/userinfo', headers=headers).json()
 
-    """
-        check here if user exists in database, if not, add him
-    """
-
     jwt_token = create_access_token(identity=user_info['email'])  # create jwt token
     response = jsonify(user=user_info)
     response.set_cookie('access_token_cookie', value=jwt_token, httponly=True, secure=True)
