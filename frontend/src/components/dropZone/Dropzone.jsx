@@ -1,42 +1,34 @@
 import React, {useState} from 'react';
 import {useDropzone} from 'react-dropzone';
-import '../../public/styles/dragzone.css';
-import PDFIcon from './SVGs/PDFIcon';
-import TextIcon from './SVGs/TextIcon';
-import XSVG from './SVGs/XSVG';
-import DeleteSVG from './SVGs/DeleteSVG';
+import '../../../public/styles/dragzone.css';
+import FileZone from './FileZone';
 
+function getFileExtension(file) {
+  const parts = file.name.split('.');
+  return parts[parts.length - 1];
+}
 
+function FileValidator(file){
+  if(file.type !== 'application/pdf' && file.type !== 'text/plain'){
+    return{
+      code: 'fileType',
+      message: `Fichero \.${getFileExtension(file)} no permitido`
+    }
+  }
+}
 
 function Dropzone(props) {
   const [myAcceptedFiles, setMyAcceptedFiles] = useState([]);
 
   const {getRootProps, getInputProps, open, acceptedFiles,fileRejections, isDragActive} = useDropzone({
-    accept: {
-      'application/pdf': ['.pdf'],
-      'text/plain': ['.txt'],
-    },
     maxFiles: 1,
     noClick: true,
     noKeyboard: true,
     onDrop: acceptedFiles => {
       setMyAcceptedFiles(acceptedFiles);
-    }
+    }, 
+    validator: FileValidator
   });
-
-
-  const fileRejectionItems = fileRejections.map(({ file, errors }) => (
-    <div key={file.path}>
-      {file.path} - {file.size} bytes
-      <div className='divErrores'>
-        {errors.map(e => (
-          <p key={e.code}>
-            {e.message}
-          </p>
-        ))}
-      </div>
-    </div>
-  ));
 
   const deleteFile = (path) => {
     setMyAcceptedFiles(currentFiles => currentFiles.filter(file => file.path !== path));
@@ -45,7 +37,7 @@ function Dropzone(props) {
 
   return (
     <>
-      <div className="container">
+      <div className='dropZoneDiv'>
         <div className='dropzoneWrapper'>
             <div {...getRootProps({className: `dropzone ${isDragActive ? 'activeDrag' : 'inactiveDrag'}`})}>
             <input {...getInputProps()} />
@@ -57,27 +49,12 @@ function Dropzone(props) {
             </button>
           </div>
         </div>
-        <aside>
-          <div className='acceptedFilesDiv'>
-              {myAcceptedFiles.map(file => (
-                  <div className='fileCard' key={file.path}>
-                    {file.type === 'application/pdf' ? <PDFIcon/> : <TextIcon/>}
-                    <div className='divInfoFile'>
-                      <div>
-                        {file.path}
-                      </div>
-                      <div>
-                        {file.size} bytes
-                      </div>
-                    </div>
-                    <button className='deleteFileButton' onClick={() => deleteFile(file.path)}>
-                      <XSVG />
-                    </button>
-                  </div>
-              ))}
-          </div>
-          <ul>{fileRejectionItems}</ul>
-        </aside>
+        <FileZone myAcceptedFiles={myAcceptedFiles} deleteFile={deleteFile} fileRejections={fileRejections}/>
+        <div className='subirButtonDiv' >
+          <button className='subirButton' disabled={!myAcceptedFiles || myAcceptedFiles.length === 0}>
+            Subir
+          </button>
+        </div>
       </div>
     </>
   );

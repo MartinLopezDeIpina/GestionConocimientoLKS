@@ -1,3 +1,11 @@
+.dropZoneDiv{
+    height: 100%;
+    width: 33%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 .dropzone{
     background-color: var(--color-surface-400);
     display: flex;
@@ -13,6 +21,7 @@
     border: 3px dashed var(--color-surface-600);
 }
 .dropzoneWrapper{
+    width: 100%;
     border-radius: 7px;
     padding: 10px;
     background-color: var(--color-surface-400);
@@ -45,6 +54,8 @@ p{
     font-weight: bold;
 }
 .acceptedFilesDiv{
+    width: 100%;
+    height: 250px;
     display: flex;
     justify-content: center;
 }
@@ -78,4 +89,80 @@ p{
 }
 .deleteSVG{
     display: inline-block;
+}
+.subirButtonDiv{
+    display: flex;
+    justify-content: center;
+}
+.subirButton{
+    background-color: var(--color-primary-700);
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px 10px 20px;
+    cursor: pointer;
+    color: var(--color-surface-100);
+    font-weight: bold;
+}
+.subirButton:not(:disabled):hover{
+    background-color: var(--color-primary-600);
+    transition: 0.05s all ease-in-out;
+}
+.subirButton:not(:disabled):active{
+    transform: scale(0.95);
+    transition: 0.05s all ease-in-out;
+}
+.subirButton:disabled{
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+.fileQuestionSVG{
+    fill: var(--color-surface-400);
+    width: 100px;
+    margin-bottom: -10px;
+}
+.h3Fondo{
+    color:  var(--color-surface-400);
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.noAcceptedFilesDiv{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+.fileRejectionDiv{
+    min-height: 50px;
+}
+.errorFicheroDiv{
+    background-color: var(--color-surface-200);
+    padding: 10px 20px 10px 20px;
+    border-radius: 5px;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.erroresFicherosDiv{
+    width: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding:0px;
+    color: var(--color-surface-900);
+}
+.erroresFicherosWrapper{
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.warningSVG{
+    height: 40px;
+    margin-right: 13px;
+    fill: var(--color-error);
 }

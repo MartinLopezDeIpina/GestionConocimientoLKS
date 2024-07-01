@@ -14,6 +14,9 @@
      --color-surface-400:  #575757;
      --color-surface-500:  #717171;
      --color-surface-600:  #8b8b8b;
+     --color-surface-700:  #a6a6a6;
+     --color-surface-800:  #c2c2c2;
+     --color-surface-900:  #dedede;
      --color-surface-1000:  #ffffff;
     
     
@@ -25,6 +28,7 @@
      --color-surface-mixed-600:  #99908d;
 
      --color-cancel:#f15642;
+     --color-error:#cf4c54;
     
     
     /** EXAMPLES */
