@@ -1,6 +1,7 @@
 from flask import jsonify
 
-from models import NodoArbol, RelacionesNodo
+from database import db
+from models import NodoArbol, RelacionesNodo, Usuario, ConocimientoUsuario
 
 
 def llm_json_tree():
@@ -47,5 +48,24 @@ def count_parents_of_leafs():
                 parents_list.add(parent)
 
     return len(parents_list)
+
+
+def create_user_if_not_exists(email, name):
+    user = Usuario.query.filter_by(email=email).first()
+    if not user:
+        user = Usuario(email=email, nombre=name)
+        create_user_personal_tree(email=email)
+        db.session.add(user)
+        db.session.commit()
+
+
+def create_user_personal_tree(email):
+    if ConocimientoUsuario.query.filter_by(usuario_email=email).first() is None:
+        db.session.add(ConocimientoUsuario(usuario_email=email, nodoID=get_root_node_id(),
+                                           nivel_IA=0, nivel_validado=0))
+
+
+def get_root_node_id():
+    return NodoArbol.query.order_by(NodoArbol.nodoID).first().nodoID
 
 

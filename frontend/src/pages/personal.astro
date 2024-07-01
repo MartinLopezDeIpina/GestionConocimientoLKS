@@ -1,8 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Tree from '../components/tree/Tree.jsx';
-import TreeCall from '../components/tree/TreeCall.astro';
+import TreeCall from '../components/tree/TreeCall.jsx'
 import '../../public/styles/tree.css'
+import PersonalTree from '../components/tree/PersonalTree.astro';
 
 const URL_BACKEND = import.meta.env.BACKEND_URL;
 const API_URL = URL_BACKEND + '/api_personal';
@@ -14,6 +15,7 @@ console.log(API_URL);
 
 <Layout title="Welcome to Astro.">
 	<main>
+		<PersonalTree />
 	</main>
 </Layout>
 <style>

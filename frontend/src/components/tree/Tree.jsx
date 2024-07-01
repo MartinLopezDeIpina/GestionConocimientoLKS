@@ -12,10 +12,10 @@ import DeleteSVG from '../SVGs/DeleteSVG.jsx';
 import EditSVG from "../SVGs/EditSVG.jsx";
 import PreviousSVG from "../SVGs/PreviousSVG.jsx";
 import NextSVG from "../SVGs/NextSVG.jsx";
+import EditButton from "./treeCompmonents/EditButton.jsx";
 
 
-function Tree({isPersonal, API_URL}) {
-  console.log(API_URL);
+function Tree({API_URL, isPersonalTree}) {
 
   const [searchString, setSearchString] = useState("");
   const [searchFocusIndex, setSearchFocusIndex] = useState(0);
@@ -136,6 +136,11 @@ function Tree({isPersonal, API_URL}) {
           setTreeData(newTree.treeData);
         }
       });
+  }
+
+  const onEditClicked = (node) => {
+    setOldName(node.title);
+    setIsEditing(true);
   }
 
   function removeNode(rowInfo) {
@@ -312,19 +317,9 @@ function Tree({isPersonal, API_URL}) {
                 >
                   <AddSVG/>
                 </button>
-                <button className="buttonNode"
-                    label="Edit"
-                    onClick={(event) => {
-                        event.stopPropagation();
-
-                        setOldName(rowInfo.node.title);
-                        setIsEditing(true);
-
-                        nodeRefs.current[rowInfo.node.id].current.focus();
-                    }}
-                >
-                  <EditSVG/>
-                </button>
+                {!isPersonalTree ? (
+                  <EditButton node={rowInfo.node} nodeRef={nodeRefs.current[rowInfo.node.id]} onEditClicked={onEditClicked}/>
+                ) : null}
                 {
                     rowInfo.parentNode != null && (
                         <button className="buttonNode" label="Delete" onClick={(event) => removeNode(rowInfo)}>

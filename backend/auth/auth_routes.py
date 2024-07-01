@@ -1,12 +1,13 @@
 import requests
 from flask import Blueprint, jsonify, request
+
+import utils
 from auth.AuthError import AuthError
-from auth.auth import requires_auth
 from config import Config
 from flask_jwt_extended import create_access_token, JWTManager, jwt_required, get_jwt_identity
 
 from database import db
-from models import Usuario
+from models import Usuario, ConocimientoUsuario, NodoArbol
 
 auth_blueprint = Blueprint('auth', __name__)
 
@@ -33,17 +34,9 @@ def login():
     response = jsonify(user=user_info)
     response.set_cookie('access_token_cookie', value=jwt_token, httponly=True, secure=True)
 
-    create_user_if_not_exists(user_info['email'], user_info['name'])
+    utils.create_user_if_not_exists(user_info['email'], user_info['name'])
 
     return response, 200
-
-
-def create_user_if_not_exists(email, name):
-    user = Usuario.query.filter_by(email=email).first()
-    if not user:
-        user = Usuario(email=email, nombre=name)
-        db.session.add(user)
-        db.session.commit()
 
 
 @jwt_required()

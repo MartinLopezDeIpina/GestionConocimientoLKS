@@ -22,3 +22,15 @@ class RelacionesNodo(db.Model):
 class Usuario(db.Model):
     email = db.Column(db.String(250), primary_key=True)
     nombre = db.Column(db.String(250), nullable=False)
+
+
+class ConocimientoUsuario(db.Model):
+    usuario_email = db.Column(db.String(250), ForeignKey('usuario.email'), primary_key=True)
+    nodoID = db.Column(db.Integer, ForeignKey('nodo_arbol.nodoID'), primary_key=True)
+    nivel_IA = db.Column(db.Integer, nullable=True)
+    nivel_validado = db.Column(db.Integer, nullable=True)
+
+    usuario = relationship('Usuario', foreign_keys=[usuario_email])
+    nodo = relationship('NodoArbol', foreign_keys=[nodoID])
+
+
