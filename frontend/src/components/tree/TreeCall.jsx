@@ -1,8 +1,8 @@
+import { useEffect, useState } from "react";
 import Tree from "./Tree";
 
 const TreeCall = ({BACKEND_URL, isPersonalTree}) => {
-    let user_email;
-    let API_URL;
+    const[API_URL, setAPI_URL] = useState(undefined);
 
     async function getUser(){
         let response = await fetch(`${BACKEND_URL}/protected`, {
@@ -18,22 +18,27 @@ const TreeCall = ({BACKEND_URL, isPersonalTree}) => {
         return await response.json();
     }
 
-    async function fetchUserAndSetEmail() {
+    async function getUserFetchedEmail() {
         const userInfo = await getUser();
-        user_email = userInfo.logged_in_as;
+        return userInfo.logged_in_as;
     }
 
-    console.log(`isPersonalTree: ${isPersonalTree}`);
-    if(isPersonalTree){
-        user_email = fetchUserAndSetEmail();
-        //API_URL = BACKEND_URL + '/api/personal/' + user_email;
-        API_URL = BACKEND_URL + '/api';
-    }else{
-        API_URL = BACKEND_URL + '/api';
-    }
+    useEffect(() => {
+        async function setupAPI_URL(){
+            if(isPersonalTree){
+                const user_email = await getUserFetchedEmail();
+                setAPI_URL(`${BACKEND_URL}/api/personal/${user_email}`);
+            }else{
+                setAPI_URL(`${BACKEND_URL}/api`);
+            }
+        }
+
+        setupAPI_URL();
+    }, []);
+
 
     return(
-        <Tree client:only  API_URL={API_URL} isPersonalTree={isPersonalTree}/>
+        (API_URL === undefined) ? (<div></div>) : <Tree client API_URL={API_URL} isPersonalTree={isPersonalTree}/>
     )
 }
 

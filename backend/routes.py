@@ -7,7 +7,7 @@ from treelib import Tree
 
 import utils
 from database import db
-from models import NodoArbol, RelacionesNodo
+from models import NodoArbol, RelacionesNodo, ConocimientoUsuario
 
 
 def init_routes(app):
@@ -103,13 +103,21 @@ def init_routes(app):
     @app.route('/api/json_tree')
     def json_tree():
         nodos = NodoArbol.query.all()
-        relaciones = RelacionesNodo.query.all()
+
+        json = get_nodos_json(nodos)
+        return [json]
+
+    def get_nodos_json(nodos):
+        node_ids = [node.nodoID for node in nodos]
+        #Filtrar sólo las relaciones que tengan un ascendente en la lista de nodos
+        relaciones = RelacionesNodo.query.filter(RelacionesNodo.descendente_id.in_(node_ids)).all()
+
         nodo_dict = {nodo.nodoID: nodo for nodo in nodos}
 
         json = {}
         add_node_to_json(json, nodos[0], relaciones, nodo_dict)
 
-        return [json]
+        return json
 
     def add_node_to_json(json, nodo, relaciones, nodo_dict):
         relaciones_nodo = [relacion for relacion in relaciones if relacion.ascendente_id == nodo.nodoID]
@@ -125,6 +133,17 @@ def init_routes(app):
             json['children'] = children
             json['expanded'] = True
             json['isDirectory'] = True
+
+    @app.route('/api/personal/<user_email>/json_tree')
+    def personal_json_tree(user_email):
+        conocimientos_usuario = ConocimientoUsuario.query.filter_by(usuario_email=user_email).all()
+
+        nodos = []
+        for conocimiento in conocimientos_usuario:
+            nodos.append(conocimiento.nodo)
+
+        json = get_nodos_json(nodos)
+        return [json]
 
     @app.route('/api/get_llm_json_tree')
     def get_llm_json_tree():
