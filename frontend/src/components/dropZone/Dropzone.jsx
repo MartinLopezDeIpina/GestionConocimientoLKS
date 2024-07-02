@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {useDropzone} from 'react-dropzone';
 import '../../../public/styles/dragzone.css';
+import '../../../public/styles/cargarAnimacion.css'
 import FileZone from './FileZone';
 import * as PDFJS from 'pdfjs-dist/legacy/build/pdf';
 import 'pdfjs-dist/legacy/build/pdf.worker';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 PDFJS.GlobalWorkerOptions.workerSrc = 'pdfjs-dist/legacy/build/pdf.worker.js';
 const apiUrl = import.meta.env.PUBLIC_REACT_APP_BACKEND_URL;
@@ -25,7 +26,7 @@ function FileValidator(file){
 
 function Dropzone(props) {
   const [myAcceptedFiles, setMyAcceptedFiles] = useState([]);
-  const [fileUploaded, setFileUploaded] = useState(false);
+  const [uploading , setUploading] = useState(false);
 
   const {getRootProps, getInputProps, open, acceptedFiles,fileRejections, isDragActive} = useDropzone({
     maxFiles: 1,
@@ -107,6 +108,7 @@ function Dropzone(props) {
   }
 
   const uploadPersonalTreeWithFile = async (fileContent) => {
+    setUploading(true);
     fetch(`${apiUrl}/api/personal/upload_tree_from_cv`, {
       method: 'POST',
       credentials: 'include',
@@ -117,6 +119,7 @@ function Dropzone(props) {
         cv: fileContent
       })
     }).then(response => {
+      setUploading(false);
       if (response.ok) {
         toast.success('🤖 Conocimientos actualizados', {
           theme: "dark",
@@ -151,9 +154,11 @@ function Dropzone(props) {
         </div>
         <FileZone myAcceptedFiles={myAcceptedFiles} deleteFile={deleteFile} fileRejections={fileRejections}/>
         <div className='subirButtonDiv' >
+        {uploading ? <div className='loader'></div> : 
           <button className='subirButton' disabled={!myAcceptedFiles || myAcceptedFiles.length === 0} onClick={subirFicheroSeleccionardo}>
             Subir
           </button>
+        }
         </div>
       </div>
     </>

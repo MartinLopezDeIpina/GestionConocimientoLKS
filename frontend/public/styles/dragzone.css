@@ -93,8 +93,11 @@ p{
 .subirButtonDiv{
     display: flex;
     justify-content: center;
+    align-items: center;
+    min-height: 100px;
 }
 .subirButton{
+    height: fit-content;
     background-color: var(--color-primary-700);
     border: none;
     border-radius: 5px;
