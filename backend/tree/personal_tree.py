@@ -12,13 +12,7 @@ personal_tree = Blueprint('personal_tree', __name__)
 @jwt_required()
 def personal_json_tree():
     user_email = get_jwt_identity()
-    conocimientos_usuario = ConocimientoUsuario.query.filter_by(usuario_email=user_email).all()
-
-    nodos = []
-    for conocimiento in conocimientos_usuario:
-        nodos.append(conocimiento.nodo)
-
-    json = utils.get_nodos_json(nodos)
+    json = utils.get_user_personal_tree(user_email)
     return [json]
 
 

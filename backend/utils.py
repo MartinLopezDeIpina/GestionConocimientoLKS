@@ -128,7 +128,6 @@ def create_user_personal_tree_from_json(json, email):
     persist_user_personal_tree_db(nodo_conocimiento_completo, email)
 
 
-
 def persist_user_personal_tree_db(nodos, email):
     conocimientos_usuario = ConocimientoUsuario.query.filter_by(usuario_email=email).all()
     for conocimiento_usuario in conocimientos_usuario:
@@ -141,20 +140,19 @@ def persist_user_personal_tree_db(nodos, email):
     db.session.commit()
 
 
-def para_luego():
-    pass
-    #root_node_id = get_root_node_id()
-    #root_node = NodoArbol.query.filter_by(nodoID=root_node_id).first()
-    #nodo_conocimiento_completo = [nodo for nodo in nodo_conocimiento_completo if nodo.nodoID != root_node_id]
-#
- #   nodos_id = [nodo.nodoID for nodo in nodo_conocimiento_completo]
- #   relaciones = RelacionesNodo.query.filter(RelacionesNodo.descendente_id.in_(nodos_id)).all()
-#
- #   json = {}
- #   json_tree = get_json_tree_from_unordered_nodes(root_node, nodo_conocimiento_completo, relaciones, json)
-#
- #   print(json_tree)
- #   return json_tree
+def get_user_personal_tree(email):
+    conocimientos_usuario = ConocimientoUsuario.query.filter_by(usuario_email=email).all()
+    conocimientos_usuario = [conocimiento.nodo for conocimiento in conocimientos_usuario]
+    nodos_id = [conocimiento_usuario.nodoID for conocimiento_usuario in conocimientos_usuario]
+    relaciones = RelacionesNodo.query.filter(RelacionesNodo.descendente_id.in_(nodos_id)).all()
+
+    nodo_raiz_id = get_root_node_id()
+    nodo_raiz = NodoArbol.query.filter_by(nodoID=nodo_raiz_id).first()
+
+    json = {}
+    json_tree = get_json_tree_from_unordered_nodes(nodo_raiz, conocimientos_usuario, relaciones, json)
+    return json_tree
+
 
 def get_json_tree_from_unordered_nodes(nodo, nodos, relaciones, json):
     nodo_dict = {nodo.nodoID: nodo for nodo in nodos}
