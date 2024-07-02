@@ -4,7 +4,7 @@ import '../../../public/styles/dragzone.css';
 import FileZone from './FileZone';
 import * as PDFJS from 'pdfjs-dist/legacy/build/pdf';
 import 'pdfjs-dist/legacy/build/pdf.worker';
-import { getUser } from "../../utils/utils";
+import { ToastContainer, toast } from 'react-toastify';
 
 PDFJS.GlobalWorkerOptions.workerSrc = 'pdfjs-dist/legacy/build/pdf.worker.js';
 const apiUrl = import.meta.env.PUBLIC_REACT_APP_BACKEND_URL;
@@ -25,6 +25,7 @@ function FileValidator(file){
 
 function Dropzone(props) {
   const [myAcceptedFiles, setMyAcceptedFiles] = useState([]);
+  const [fileUploaded, setFileUploaded] = useState(false);
 
   const {getRootProps, getInputProps, open, acceptedFiles,fileRejections, isDragActive} = useDropzone({
     maxFiles: 1,
@@ -115,7 +116,23 @@ function Dropzone(props) {
       body: JSON.stringify({
         cv: fileContent
       })
-    });
+    }).then(response => {
+      if (response.ok) {
+        toast.success('🤖 Conocimientos actualizados', {
+          theme: "dark",
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    });  
+  }
+  
+  const notify = () => {
   }
 
   return (

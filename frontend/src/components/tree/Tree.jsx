@@ -30,7 +30,6 @@ function Tree({API_URL, isPersonalTree}) {
 
   useEffect(() => {
     async function fetchData(){
-      console.log(`fetching data from ${API_URL}/json_tree`)
         await fetch(`${API_URL}/json_tree`, {
             method: 'GET',
             credentials: "include",
