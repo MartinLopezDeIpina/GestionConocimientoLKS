@@ -1,7 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDropzone} from 'react-dropzone';
 import '../../../public/styles/dragzone.css';
 import FileZone from './FileZone';
+import * as PDFJS from 'pdfjs-dist/legacy/build/pdf';
+import 'pdfjs-dist/legacy/build/pdf.worker';
+
+PDFJS.GlobalWorkerOptions.workerSrc = 'pdfjs-dist/legacy/build/pdf.worker.js';
+
 
 function getFileExtension(file) {
   const parts = file.name.split('.');
@@ -34,6 +39,73 @@ function Dropzone(props) {
     setMyAcceptedFiles(currentFiles => currentFiles.filter(file => file.path !== path));
   }
 
+// Make subirFicheroSeleccionardo async and await the reading functions
+const subirFicheroSeleccionardo = async () => {
+  const file = myAcceptedFiles[0];
+  let fileContent = "";
+
+  if (file.type === 'text/plain') {
+    fileContent = await leerFicheroDeText(file);
+  } else if (file.type === 'application/pdf') {
+    fileContent = await leerFicheroPDF(file);
+  }
+
+  console.log(fileContent);
+};
+
+// Refactor leerFicheroDeText to return a promise
+const leerFicheroDeText = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      resolve(event.target.result);
+    };
+    reader.onerror = function(event) {
+      reject("File could not be read! Code " + event.target.error.code);
+    };
+    reader.readAsText(file, "UTF-8");
+  });
+};
+
+// Refactor leerFicheroPDF to return a promise
+function leerFicheroPDF(file) {
+  return new Promise((resolve, reject) => {
+    if (!(file instanceof Blob)) {
+      reject("The provided file is not a Blob or File.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = async function(event) {
+      const arrayBuffer = event.target.result;
+
+      try {
+        const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
+        let totalPageCount = pdf.numPages;
+        let countPromises = [];
+
+        for (let currentPage = 1; currentPage <= totalPageCount; currentPage++) {
+          let pagePromise = pdf.getPage(currentPage).then(page => {
+            return page.getTextContent().then(text => {
+              return text.items.map(s => s.str).join('');
+            });
+          });
+          countPromises.push(pagePromise);
+        }
+
+        const pagesText = await Promise.all(countPromises);
+        resolve(pagesText.join('\n'));
+      } catch (reason) {
+        reject(reason);
+      }
+    };
+    reader.onerror = function(event) {
+      reject("File could not be read! Code " + event.target.error.code);
+    };
+
+    reader.readAsArrayBuffer(file);
+  });
+}
 
   return (
     <>
@@ -51,7 +123,7 @@ function Dropzone(props) {
         </div>
         <FileZone myAcceptedFiles={myAcceptedFiles} deleteFile={deleteFile} fileRejections={fileRejections}/>
         <div className='subirButtonDiv' >
-          <button className='subirButton' disabled={!myAcceptedFiles || myAcceptedFiles.length === 0}>
+          <button className='subirButton' disabled={!myAcceptedFiles || myAcceptedFiles.length === 0} onClick={subirFicheroSeleccionardo}>
             Subir
           </button>
         </div>

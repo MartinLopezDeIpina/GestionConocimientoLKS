@@ -35,7 +35,7 @@
     background-color: var(--color-primary-700);
     border: none;
     border-radius: 5px;
-    padding: 10px 20px 10px 20px;
+    padding: 10px 50px 10px 50px;
     cursor: pointer;
     color: var(--color-surface-100);
     font-weight: bold;
@@ -98,7 +98,7 @@ p{
     background-color: var(--color-primary-700);
     border: none;
     border-radius: 5px;
-    padding: 10px 20px 10px 20px;
+    padding: 10px 50px 10px 50px;
     cursor: pointer;
     color: var(--color-surface-100);
     font-weight: bold;
@@ -162,6 +162,7 @@ p{
     justify-content: center;
 }
 .warningSVG{
+    flex-shrink: 0;
     height: 40px;
     margin-right: 13px;
     fill: var(--color-error);
