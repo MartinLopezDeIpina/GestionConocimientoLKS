@@ -8,6 +8,7 @@ from flask_cors import CORS
 
 from config import Config
 from database import db
+from tree.personal_tree import personal_tree
 
 
 def create_app():
@@ -28,6 +29,7 @@ def create_app():
     init_routes(current_app)
     current_app.register_blueprint(auth_blueprint)
     current_app.register_blueprint(llm_blueprint, url_prefix='/llm')
+    current_app.register_blueprint(personal_tree, url_prefix='/api/personal')
 
     return current_app
 

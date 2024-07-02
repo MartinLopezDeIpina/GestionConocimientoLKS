@@ -39,8 +39,8 @@ def login():
     return response, 200
 
 
-@jwt_required()
 @auth_blueprint.route('/get_user_info/<email>', methods=['GET'])
+@jwt_required()
 def get_user_info(email):
     user = Usuario.query.filter_by(email=email).first()
     if user:

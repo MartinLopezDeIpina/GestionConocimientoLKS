@@ -69,3 +69,114 @@ def get_root_node_id():
     return NodoArbol.query.order_by(NodoArbol.nodoID).first().nodoID
 
 
+# Dado un conjunto de nodos, devuelve un json con la estructura de árbol para el front
+def get_nodos_json(nodos):
+    node_ids = [node.nodoID for node in nodos]
+    #Filtrar sólo las relaciones que tengan un ascendente en la lista de nodos
+    relaciones = RelacionesNodo.query.filter(RelacionesNodo.descendente_id.in_(node_ids)).all()
+
+    nodo_dict = {nodo.nodoID: nodo for nodo in nodos}
+
+    json = {}
+    add_node_to_json(json, nodos[0], relaciones, nodo_dict)
+
+    return json
+
+
+def add_node_to_json(json, nodo, relaciones, nodo_dict):
+    relaciones_nodo = [relacion for relacion in relaciones if relacion.ascendente_id == nodo.nodoID]
+    children = []
+    for relacion in relaciones_nodo:
+        descendente = nodo_dict[relacion.descendente_id]
+        child = {}
+        add_node_to_json(child, descendente, relaciones, nodo_dict)
+        children.append(child)
+    json['title'] = nodo.nombre
+    json['id'] = nodo.nodoID
+    if relaciones_nodo:
+        json['children'] = children
+        json['expanded'] = True
+        json['isDirectory'] = True
+
+
+def get_nodos_de_los_que_depende_nodo(nodo):
+    relaciones = RelacionesNodo.query.filter_by(descendente_id=nodo.nodoID).all()
+    nodos_dependencia = []
+    for relacion in relaciones:
+        nodo_dependencia = NodoArbol.query.filter_by(nodoID=relacion.ascendente_id).first()
+        nodos_dependencia.append(nodo_dependencia)
+        nodos_dependencia.extend(get_nodos_de_los_que_depende_nodo(nodo_dependencia))
+    return nodos_dependencia
+
+
+def create_user_personal_tree_from_json(json, email):
+    node_ids = [node['id'] for node in json['ids']]
+
+    nodos_conocimiento = []
+    for node_id in node_ids:
+        nodo = NodoArbol.query.filter_by(nodoID=node_id).first()
+        nodos_conocimiento.append(nodo)
+
+    nodo_conocimiento_completo = nodos_conocimiento.copy()
+    #Añadir los nodos de los que dependen los nodos de conocimiento, el LLM no devuelve el árbol completo
+    for nodo in nodos_conocimiento:
+        nodos_dependencia = get_nodos_de_los_que_depende_nodo(nodo)
+        for nodo_dependencia in nodos_dependencia:
+            if nodo_dependencia not in nodo_conocimiento_completo:
+                nodo_conocimiento_completo.append(nodo_dependencia)
+
+    persist_user_personal_tree_db(nodo_conocimiento_completo, email)
+
+
+
+def persist_user_personal_tree_db(nodos, email):
+    conocimientos_usuario = ConocimientoUsuario.query.filter_by(usuario_email=email).all()
+    for conocimiento_usuario in conocimientos_usuario:
+        db.session.delete(conocimiento_usuario)
+    db.session.commit()
+
+    for nodo in nodos:
+        conocimiento_usuario = ConocimientoUsuario(usuario_email=email, nodoID=nodo.nodoID, nivel_IA=0, nivel_validado=0)
+        db.session.add(conocimiento_usuario)
+    db.session.commit()
+
+
+def para_luego():
+    pass
+    #root_node_id = get_root_node_id()
+    #root_node = NodoArbol.query.filter_by(nodoID=root_node_id).first()
+    #nodo_conocimiento_completo = [nodo for nodo in nodo_conocimiento_completo if nodo.nodoID != root_node_id]
+#
+ #   nodos_id = [nodo.nodoID for nodo in nodo_conocimiento_completo]
+ #   relaciones = RelacionesNodo.query.filter(RelacionesNodo.descendente_id.in_(nodos_id)).all()
+#
+ #   json = {}
+ #   json_tree = get_json_tree_from_unordered_nodes(root_node, nodo_conocimiento_completo, relaciones, json)
+#
+ #   print(json_tree)
+ #   return json_tree
+
+def get_json_tree_from_unordered_nodes(nodo, nodos, relaciones, json):
+    nodo_dict = {nodo.nodoID: nodo for nodo in nodos}
+
+    nodos_id = [nodo.nodoID for nodo in nodos]
+    relaciones_nodo = [relacion for relacion in relaciones if relacion.ascendente_id == nodo.nodoID]
+
+    children = []
+
+    for relacion in relaciones_nodo:
+        if relacion.descendente_id in nodos_id:
+            descendente = nodo_dict[relacion.descendente_id]
+            child = {}
+            get_json_tree_from_unordered_nodes(descendente, nodos, relaciones, child)
+            children.append(child)
+
+    json['title'] = nodo.nombre
+    json['id'] = nodo.nodoID
+    if relaciones_nodo:
+        json['children'] = children
+        json['expanded'] = True
+        json['isDirectory'] = True
+
+    return json
+

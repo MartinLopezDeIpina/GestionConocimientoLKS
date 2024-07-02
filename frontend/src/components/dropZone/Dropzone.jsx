@@ -4,9 +4,10 @@ import '../../../public/styles/dragzone.css';
 import FileZone from './FileZone';
 import * as PDFJS from 'pdfjs-dist/legacy/build/pdf';
 import 'pdfjs-dist/legacy/build/pdf.worker';
+import { getUser } from "../../utils/utils";
 
 PDFJS.GlobalWorkerOptions.workerSrc = 'pdfjs-dist/legacy/build/pdf.worker.js';
-
+const apiUrl = import.meta.env.PUBLIC_REACT_APP_BACKEND_URL;
 
 function getFileExtension(file) {
   const parts = file.name.split('.');
@@ -39,73 +40,83 @@ function Dropzone(props) {
     setMyAcceptedFiles(currentFiles => currentFiles.filter(file => file.path !== path));
   }
 
-// Make subirFicheroSeleccionardo async and await the reading functions
-const subirFicheroSeleccionardo = async () => {
-  const file = myAcceptedFiles[0];
-  let fileContent = "";
+  const subirFicheroSeleccionardo = async () => {
+    const file = myAcceptedFiles[0];
+    let fileContent = "";
 
-  if (file.type === 'text/plain') {
-    fileContent = await leerFicheroDeText(file);
-  } else if (file.type === 'application/pdf') {
-    fileContent = await leerFicheroPDF(file);
-  }
-
-  console.log(fileContent);
-};
-
-// Refactor leerFicheroDeText to return a promise
-const leerFicheroDeText = (file) => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = function(event) {
-      resolve(event.target.result);
-    };
-    reader.onerror = function(event) {
-      reject("File could not be read! Code " + event.target.error.code);
-    };
-    reader.readAsText(file, "UTF-8");
-  });
-};
-
-// Refactor leerFicheroPDF to return a promise
-function leerFicheroPDF(file) {
-  return new Promise((resolve, reject) => {
-    if (!(file instanceof Blob)) {
-      reject("The provided file is not a Blob or File.");
-      return;
+    if (file.type === 'text/plain') {
+      fileContent = await leerFicheroDeTexto(file);
+    } else if (file.type === 'application/pdf') {
+      fileContent = await leerFicheroPDF(file);
     }
 
-    const reader = new FileReader();
-    reader.onload = async function(event) {
-      const arrayBuffer = event.target.result;
+    uploadPersonalTreeWithFile(fileContent);
+  };
 
-      try {
-        const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
-        let totalPageCount = pdf.numPages;
-        let countPromises = [];
+  const leerFicheroDeTexto = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        resolve(event.target.result);
+      };
+      reader.onerror = function(event) {
+        reject("File could not be read! Code " + event.target.error.code);
+      };
+      reader.readAsText(file, "UTF-8");
+    });
+  };
 
-        for (let currentPage = 1; currentPage <= totalPageCount; currentPage++) {
-          let pagePromise = pdf.getPage(currentPage).then(page => {
-            return page.getTextContent().then(text => {
-              return text.items.map(s => s.str).join('');
-            });
-          });
-          countPromises.push(pagePromise);
-        }
-
-        const pagesText = await Promise.all(countPromises);
-        resolve(pagesText.join('\n'));
-      } catch (reason) {
-        reject(reason);
+  function leerFicheroPDF(file) {
+    return new Promise((resolve, reject) => {
+      if (!(file instanceof Blob)) {
+        reject("The provided file is not a Blob or File.");
+        return;
       }
-    };
-    reader.onerror = function(event) {
-      reject("File could not be read! Code " + event.target.error.code);
-    };
 
-    reader.readAsArrayBuffer(file);
-  });
-}
+      const reader = new FileReader();
+      reader.onload = async function(event) {
+        const arrayBuffer = event.target.result;
+
+        try {
+          const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
+          let totalPageCount = pdf.numPages;
+          let countPromises = [];
+
+          for (let currentPage = 1; currentPage <= totalPageCount; currentPage++) {
+            let pagePromise = pdf.getPage(currentPage).then(page => {
+              return page.getTextContent().then(text => {
+                return text.items.map(s => s.str).join('');
+              });
+            });
+            countPromises.push(pagePromise);
+          }
+
+          const pagesText = await Promise.all(countPromises);
+          resolve(pagesText.join('\n'));
+        } catch (reason) {
+          reject(reason);
+        }
+      };
+      reader.onerror = function(event) {
+        reject("File could not be read! Code " + event.target.error.code);
+      };
+
+      reader.readAsArrayBuffer(file);
+    });
+  }
+
+  const uploadPersonalTreeWithFile = async (fileContent) => {
+    fetch(`${apiUrl}/api/personal/upload_tree_from_cv`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        cv: fileContent
+      })
+    });
+  }
 
   return (
     <>
