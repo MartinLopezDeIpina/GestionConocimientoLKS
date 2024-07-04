@@ -151,7 +151,8 @@ function Tree({API_URL, isPersonalTree}) {
 
   function removeNode(rowInfo) {
     fetch(`${API_URL}/delete_node/${rowInfo.node.id}`,{
-        method: 'DELETE'
+      credentials: "include",
+      method: 'DELETE'
     })
     .then(response => response.json())
     .then(data => { 

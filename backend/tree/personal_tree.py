@@ -1,9 +1,10 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, Response, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 import utils
 from LLM.LLMHandler import LLMHandler
-from models import ConocimientoUsuario
+from database import db
+from models import ConocimientoUsuario, NodoArbol
 
 personal_tree = Blueprint('personal_tree', __name__)
 
@@ -33,3 +34,29 @@ def personal_upload_tree_from_cv():
 def personal_upload_tree():
     user_email = get_jwt_identity()
     arbol_json = request.get_json().get('arbol')
+
+
+@personal_tree.route('/delete_node/<int:nodo_id>', methods=['GET', 'DELETE'])
+@jwt_required()
+def delete_node(nodo_id):
+    email = get_jwt_identity()
+    nodo = ConocimientoUsuario.query.filter_by(nodoID=nodo_id, usuario_email=email).first()
+    if nodo is None:
+        return Response('Nodo no existe', status=400)
+
+    delete_node_from_user(nodo, email)
+
+    return jsonify({'message':'Nodo eliminado', 'status':200})
+
+
+def delete_node_from_user(nodo_conocimiento_personal, email):
+    if nodo_conocimiento_personal is not None:
+        db.session.delete(nodo_conocimiento_personal)
+        delete_nodos_descendientes_arbol_personal(nodo_conocimiento_personal.nodoID, email)
+        db.session.commit()
+
+
+def delete_nodos_descendientes_arbol_personal(nodo_id, email):
+    nodos_descendientes_id = utils.get_nodos_descendientes_id(nodo_id)
+    ConocimientoUsuario.query.filter(ConocimientoUsuario.nodoID.in_(nodos_descendientes_id), ConocimientoUsuario.usuario_email == email).delete()
+

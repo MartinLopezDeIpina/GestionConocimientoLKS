@@ -178,3 +178,17 @@ def get_json_tree_from_unordered_nodes(nodo, nodos, relaciones, json):
 
     return json
 
+
+def get_nodos_descendientes_id(nodo_id):
+    acumulador = []
+    nodos_descendientes_id = get_nodos_descendientes_id_recursivo(nodo_id, acumulador)
+    return nodos_descendientes_id
+
+
+def get_nodos_descendientes_id_recursivo(nodo_id, acumulador):
+    relaciones = RelacionesNodo.query.filter_by(ascendente_id=nodo_id).all()
+    for relacion in relaciones:
+        acumulador.append(relacion.descendente_id)
+        get_nodos_descendientes_id_recursivo(relacion.descendente_id, acumulador)
+    return acumulador
+
