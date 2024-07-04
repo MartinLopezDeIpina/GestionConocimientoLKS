@@ -282,7 +282,7 @@ function Tree({API_URL, isPersonalTree}) {
               matches.length > 0 ? searchFocusIndex % matches.length : 0
             );
           }}
-          canDrag={({ node }) => !node.dragDisabled}
+          canDrag={({ node }) => !node.dragDisabled && !isPersonalTree}
           generateNodeProps={(rowInfo) => {
 
             if (!nodeRefs.current[rowInfo.node.id]) {

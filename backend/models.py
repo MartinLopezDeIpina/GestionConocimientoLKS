@@ -26,7 +26,7 @@ class Usuario(db.Model):
 
 class ConocimientoUsuario(db.Model):
     usuario_email = db.Column(db.String(250), ForeignKey('usuario.email'), primary_key=True)
-    nodoID = db.Column(db.Integer, ForeignKey('nodo_arbol.nodoID'), primary_key=True)
+    nodoID = db.Column(db.Integer, ForeignKey('nodo_arbol.nodoID', ondelete='CASCADE'), primary_key=True)
     nivel_IA = db.Column(db.Integer, nullable=True)
     nivel_validado = db.Column(db.Integer, nullable=True)
 
