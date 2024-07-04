@@ -10,8 +10,8 @@ class NodoArbol(db.Model):
 
 
 class RelacionesNodo(db.Model):
-    ascendente_id = db.Column(db.Integer, ForeignKey('nodo_arbol.nodoID'))
-    descendente_id = db.Column(db.Integer, ForeignKey('nodo_arbol.nodoID'))
+    ascendente_id = db.Column(db.Integer, ForeignKey('nodo_arbol.nodoID', ondelete='CASCADE'))
+    descendente_id = db.Column(db.Integer, ForeignKey('nodo_arbol.nodoID', ondelete='CASCADE'))
 
     nodo_ascendiente_id = relationship('NodoArbol', foreign_keys=[ascendente_id])
     nodo_descendiente_id = relationship('NodoArbol', foreign_keys=[descendente_id])
