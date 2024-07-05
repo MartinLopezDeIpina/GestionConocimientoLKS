@@ -5,7 +5,7 @@ import SortableTree, {
   changeNodeAtPath,
   toggleExpandedForAll
 } from "@nosferatu500/react-sortable-tree";
-import "@nosferatu500/react-sortable-tree/style.css";
+import '../../../public/styles/tree_structure.css'
 import '../../../public/styles/tree.css';
 import AddSVG from '../SVGs/AddSVG.jsx';
 import DeleteSVG from '../SVGs/DeleteSVG.jsx';
@@ -13,6 +13,7 @@ import EditSVG from "../SVGs/EditSVG.jsx";
 import PreviousSVG from "../SVGs/PreviousSVG.jsx";
 import NextSVG from "../SVGs/NextSVG.jsx";
 import EditButton from "./treeCompmonents/EditButton.jsx";
+import AddButton from "./treeCompmonents/AddButton.jsx";
 
 
 function Tree({API_URL, isPersonalTree}) {
@@ -116,6 +117,14 @@ function Tree({API_URL, isPersonalTree}) {
     });
   }
 
+  function addButtonClicked(rowInfo) {
+    if(!isPersonalTree){
+      addNodeChild(rowInfo);
+    }else{
+      addVisualizingNode(rowInfo);
+    }
+  }
+
   function addNodeChild(rowInfo) {
     let { path } = rowInfo;
     const parentNodeID = rowInfo.node.id;
@@ -127,21 +136,31 @@ function Tree({API_URL, isPersonalTree}) {
     .then(response => response.json())
     .then(data => { 
         if(data.status === 200){
-          let newTree = addNodeUnderParent({
-            treeData: treeData,
-            parentKey: path[path.length - 1],
-            expandParent: true,
-            getNodeKey,
-            newNode: {
-              title: value,
-              id: data.nodoID 
-            }
-          });
-          setLastAddedNodeId(data.nodoID);
-          setIsEditing(true);
-          setTreeData(newTree.treeData);
+          addNodeToTree(rowInfo, value, data.nodoID);
         }
       });
+  }
+
+  function addNodeToTree(rowInfo, title, nodoID){
+    let { path } = rowInfo;
+
+    let newTree = addNodeUnderParent({
+      treeData: treeData,
+      parentKey: path[path.length - 1],
+      expandParent: true,
+      getNodeKey,
+      newNode: {
+        title: title,
+        id: nodoID 
+      }
+    });
+    setLastAddedNodeId(nodoID);
+    setIsEditing(true);
+    setTreeData(newTree.treeData);
+  }
+
+  function addVisualizingNode(rowInfo) {
+
   }
 
   const onEditClicked = (node) => {
@@ -316,17 +335,8 @@ function Tree({API_URL, isPersonalTree}) {
             ),
             buttons: [
               <div className="divButtons">
-                <button className="buttonNode"
-                  label="Add Child"
-                  onClick={(event) => { 
-                    addNodeChild(rowInfo);
-                  }}
-                >
-                  <AddSVG/>
-                </button>
-                {!isPersonalTree ? (
-                  <EditButton node={rowInfo.node} nodeRef={nodeRefs.current[rowInfo.node.id]} onEditClicked={onEditClicked}/>
-                ) : null}
+                <AddButton rowInfo={rowInfo} onAddClicked={addButtonClicked}/>
+                <EditButton isPersonalTree={isPersonalTree} node={rowInfo.node} nodeRef={nodeRefs.current[rowInfo.node.id]} onEditClicked={onEditClicked}/>
                 {
                     rowInfo.parentNode != null && (
                         <button className="buttonNode" label="Delete" onClick={(event) => removeNode(rowInfo)}>

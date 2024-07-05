@@ -32,6 +32,6 @@
   "devDependencies": {
     "cssnano": "^4.1.11",
     "postcss": "^8.4.38",
-    "sass": "^1.77.4"
+    "sass": "^1.77.6"
   }
 }
