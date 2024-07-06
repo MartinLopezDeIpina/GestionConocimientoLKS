@@ -121,7 +121,7 @@ function Tree({API_URL, isPersonalTree}) {
     if(!isPersonalTree){
       addNodeChild(rowInfo);
     }else{
-      addVisualizingNode(rowInfo);
+      addVisualizingNodes(rowInfo);
     }
   }
 
@@ -159,9 +159,70 @@ function Tree({API_URL, isPersonalTree}) {
     setTreeData(newTree.treeData);
   }
 
-  function addVisualizingNode(rowInfo) {
+  //Crear un tree temporal y agregar los nodos hijos del nodo seleccionado, luego actualizar el treeData con este nuevo árbol
+  async function addVisualizingNodes(rowInfo) {
+    const parentNodeID = rowInfo.node.id;
+    let { path } = rowInfo;
 
+    try {
+      const response = await fetch(`${API_URL}/json_tree/${parentNodeID}`, {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
+      const parentNodeWithChildren = await response.json();
+      if (parentNodeWithChildren && parentNodeWithChildren[0].children) {
+        let newTreeData = [...treeData]; 
+        let currentTreeData = newTreeData;
+
+        const addChildrenRecursively = (children, path) => {
+          children.forEach(child => {
+            if (!isNodeInTree(child, currentTreeData)) {
+              const result = addNodeUnderParent({
+                treeData: currentTreeData,
+                parentKey: path[path.length - 1] || null,
+                expandParent: true,
+                getNodeKey,
+                newNode: {
+                  title: child.title,
+                  id: child.id
+                }
+              });
+              currentTreeData = result.treeData; 
+
+              if (child.children && child.children.length > 0) {
+                addChildrenRecursively(child.children, [...path, result.treeIndex], currentTreeData);
+              }
+            }
+          });
+          return currentTreeData;
+        };
+
+        newTreeData = addChildrenRecursively(parentNodeWithChildren[0].children, path);
+
+        setTreeData(newTreeData); 
+      } else {
+        console.log('Node has no children');
+      }
+    } catch (error) {
+      console.error('Error fetching node with children:', error);
+    }
   }
+
+  // Function to check if a node is already in the tree
+  const isNodeInTree = (node, nodes) => {
+    for (let i = 0; i < nodes.length; i++) {
+      if (nodes[i].id === node.id) {
+        return true; // Node found
+      }
+      // If the current node has children, search recursively in its children
+      if (nodes[i].children && isNodeInTree(node, nodes[i].children)) {
+        return true; // Node found in children
+      }
+    }
+    return false; // Node not found
+  };
 
   const onEditClicked = (node) => {
     setOldName(node.title);
@@ -223,7 +284,9 @@ function Tree({API_URL, isPersonalTree}) {
     );
   };
 
-  const getNodeKey = ({ treeIndex }) => treeIndex;
+  const getNodeKey = ({ treeIndex }) => {
+    return treeIndex
+  };
 
   function getInputWidth(length){
     return length * 1.2 + 1;

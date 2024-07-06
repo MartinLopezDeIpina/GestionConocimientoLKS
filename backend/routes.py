@@ -112,6 +112,7 @@ def init_routes(app):
         json = utils.get_nodos_json(nodos)
         return [json]
 
+
     @app.route('/api/get_llm_json_tree')
     def get_llm_json_tree():
         return utils.llm_json_tree()

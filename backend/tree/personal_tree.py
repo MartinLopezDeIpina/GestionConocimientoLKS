@@ -60,3 +60,13 @@ def delete_nodos_descendientes_arbol_personal(nodo_id, email):
     nodos_descendientes_id = utils.get_nodos_descendientes_id(nodo_id)
     ConocimientoUsuario.query.filter(ConocimientoUsuario.nodoID.in_(nodos_descendientes_id), ConocimientoUsuario.usuario_email == email).delete()
 
+
+@personal_tree.route('/json_tree/<int:parent_node_id>')
+def json_tree_from_parent(parent_node_id):
+    nodos_id = utils.get_nodos_descendientes_id(parent_node_id)
+    nodos_id.append(parent_node_id)
+
+    nodos = NodoArbol.query.filter(NodoArbol.nodoID.in_(nodos_id)).all()
+
+    json = utils.get_nodos_json(nodos)
+    return [json]
