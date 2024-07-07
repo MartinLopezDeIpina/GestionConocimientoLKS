@@ -190,16 +190,39 @@ function Tree({API_URL, isPersonalTree}) {
     .then(data => { 
         if(data.status === 200){
             const { path } = rowInfo;
-            setTreeData(
-                removeNodeAtPath({
-                  treeData,
-                  path,
-                  getNodeKey
-                })
-              );
+            if(isPersonalTree && combinedTree){
+              const dependentNodes = getDependentNodesID(rowInfo.node);
+              setPersonalNodes(personalNodes.filter(node => !dependentNodes.includes(node)));
+            }else{
+              setTreeData(
+                  removeNodeAtPath({
+                    treeData,
+                    path,
+                    getNodeKey
+                  })
+                );
+            }
         }
      })
   }
+
+  function getDependentNodesID(node) {
+    let dependentNodes = [node.id];
+
+    function traverseChildren(node) {
+      if (node.children) {
+        node.children.forEach(child => {
+          dependentNodes.push(child.id); // Assuming each child has a unique ID
+          traverseChildren(child); // Recursively add all descendants
+        });
+      }
+    }
+
+    traverseChildren(node);
+
+    return dependentNodes;
+  }
+
 
   function updateTreeData(treeData) {
     setTreeData(treeData);
