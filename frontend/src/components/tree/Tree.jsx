@@ -14,6 +14,7 @@ import PreviousSVG from "../SVGs/PreviousSVG.jsx";
 import NextSVG from "../SVGs/NextSVG.jsx";
 import EditButton from "./treeCompmonents/EditButton.jsx";
 import AddButton from "./treeCompmonents/AddButton.jsx";
+import PersonalTreeSwitch from "./treeCompmonents/PersonalTreeSwitch.jsx";
 
 
 function Tree({API_URL, isPersonalTree}) {
@@ -27,7 +28,8 @@ function Tree({API_URL, isPersonalTree}) {
   const [oldName, setOldName] = useState(null);
   const [prevTreeData, setPrevTreeData] = useState(null);
   const [lastAddedNodeId, setLastAddedNodeId] = useState(null);
-  const[tempNodes, setTempNodes] = useState([]);
+  const [personalNodes, setPersonalNodes] = useState([]);
+  const [combinedTree, setCombinedTree] = useState(false);
 
   useEffect(() => {
     async function fetchData(){
@@ -40,14 +42,19 @@ function Tree({API_URL, isPersonalTree}) {
         })
         .then(response => response.json())
         .then(data => {
-          setTreeData(data)
-          setPrevTreeData(data)
-          console.log(data)
+          if(combinedTree || !isPersonalTree){
+            setTreeData(data.tree);
+            setPrevTreeData(data.tree)
+          }else{
+            setTreeData(data.personal_tree);
+            setPrevTreeData(data.personal_tree)
+          }
+          setPersonalNodes(data.personal_nodes_id[0]);
         })
         .catch(error => console.error('Error:', error));
     }
     fetchData();
-  }, []); 
+  }, [combinedTree]); 
 
   useEffect(() => {
     if(lastAddedNodeId === null){
@@ -117,14 +124,6 @@ function Tree({API_URL, isPersonalTree}) {
     });
   }
 
-  function addButtonClicked(rowInfo) {
-    if(!isPersonalTree){
-      addNodeChild(rowInfo);
-    }else{
-      addVisualizingNodes(rowInfo);
-    }
-  }
-
   function addNodeChild(rowInfo) {
     let { path } = rowInfo;
     const parentNodeID = rowInfo.node.id;
@@ -161,63 +160,6 @@ function Tree({API_URL, isPersonalTree}) {
 
 
   //Crear un tree temporal y agregar los nodos hijos del nodo seleccionado, luego actualizar el treeData con este nuevo árbol
-  async function addVisualizingNodes(rowInfo) {
-    const parentNodeID = rowInfo.node.id;
-    let { path } = rowInfo;
-
-    try {
-      const response = await fetch(`${API_URL}/json_tree/${parentNodeID}`, {
-        method: 'GET',
-        headers: {
-          "Content-Type": "application/json",
-        }
-      });
-      const parentNodeWithChildren = await response.json();
-      if (parentNodeWithChildren && parentNodeWithChildren[0].children) {
-        let newTreeData = [...treeData]; 
-        let currentTreeData = newTreeData;
-
-        const addChildrenRecursively = (children, path) => {
-          children.forEach(child => {
-            if (!isNodeInTree(child, currentTreeData)) {
-              const result = addNodeUnderParent({
-                treeData: currentTreeData,
-                parentKey: path[path.length - 1] || null,
-                expandParent: true,
-                getNodeKey,
-                newNode: {
-                  title: child.title,
-                  id: child.id
-                },
-                addAsFirstChild: true
-              });
-              currentTreeData = result.treeData; 
-              tempNodes.push(child.id);
-
-              if (child.children && child.children.length > 0) {
-                //el path del hijo va a ser debajo del padre, el path del padre + en la siguinete profundidad con el index del padre + 1
-                let childPath = [...path, path[path.length-1]+1];
-                if (path.length === 1){
-                  childPath = [result.treeIndex]
-                }
-                addChildrenRecursively(child.children, childPath);
-              }
-            }
-          });
-          return currentTreeData;
-        };
-
-        newTreeData = addChildrenRecursively(parentNodeWithChildren[0].children, path);
-
-        setTempNodes([tempNodes]);;
-        setTreeData(newTreeData); 
-      } else {
-        console.log('Node has no children');
-      }
-    } catch (error) {
-      console.error('Error fetching node with children:', error);
-    }
-  }
 
   // Function to check if a node is already in the tree
   const isNodeInTree = (node, nodes) => {
@@ -301,6 +243,15 @@ function Tree({API_URL, isPersonalTree}) {
     return length * 1.2 + 1;
   }
 
+  function onPersonalTreeSwitchToggled(){
+    if(combinedTree){
+      setCombinedTree(false);
+    }else{
+      setCombinedTree(true);
+    }
+
+  }
+
   return (
     <div className="controlsAndTreeDiv">
       <div className="controlsDiv" >
@@ -348,6 +299,9 @@ function Tree({API_URL, isPersonalTree}) {
             {searchFoundCount || 0}
           </span>
         </form>
+
+        <PersonalTreeSwitch isPersonalTree={isPersonalTree} switchToggled={onPersonalTreeSwitchToggled}/>
+
       </div>
 
       <div className="divTree">
@@ -407,7 +361,7 @@ function Tree({API_URL, isPersonalTree}) {
             ),
             buttons: [
               <div className="divButtons">
-                <AddButton rowInfo={rowInfo} onAddClicked={addButtonClicked}/>
+                <AddButton rowInfo={rowInfo} onAddClicked={addNodeChild} isPersonalTree={isPersonalTree}/>
                 <EditButton isPersonalTree={isPersonalTree} node={rowInfo.node} nodeRef={nodeRefs.current[rowInfo.node.id]} onEditClicked={onEditClicked}/>
                 {
                     rowInfo.parentNode != null && (
@@ -420,7 +374,7 @@ function Tree({API_URL, isPersonalTree}) {
             ],
             style: {
               height: "50px",
-              opacity: tempNodes[0] && tempNodes[0].includes(rowInfo.node.id) ? 0.5 : 1
+              opacity: (isPersonalTree && combinedTree && !personalNodes.includes(rowInfo.node.id)) ? 0.5 : 1,
             },
           }}}
         />

@@ -109,8 +109,8 @@ def init_routes(app):
     def json_tree():
         nodos = NodoArbol.query.all()
 
-        json = utils.get_nodos_json(nodos)
-        return [json]
+        tree = utils.get_nodos_json(nodos)
+        return jsonify({"tree": [tree]})
 
 
     @app.route('/api/get_llm_json_tree')

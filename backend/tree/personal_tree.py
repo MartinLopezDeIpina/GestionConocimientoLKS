@@ -13,8 +13,13 @@ personal_tree = Blueprint('personal_tree', __name__)
 @jwt_required()
 def personal_json_tree():
     user_email = get_jwt_identity()
-    json = utils.get_user_personal_tree(user_email)
-    return [json]
+    todos_nodos = NodoArbol.query.all()
+
+    tree = utils.get_nodos_json(todos_nodos)
+    personal_tree = utils.get_user_personal_tree(user_email)
+    nodos_id = [nodo.nodoID for nodo in ConocimientoUsuario.query.filter_by(usuario_email=user_email).all()]
+
+    return jsonify({"tree": [tree], "personal_tree": [personal_tree], "personal_nodes_id": [nodos_id]})
 
 
 @personal_tree.route('/upload_tree_from_cv', methods=['POST'])
@@ -70,3 +75,12 @@ def json_tree_from_parent(parent_node_id):
 
     json = utils.get_nodos_json(nodos)
     return [json]
+
+
+@personal_tree.route('/personal_nodes_id')
+@jwt_required()
+def personal_nodes_id():
+    email = get_jwt_identity()
+    conocimientos_usuario = ConocimientoUsuario.query.filter_by(usuario_email=email).all()
+    nodos_id = [conocimiento_usuario.nodoID for conocimiento_usuario in conocimientos_usuario]
+    return jsonify(nodos_id), 200
