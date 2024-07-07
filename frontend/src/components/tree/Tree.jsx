@@ -14,6 +14,7 @@ import PreviousSVG from "../SVGs/PreviousSVG.jsx";
 import NextSVG from "../SVGs/NextSVG.jsx";
 import EditButton from "./treeCompmonents/EditButton.jsx";
 import AddButton from "./treeCompmonents/AddButton.jsx";
+import DeleteButton from "./treeCompmonents/DeleteButton.jsx";
 import PersonalTreeSwitch from "./treeCompmonents/PersonalTreeSwitch.jsx";
 
 
@@ -335,9 +336,6 @@ function Tree({API_URL, isPersonalTree}) {
             }
 
             return {
-
-            // title: rowInfo.node.label,
-            // subtitle: rowInfo.node.subTitle,
             title: (
                 <input className="nodeInput"
                 style={{ width: `${getInputWidth(rowInfo.node.title.length)}ch` }}
@@ -363,13 +361,7 @@ function Tree({API_URL, isPersonalTree}) {
               <div className="divButtons">
                 <AddButton rowInfo={rowInfo} onAddClicked={addNodeChild} isPersonalTree={isPersonalTree}/>
                 <EditButton isPersonalTree={isPersonalTree} node={rowInfo.node} nodeRef={nodeRefs.current[rowInfo.node.id]} onEditClicked={onEditClicked}/>
-                {
-                    rowInfo.parentNode != null && (
-                        <button className="buttonNode" label="Delete" onClick={(event) => removeNode(rowInfo)}>
-                          <DeleteSVG/>
-                        </button>
-                    )
-                }
+                <DeleteButton rowInfo={rowInfo} removeNode={removeNode} isPersonalTree={isPersonalTree} combinedTree={combinedTree} personalNodes={personalNodes}/>
               </div>
             ],
             style: {
