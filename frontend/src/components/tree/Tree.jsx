@@ -27,7 +27,7 @@ function Tree({API_URL, isPersonalTree}) {
   const [oldName, setOldName] = useState(null);
   const [prevTreeData, setPrevTreeData] = useState(null);
   const [lastAddedNodeId, setLastAddedNodeId] = useState(null);
-
+  const[tempNodes, setTempNodes] = useState([]);
 
   useEffect(() => {
     async function fetchData(){
@@ -159,6 +159,7 @@ function Tree({API_URL, isPersonalTree}) {
     setTreeData(newTree.treeData);
   }
 
+
   //Crear un tree temporal y agregar los nodos hijos del nodo seleccionado, luego actualizar el treeData con este nuevo árbol
   async function addVisualizingNodes(rowInfo) {
     const parentNodeID = rowInfo.node.id;
@@ -187,12 +188,19 @@ function Tree({API_URL, isPersonalTree}) {
                 newNode: {
                   title: child.title,
                   id: child.id
-                }
+                },
+                addAsFirstChild: true
               });
               currentTreeData = result.treeData; 
+              tempNodes.push(child.id);
 
               if (child.children && child.children.length > 0) {
-                addChildrenRecursively(child.children, [...path, result.treeIndex], currentTreeData);
+                //el path del hijo va a ser debajo del padre, el path del padre + en la siguinete profundidad con el index del padre + 1
+                let childPath = [...path, path[path.length-1]+1];
+                if (path.length === 1){
+                  childPath = [result.treeIndex]
+                }
+                addChildrenRecursively(child.children, childPath);
               }
             }
           });
@@ -201,6 +209,7 @@ function Tree({API_URL, isPersonalTree}) {
 
         newTreeData = addChildrenRecursively(parentNodeWithChildren[0].children, path);
 
+        setTempNodes([tempNodes]);;
         setTreeData(newTreeData); 
       } else {
         console.log('Node has no children');
@@ -410,7 +419,8 @@ function Tree({API_URL, isPersonalTree}) {
               </div>
             ],
             style: {
-              height: "50px"
+              height: "50px",
+              opacity: tempNodes[0] && tempNodes[0].includes(rowInfo.node.id) ? 0.5 : 1
             },
           }}}
         />

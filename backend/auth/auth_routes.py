@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 import requests
 from flask import Blueprint, jsonify, request
 
@@ -30,7 +32,7 @@ def login():
     }
     user_info = requests.get('https://www.googleapis.com/oauth2/v3/userinfo', headers=headers).json()
 
-    jwt_token = create_access_token(identity=user_info['email'])  # create jwt token
+    jwt_token = create_access_token(identity=user_info['email'], expires_delta=timedelta(hours=2))
     response = jsonify(user=user_info)
     response.set_cookie('access_token_cookie', value=jwt_token, httponly=True, secure=True)
 
