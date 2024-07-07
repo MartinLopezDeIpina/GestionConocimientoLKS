@@ -131,12 +131,23 @@ function Tree({API_URL, isPersonalTree}) {
     const value = " ";
 
     return fetch(`${API_URL}/add_node/${value}/${parentNodeID}`,{
+        credentials: "include",
         method: 'POST'
     })
     .then(response => response.json())
     .then(data => { 
         if(data.status === 200){
-          addNodeToTree(rowInfo, value, data.nodoID);
+          if(isPersonalTree && combinedTree){
+            let new_nodes = []; 
+            data.nodos_dependientes[0].forEach(node => {
+              if(!personalNodes.includes(node)){
+                new_nodes.push(node);
+              }
+            });
+            setPersonalNodes(personalNodes.concat(new_nodes));
+          }else{
+            addNodeToTree(rowInfo, value, data.nodoID);
+          }
         }
       });
   }
@@ -212,8 +223,8 @@ function Tree({API_URL, isPersonalTree}) {
     function traverseChildren(node) {
       if (node.children) {
         node.children.forEach(child => {
-          dependentNodes.push(child.id); // Assuming each child has a unique ID
-          traverseChildren(child); // Recursively add all descendants
+          dependentNodes.push(child.id); 
+          traverseChildren(child); 
         });
       }
     }
@@ -268,12 +279,16 @@ function Tree({API_URL, isPersonalTree}) {
   }
 
   function onPersonalTreeSwitchToggled(){
+    collapseAll(); 
     if(combinedTree){
       setCombinedTree(false);
     }else{
       setCombinedTree(true);
     }
+  }
 
+  function isNodeInsidePersonalTreeAndNotPersonalNode(isPersonalTree, combinedTree, personalNodes, nodeID) {
+      return isPersonalTree && combinedTree && !personalNodes.includes(nodeID);
   }
 
   return (
@@ -330,6 +345,7 @@ function Tree({API_URL, isPersonalTree}) {
 
       <div className="divTree">
         <SortableTree
+          rowHeight={55}
           treeData={treeData}
           onChange={(newTreeData) => {
             updateTreeData(newTreeData)
@@ -358,7 +374,18 @@ function Tree({API_URL, isPersonalTree}) {
                 nodeRefs.current[rowInfo.node.id] = React.createRef();
             }
 
+            const isNodeDisabled = () => {
+              return isNodeInsidePersonalTreeAndNotPersonalNode(isPersonalTree, combinedTree, personalNodes, rowInfo.node.id);
+            }
+
+            const handleNodeClick = () => {
+              if(isNodeDisabled()){
+               addNodeChild(rowInfo); 
+              }
+            };
+
             return {
+            className: isNodeDisabled() ? "hoverNode" : "",
             title: (
                 <input className="nodeInput"
                 style={{ width: `${getInputWidth(rowInfo.node.title.length)}ch` }}
@@ -388,9 +415,9 @@ function Tree({API_URL, isPersonalTree}) {
               </div>
             ],
             style: {
-              height: "50px",
-              opacity: (isPersonalTree && combinedTree && !personalNodes.includes(rowInfo.node.id)) ? 0.5 : 1,
+              opacity: isNodeDisabled() ? 0.5 : 1
             },
+            onClick: handleNodeClick
           }}}
         />
       </div>

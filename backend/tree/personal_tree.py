@@ -84,3 +84,27 @@ def personal_nodes_id():
     conocimientos_usuario = ConocimientoUsuario.query.filter_by(usuario_email=email).all()
     nodos_id = [conocimiento_usuario.nodoID for conocimiento_usuario in conocimientos_usuario]
     return jsonify(nodos_id), 200
+
+
+@personal_tree.route('/add_node/<nombre>/<int:nodo_id>', methods=['POST'])
+@jwt_required()
+def add_node(nombre, nodo_id):
+    email = get_jwt_identity()
+    nodo = NodoArbol.query.get(nodo_id)
+
+    if nodo is None:
+        return Response('nodo no existe', status=400)
+
+    nodos_dependientes = utils.get_nodos_de_los_que_depende_nodo(nodo)
+
+    for nodo_dependiente in nodos_dependientes:
+        conocimiento = ConocimientoUsuario.query.filter_by(usuario_email=email, nodoID=nodo_dependiente.nodoID).first()
+        if conocimiento is None:
+            db.session.add(ConocimientoUsuario(usuario_email=email, nodoID=nodo_dependiente.nodoID, nivel_IA=0, nivel_validado=0))
+    db.session.add(ConocimientoUsuario(usuario_email=email, nodoID=nodo_id, nivel_IA=0, nivel_validado=0))
+    db.session.commit()
+
+    nodos_dependientes_id = [nodo_dependiente.nodoID for nodo_dependiente in nodos_dependientes]
+    nodos_dependientes_id.append(nodo_id)
+
+    return jsonify(message='Nodo agregado', status=200, nodos_dependientes=[nodos_dependientes_id])
