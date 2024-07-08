@@ -43,13 +43,15 @@ function Tree({API_URL, isPersonalTree}) {
         })
         .then(response => response.json())
         .then(data => {
+          if(combinedTree){
+            setPersonalNodes(data.personal_nodes_id[0]);
+          }
           if(combinedTree || !isPersonalTree){
             setTreeData(data.tree);
             setPrevTreeData(data.tree)
           }else{
             setTreeData(data.personal_tree);
             setPrevTreeData(data.personal_tree)
-            setPersonalNodes(data.personal_nodes_id[0]);
           }
         })
         .catch(error => console.error('Error:', error));
