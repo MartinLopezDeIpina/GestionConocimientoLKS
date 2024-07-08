@@ -49,8 +49,8 @@ function Tree({API_URL, isPersonalTree}) {
           }else{
             setTreeData(data.personal_tree);
             setPrevTreeData(data.personal_tree)
+            setPersonalNodes(data.personal_nodes_id[0]);
           }
-          setPersonalNodes(data.personal_nodes_id[0]);
         })
         .catch(error => console.error('Error:', error));
     }
