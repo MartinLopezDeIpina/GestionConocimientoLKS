@@ -44,8 +44,12 @@
     padding: 5px;
     transform-origin: center;
 }
+
 .buttonNode:hover{
+    background-color: var(--color-surface-850);
+    cursor: pointer;
 }
+
 .expandButton{
     background-color: var(--color-surface-600);
     border-radius: 5px;
