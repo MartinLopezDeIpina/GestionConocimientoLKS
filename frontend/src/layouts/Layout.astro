@@ -14,7 +14,7 @@ interface Props {
 const { title } = Astro.props;
 ---
 
-<!doctype html>
+<!doctype>
 <html lang="en" class="dark">
 	<head>
 		<meta charset="UTF-8" />
@@ -28,7 +28,9 @@ const { title } = Astro.props;
 	
 	<body>
 		<Header/>
-		<slot/>
+		<div transition:animate="fade">
+			<slot/>
+		</div>
 		<ToastProvider client:load/>
 	</body>
 </html>
