@@ -2,7 +2,16 @@ import Avatar from "@mui/material/Avatar";
 import React, { useState } from "react";
 
 export default function UserAvatar({ userName, onClick }) {
-  return <Avatar {...stringAvatar(userName)} onClick={() => onClick()} />;
+  const avatar = stringAvatar(userName);
+  const color = stringToColor(userName);
+
+  return (
+    <button className="loggedIcon" style={{backgroundColor: color}} onClick={onClick}>
+      <p className="loggedIconText">
+        {avatar}
+      </p>
+    </button>
+  );
 }
 
 function stringToColor(string) {
@@ -26,10 +35,5 @@ function stringToColor(string) {
 }
 
 function stringAvatar(name) {
-  return {
-    sx: {
-      bgcolor: stringToColor(name),
-    },
-    children: name.split(" ").length === 1 ? name.substring(0, 2) : `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
-  };
+  return name.split(" ").length === 1 ? name.substring(0, 2) : `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`;
 }

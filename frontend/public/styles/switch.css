@@ -3,7 +3,7 @@
   position: relative;
   display: inline-block;
   width: 60px;
-  height: 34px;
+  height: 28px;
 }
 
 /* Hide default HTML checkbox */
@@ -15,6 +15,7 @@
 
 /* The slider */
 .slider {
+  margin-top: -1px;
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -29,8 +30,8 @@
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
+  height: 21px;
+  width: 21px;
   left: 4px;
   bottom: 4px;
   background-color: white;

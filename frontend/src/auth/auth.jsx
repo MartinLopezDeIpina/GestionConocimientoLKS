@@ -3,6 +3,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import IconButton from "@mui/material/IconButton";
 import { useGoogleLogin } from "@react-oauth/google";
 import UserAvatar from "./userAvatar";
+import GoogleSVG from "../components/SVGs/GoogleSVG";
 
 async function getUserInfoAndCoockies(codeResponse) {
   var response = await fetch("http://localhost:5000/google_login", {
@@ -72,8 +73,6 @@ export default function Auth() {
     }
   };
 
-
-
   useEffect(() => {
     async function checkLoggedInStatus() {
       let response = await getProtected();
@@ -98,13 +97,9 @@ export default function Auth() {
     return (
       <>
         {!loggedIn ? (
-          <IconButton
-            color="primary"
-            aria-label="add to shopping cart"
-            onClick={() => googleLogin()}
-          >
-          <GoogleIcon fontSize="large" />
-          </IconButton>
+          <button className="googleButton" onClick={() => googleLogin()}>
+            <GoogleSVG />
+          </button>
         ) : (
           <UserAvatar userName={user.name} onClick={handleLogout}></UserAvatar>
         )}
