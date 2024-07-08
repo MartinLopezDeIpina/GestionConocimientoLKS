@@ -1,18 +1,35 @@
 ---
+
 import Layout from '../layouts/Layout.astro';
 import '../../public/styles/tree.css'
-
+import LoginButton from '../auth/LoginButton';
 import GoogleOauthReact from '../components/GoogleOauthReact.jsx';
 let clientID = import.meta.env.GOOGLE_CLIENT_ID;
 ---
 
 <Layout title="Welcome to Astro.">
 	<main>
+		<div class="divLogin">
+			<h1>Iniciar sesión</h1>
+			<LoginButton client:only="react"/>
+		</div>
 	</main>
 </Layout>
 <style>
 	main{
-		padding-top: 3vh;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	.divLogin{
+		margin-top: 10vh;
+		width: 30vw;
+		height: 30vh;
+		min-height: 200px;
+		min-width: 356px;
+		background-color: var(--color-surface-100);
+		border-radius: 10px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;

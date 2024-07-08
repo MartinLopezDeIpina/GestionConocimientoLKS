@@ -4,8 +4,9 @@ import IconButton from "@mui/material/IconButton";
 import { useGoogleLogin } from "@react-oauth/google";
 import UserAvatar from "./userAvatar";
 import GoogleSVG from "../components/SVGs/GoogleSVG";
+import { useAuth } from './AuthContext';
 
-async function getUserInfoAndCoockies(codeResponse) {
+async function getUserInfoAndCookies(codeResponse) {
   var response = await fetch("http://localhost:5000/google_login", {
     method: "POST",
     credentials: "include",
@@ -52,14 +53,13 @@ async function logout(){
   return response;
 }
 
-export default function Auth() {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [user, setUser] = useState({});
+export default function Auth({}) {
+  const { loggedIn, setLoggedIn, user, setUser } = useAuth();
+
   const googleLogin = useGoogleLogin({
     flow: "auth-code",
     onSuccess: async (codeResponse) => {
-      let loginDetails = await getUserInfoAndCoockies(codeResponse);
-      console.log(loginDetails);
+      let loginDetails = await getUserInfoAndCookies(codeResponse);
       setLoggedIn(true);
       setUser(loginDetails.user);
     },
@@ -75,6 +75,7 @@ export default function Auth() {
 
   useEffect(() => {
     async function checkLoggedInStatus() {
+      console.log("Checking logged in status");
       let response = await getProtected();
       console.log(response);
 
@@ -87,10 +88,6 @@ export default function Auth() {
     }
 
     checkLoggedInStatus();
-  }, []);
-
-  useEffect(() => {
-    console.log(`logged in: ${loggedIn}`);
   }, [loggedIn]);
 
   const returnButton = () => {
@@ -101,7 +98,7 @@ export default function Auth() {
             <GoogleSVG />
           </button>
         ) : (
-          <UserAvatar userName={user.name} onClick={handleLogout}></UserAvatar>
+          user && <UserAvatar userName={user.name} onClick={handleLogout}></UserAvatar>
         )}
       </>
     );
