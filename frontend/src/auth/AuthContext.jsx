@@ -6,6 +6,8 @@ export function AuthProvider({ children }) {
 
   const [user, setUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
+  
+  console.log("AuthProvider state:", { loggedIn, user });
 
   return (
     <AuthContext.Provider value={{ loggedIn, setLoggedIn, user, setUser }}>

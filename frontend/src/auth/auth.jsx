@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
 import UserAvatar from "./userAvatar";
 import GoogleSVG from "../components/SVGs/GoogleSVG";
-import { useAuth } from './AuthContext';
+import {useStore} from '@nanostores/react';
+import {isLoggedNano, userNano} from '../components/nano/authNano';
 
 
 async function getUserInfoAndCookies(codeResponse) {
@@ -53,14 +54,15 @@ async function logout(){
 }
 
 export default function Auth({}) {
-  const { loggedIn, setLoggedIn, user, setUser } = useAuth();
+  const $isLoggedNano = useStore(isLoggedNano);
+  const $userNano = useStore(userNano);
 
   const googleLogin = useGoogleLogin({
     flow: "auth-code",
     onSuccess: async (codeResponse) => {
       let loginDetails = await getUserInfoAndCookies(codeResponse);
-      setLoggedIn(true);
-      setUser(loginDetails.user);
+      isLoggedNano.set(true);
+      userNano.set(loginDetails.user);
     },
   });
 
@@ -68,37 +70,35 @@ export default function Auth({}) {
   const handleLogout = async () => {
     let response = await logout();
     if(response.ok){
-      setLoggedIn(false);
+      isLoggedNano.set(false);
     }
   };
 
   useEffect(() => {
     async function checkLoggedInStatus() {
-      console.log("Checking logged in status");
       let response = await getProtected();
-      console.log(response);
 
       if (response.ok) {
         let data = await response.json();
         let userInfo = await getUserInfo(data.logged_in_as);
-        setUser(userInfo);
-        setLoggedIn(true);
-        console.log('set logged in true');
+        userNano.set(userInfo);
+        isLoggedNano.set(true);
       }
     }
 
     checkLoggedInStatus();
-  }, [loggedIn]);
+  }, []);
+
 
   const returnButton = () => {
     return (
       <>
-        {!loggedIn ? (
+        {!$isLoggedNano ? (
           <button className="googleButton" onClick={() => googleLogin()}>
             <GoogleSVG />
           </button>
         ) : (
-          user && <UserAvatar userName={user.name} onClick={handleLogout}></UserAvatar>
+          $userNano && <UserAvatar userName={$userNano.name} onClick={handleLogout}></UserAvatar>
         )}
       </>
     );
