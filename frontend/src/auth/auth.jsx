@@ -3,7 +3,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import UserAvatar from "./userAvatar";
 import GoogleSVG from "../components/SVGs/GoogleSVG";
 import {useStore} from '@nanostores/react';
-import {isLoggedNano, userNano} from '../components/nano/authNano';
+import {isLoggedNano, userNano, logginClicked} from '../components/nano/authNano';
 
 
 async function getUserInfoAndCookies(codeResponse) {
@@ -56,6 +56,14 @@ async function logout(){
 export default function Auth({}) {
   const $isLoggedNano = useStore(isLoggedNano);
   const $userNano = useStore(userNano);
+  const $logginClicked = useStore(logginClicked)
+
+  useEffect(() => {
+    if($logginClicked){
+      googleLogin();
+      logginClicked.set(false);
+    }
+  }, [$logginClicked])
 
   const googleLogin = useGoogleLogin({
     flow: "auth-code",

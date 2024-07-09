@@ -2,7 +2,7 @@
 import { useGoogleLogin } from "@react-oauth/google";
 import GoogleSVG from "../components/SVGs/GoogleSVG";
 import {useStore} from '@nanostores/react';
-import {isLoggedNano, userNano} from '../components/nano/authNano';
+import {isLoggedNano, userNano, logginClicked} from '../components/nano/authNano';
 
 async function getUserInfoAndCookies(codeResponse) {
   var response = await fetch("http://localhost:5000/google_login", {
@@ -19,18 +19,10 @@ async function getUserInfoAndCookies(codeResponse) {
 const LoginButton = () => {
     const $isLoggedNano = useStore(isLoggedNano);
     const $userNano = useStore(userNano);
-
-    const googleLogin = useGoogleLogin({
-        flow: "auth-code",
-        onSuccess: async (codeResponse) => {
-            let loginDetails = await getUserInfoAndCookies(codeResponse);
-            isLoggedNano.set(true);
-            userNano.set(loginDetails.user);
-        },
-    });
+    const $logginClicked = useStore(logginClicked);
 
     return (
-        <button onClick={() => googleLogin()}>
+        <button onClick={() => logginClicked.set(true)}>
             <GoogleSVG />
             <span>Login with Google</span>
         </button>
