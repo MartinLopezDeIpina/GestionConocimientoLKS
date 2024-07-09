@@ -1,8 +1,6 @@
-
-import { useGoogleLogin } from "@react-oauth/google";
 import GoogleSVG from "../components/SVGs/GoogleSVG";
 import {useStore} from '@nanostores/react';
-import {isLoggedNano, userNano, logginClicked} from '../components/nano/authNano';
+import {logginClicked} from '../components/nano/authNano';
 
 async function getUserInfoAndCookies(codeResponse) {
   var response = await fetch("http://localhost:5000/google_login", {
@@ -17,8 +15,6 @@ async function getUserInfoAndCookies(codeResponse) {
 }
 
 const LoginButton = () => {
-    const $isLoggedNano = useStore(isLoggedNano);
-    const $userNano = useStore(userNano);
     const $logginClicked = useStore(logginClicked);
 
     return (

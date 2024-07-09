@@ -3,7 +3,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import UserAvatar from "./userAvatar";
 import GoogleSVG from "../components/SVGs/GoogleSVG";
 import {useStore} from '@nanostores/react';
-import {isLoggedNano, userNano, logginClicked} from '../components/nano/authNano';
+import {logginClicked} from '../components/nano/authNano';
 
 
 async function getUserInfoAndCookies(codeResponse) {
@@ -54,8 +54,7 @@ async function logout(){
 }
 
 export default function Auth({}) {
-  const $isLoggedNano = useStore(isLoggedNano);
-  const $userNano = useStore(userNano);
+  const [loggedName, setLoggedName] = useState(null);
   const $logginClicked = useStore(logginClicked)
 
   useEffect(() => {
@@ -69,16 +68,15 @@ export default function Auth({}) {
     flow: "auth-code",
     onSuccess: async (codeResponse) => {
       let loginDetails = await getUserInfoAndCookies(codeResponse);
-      isLoggedNano.set(true);
-      userNano.set(loginDetails.user);
-    },
+      setLoggedName(loginDetails.user.name);
+    }
   });
 
 
   const handleLogout = async () => {
     let response = await logout();
     if(response.ok){
-      isLoggedNano.set(false);
+      setLoggedName(null);
     }
   };
 
@@ -89,8 +87,7 @@ export default function Auth({}) {
       if (response.ok) {
         let data = await response.json();
         let userInfo = await getUserInfo(data.logged_in_as);
-        userNano.set(userInfo);
-        isLoggedNano.set(true);
+        setLoggedName(userInfo.name);
       }
     }
 
@@ -101,12 +98,12 @@ export default function Auth({}) {
   const returnButton = () => {
     return (
       <>
-        {!$isLoggedNano ? (
+        {!loggedName ? (
           <button className="googleButton" onClick={() => googleLogin()}>
             <GoogleSVG />
           </button>
         ) : (
-          $userNano && <UserAvatar userName={$userNano.name} onClick={handleLogout}></UserAvatar>
+          loggedName && <UserAvatar userName={loggedName} onClick={handleLogout}></UserAvatar>
         )}
       </>
     );
