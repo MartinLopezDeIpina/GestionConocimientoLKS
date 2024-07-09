@@ -28,7 +28,7 @@ const { title } = Astro.props;
 	</head>
 	
 	<body>
-		<AuthWrapper client:only="react" clientId={googleClientId}>
+		<AuthWrapper clientId={googleClientId}>
 			<Header />
 			<div transition:animate="fade" class="slotWrapper">
 				<slot/>

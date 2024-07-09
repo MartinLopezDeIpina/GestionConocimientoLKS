@@ -4,11 +4,9 @@ import { AuthProvider } from './AuthContext';
 
 const AuthWrapper = ({ children, clientId }) => {
   return (
-    <GoogleOAuthProvider clientId={clientId}>
-      <AuthProvider>
-        {children}
-      </AuthProvider>
-    </GoogleOAuthProvider>
+    <AuthProvider>
+      {children}
+    </AuthProvider>
   );
 };
 

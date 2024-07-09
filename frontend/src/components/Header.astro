@@ -1,7 +1,6 @@
 ---
-import Auth from '../auth/auth.jsx';
 const clientId = "243996829698-50me4e29rr1vbjdpgop8erdbjonufstv.apps.googleusercontent.com";
-import { GoogleOAuthProvider } from "@react-oauth/google";
+import GoogleOauthReact from './GoogleOauthReact.jsx';
 ---
 <header>
     <h1>Árbol de conocimientos</h1>
@@ -12,7 +11,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
         <a href="/login">Login</a>
     </nav>
     <div class="divGoogleWrapper">
-        <Auth transition:persist client:only="react"/>
+        <GoogleOauthReact transition:persist client:only="react" clientId={clientId} isHeaderButton={true}/>
     </div>
 </header>
 

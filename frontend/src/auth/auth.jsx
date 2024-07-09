@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import GoogleIcon from "@mui/icons-material/Google";
-import IconButton from "@mui/material/IconButton";
 import { useGoogleLogin } from "@react-oauth/google";
 import UserAvatar from "./userAvatar";
 import GoogleSVG from "../components/SVGs/GoogleSVG";
 import { useAuth } from './AuthContext';
+
 
 async function getUserInfoAndCookies(codeResponse) {
   var response = await fetch("http://localhost:5000/google_login", {
@@ -84,6 +83,7 @@ export default function Auth({}) {
         let userInfo = await getUserInfo(data.logged_in_as);
         setUser(userInfo);
         setLoggedIn(true);
+        console.log('set logged in true');
       }
     }
 
