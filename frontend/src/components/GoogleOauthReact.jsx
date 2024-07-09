@@ -2,7 +2,6 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import Auth from "../auth/auth";
 import '../../public/styles/auth.css';
 import LoginButton from "../auth/LoginButton";
-import { useState } from "react";
 
 const GoogleOauthReact = ({clientId, isHeaderButton}) => {
 

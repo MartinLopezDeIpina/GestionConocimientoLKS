@@ -3,8 +3,6 @@ import Header from '../components/Header.astro';
 import '../../public/styles/global.css';
 import ViewTransitions from 'astro/components/ViewTransitions.astro';
 import ToastProvider from '../components/ToastProvider.jsx'
-import AuthWrapper from '../auth/AuthWrapper.jsx';
-import { AuthProvider } from '../auth/AuthContext';
 
 const googleClientId = import.meta.env.GOOGLE_CLIENT_ID;
 
@@ -29,12 +27,10 @@ const { title } = Astro.props;
 	</head>
 	
 	<body>
-		<AuthProvider client:only="react">
-			<Header />
-			<div transition:animate="fade" class="slotWrapper">
-				<slot/>
-			</div>
-		</AuthProvider>
+		<Header />
+		<div transition:animate="fade" class="slotWrapper">
+			<slot/>
+		</div>
 		<ToastProvider client:load/>
 	</body>
 </html>
