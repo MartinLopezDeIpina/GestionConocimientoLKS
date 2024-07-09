@@ -2,7 +2,7 @@ import GoogleSVG from "../components/SVGs/GoogleSVG";
 import {useStore} from '@nanostores/react';
 import {logginClicked} from '../components/nano/authNano';
 
-async function getUserInfoAndCookies(codeResponse) {
+  async function getUserInfoAndCookies(codeResponse) {
   var response = await fetch("http://localhost:5000/google_login", {
     method: "POST",
     credentials: "include",
@@ -18,11 +18,12 @@ const LoginButton = () => {
     const $logginClicked = useStore(logginClicked);
 
     return (
-        <button onClick={() => logginClicked.set(true)}>
+      <div className="divGoogleButtonWrapper">
+        <button className="loginButton" onClick={() => logginClicked.set(true)}>
             <GoogleSVG />
-            <span>Login with Google</span>
+            <span>Iniciar sesión con Google</span>
         </button>
-
+      </div>
     )
 }
 
