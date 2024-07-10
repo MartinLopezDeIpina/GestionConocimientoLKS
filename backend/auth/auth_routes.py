@@ -14,16 +14,15 @@ from models import Usuario, ConocimientoUsuario, NodoArbol
 
 auth_blueprint = Blueprint('auth', __name__)
 
-@auth_blueprint.route('/google_login', methods=['POST', 'OPTIONS'])
+@auth_blueprint.route('/google_login', methods=['POST'])
 def login():
-    request_debug = request
     auth_code = request.get_json()['code']
 
     data = {
         'code': auth_code,
         'client_id': Config.GOOGLE_CLIENT_ID,  # client ID from the credential at google developer console
         'client_secret': Config.GOOGLE_SECRET_KEY,  # client secret from the credential at google developer console
-        'redirect_uri': 'postmessage',
+        'redirect_uri': 'http://localhost:4321/authentication_callback',
         'grant_type': 'authorization_code'
     }
 
