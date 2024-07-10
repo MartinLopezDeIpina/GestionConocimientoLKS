@@ -2,6 +2,7 @@ from datetime import timedelta
 
 import requests
 from flask import Blueprint, jsonify, request
+from flask_cors import CORS
 
 import utils
 from auth.AuthError import AuthError
@@ -13,9 +14,9 @@ from models import Usuario, ConocimientoUsuario, NodoArbol
 
 auth_blueprint = Blueprint('auth', __name__)
 
-
-@auth_blueprint.route('/google_login', methods=['POST'])
+@auth_blueprint.route('/google_login', methods=['POST', 'OPTIONS'])
 def login():
+    request_debug = request
     auth_code = request.get_json()['code']
 
     data = {

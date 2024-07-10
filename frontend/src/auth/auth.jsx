@@ -66,9 +66,12 @@ export default function Auth({}) {
 
   const googleLogin = useGoogleLogin({
     flow: "auth-code",
+    ux_mode: "redirect",
+    redirect_uri: "http://localhost:4321/authentication_callback",
     onSuccess: async (codeResponse) => {
-      let loginDetails = await getUserInfoAndCookies(codeResponse);
-      setLoggedName(loginDetails.user.name);
+    },
+    onError: (error) => {
+      console.log(`error code response: ${error}`);
     }
   });
 
