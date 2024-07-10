@@ -55,7 +55,7 @@ async function logout(){
 
 export default function Auth({}) {
   const [loggedName, setLoggedName] = useState(null);
-  const $logginClicked = useStore(logginClicked)
+  const $logginClicked = useStore(logginClicked);
 
   useEffect(() => {
     if($logginClicked){
@@ -79,22 +79,14 @@ export default function Auth({}) {
   const handleLogout = async () => {
     let response = await logout();
     if(response.ok){
+      localStorage.removeItem('userName');
       setLoggedName(null);
     }
   };
 
   useEffect(() => {
-    async function checkLoggedInStatus() {
-      let response = await getProtected();
-
-      if (response.ok) {
-        let data = await response.json();
-        let userInfo = await getUserInfo(data.logged_in_as);
-        setLoggedName(userInfo.name);
-      }
-    }
-
-    checkLoggedInStatus();
+    const userName = localStorage.getItem('userName');
+    setLoggedName(userName);
   }, []);
 
 

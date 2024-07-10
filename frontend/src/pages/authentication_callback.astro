@@ -2,9 +2,23 @@
 import Layout from '../layouts/Layout.astro';
 import AuthenticationCallbackReact from '../auth/AuthenticationCallbackReact.jsx'
 
+import '../../public/styles/cargarAnimacion.css';
+
 ---
 
 <Layout title="Authentication Callback">
-    <AuthenticationCallbackReact client:only="react"/>
+    <main>
+        <div class='loader'></div>
+        <AuthenticationCallbackReact client:only="react"/>
+    </main>
 </Layout>
+
+<style>
+    main{
+        height: 100%;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
 

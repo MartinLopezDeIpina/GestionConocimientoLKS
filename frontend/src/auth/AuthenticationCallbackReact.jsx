@@ -5,7 +5,7 @@ const AuthenticationCallbackReact = () => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const authCode = params.get('code');
-    console.log(`code: ${authCode}`);
+
     
     fetch('http://localhost:5000/google_login', {
       method: 'POST',
@@ -17,6 +17,7 @@ const AuthenticationCallbackReact = () => {
     })
     .then(response => response.json())
     .then(data => {
+      localStorage.setItem('userName', data.user.name);
       window.location.href = '/home';
     })
     .catch(error => {
