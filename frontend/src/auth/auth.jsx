@@ -5,42 +5,6 @@ import GoogleSVG from "../components/SVGs/GoogleSVG";
 import {useStore} from '@nanostores/react';
 import {logginClicked} from '../components/nano/authNano';
 
-
-async function getUserInfoAndCookies(codeResponse) {
-  var response = await fetch("http://localhost:5000/google_login", {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ code: codeResponse.code }),
-  });
-  return await response.json();
-}
-
-async function getUserInfo(email){
-  var response = await fetch(`http://localhost:5000/get_user_info/${email}`, {
-    method: "GET",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  return await response.json();
-}
-
-async function getProtected() {
-  let response = await fetch("http://localhost:5000/protected", {
-    method: "GET",
-    credentials: "include",
-    mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  return response;
-}
-
 async function logout(){
   let response = await fetch("http://localhost:5000/logout", {
     method: "POST",
@@ -81,6 +45,7 @@ export default function Auth({}) {
     if(response.ok){
       localStorage.removeItem('userName');
       setLoggedName(null);
+      response.redirected(window.location.href = '/login');
     }
   };
 
