@@ -1,0 +1,107 @@
+Licitación para el Desarrollo de una Plataforma de Gestión Integral para Organizaciones Sin Ánimo de Lucro
+
+Referencia de Licitación: LIC-2024-002
+1. Introducción
+
+La Fundación Altruista invita a empresas desarrolladoras de software a presentar propuestas para el desarrollo de una plataforma de gestión integral destinada a mejorar la eficiencia operativa y administrativa de organizaciones sin ánimo de lucro. El presupuesto asignado para este proyecto es de $150,000 USD.
+2. Objetivo del Proyecto
+
+Desarrollar una plataforma multifuncional que permita a las organizaciones sin ánimo de lucro gestionar sus actividades diarias de manera eficiente, incluyendo la gestión de voluntarios, donaciones, eventos, comunicaciones y reportes de impacto.
+3. Alcance del Proyecto
+
+La plataforma deberá incluir, pero no se limitará a, las siguientes características:
+
+    Gestión de Voluntarios
+        Registro y perfiles de voluntarios.
+        Gestión de disponibilidad y asignación de tareas.
+        Seguimiento de horas trabajadas y logros.
+
+    Gestión de Donaciones
+        Registro y seguimiento de donaciones.
+        Integración con pasarelas de pago seguras.
+        Emisión de recibos y certificados de donación.
+        Reportes financieros detallados.
+
+    Gestión de Eventos
+        Planificación y organización de eventos.
+        Registro de asistentes y venta de boletos.
+        Comunicación con participantes y voluntarios.
+        Evaluación post-evento y generación de informes.
+
+    Comunicaciones
+        Herramientas de comunicación interna y externa.
+        Integración con correo electrónico y redes sociales.
+        Creación y envío de boletines informativos.
+        Gestión de campañas de concienciación.
+
+    Reportes y Análisis de Impacto
+        Generación de informes de actividades y resultados.
+        Análisis de datos para medir el impacto de las iniciativas.
+        Visualización de estadísticas clave y KPIs.
+
+    Portal de Usuarios
+        Acceso seguro para administradores, voluntarios y donantes.
+        Perfiles personalizados y dashboards.
+        Herramientas de colaboración y feedback.
+
+4. Requisitos Técnicos
+
+    Compatibilidad: La plataforma debe ser accesible a través de navegadores web modernos y dispositivos móviles.
+    Seguridad: Implementación de las mejores prácticas de seguridad y cumplimiento con normativas de protección de datos.
+    Escalabilidad: Capacidad de manejar un número creciente de usuarios y datos.
+    Integraciones: Integración con sistemas de pago, herramientas de comunicación y redes sociales.
+
+5. Plazos y Entregables
+
+    Duración del Proyecto: 9 meses desde la adjudicación del contrato.
+    Entregables:
+        Documento de especificaciones técnicas y de diseño (primer mes).
+        Prototipo funcional (tercer mes).
+        Versión beta para pruebas internas (sexto mes).
+        Versión final de la plataforma y lanzamiento (noveno mes).
+        Documentación completa y capacitación para el equipo de administración.
+
+6. Presupuesto
+
+El presupuesto máximo asignado para este proyecto es de $150,000 USD. Las propuestas deben incluir una descomposición detallada de costos, incluyendo:
+
+    Costos de desarrollo.
+    Diseño de la interfaz de usuario.
+    Pruebas y aseguramiento de la calidad.
+    Documentación y capacitación.
+    Mantenimiento y soporte inicial.
+
+7. Proceso de Selección
+
+Las propuestas serán evaluadas en base a los siguientes criterios:
+
+    Experiencia y capacidad técnica del proveedor.
+    Calidad del diseño propuesto y usabilidad de la interfaz.
+    Enfoque y metodología de desarrollo.
+    Detalle y realismo del cronograma propuesto.
+    Relación costo-beneficio.
+
+8. Presentación de Propuestas
+
+Las empresas interesadas deben enviar sus propuestas antes del 15 de septiembre de 2024 a la siguiente dirección de correo electrónico: licitaciones@fundacionaltruista.org.
+
+Las propuestas deben incluir:
+
+    Descripción de la empresa y portafolio de proyectos similares.
+    Plan de trabajo detallado.
+    Cronograma de desarrollo.
+    Presupuesto desglosado.
+    Perfiles de los miembros clave del equipo de desarrollo.
+
+9. Contacto
+
+Para consultas adicionales, contactar a:
+
+Nombre: María Gómez
+Correo electrónico: maria.gomez@fundacionaltruista.org
+Teléfono: +1 987 654 321
+
+Esperamos recibir sus propuestas y trabajar juntos en este emocionante proyecto para apoyar a las organizaciones sin ánimo de lucro en su misión de hacer del mundo un lugar mejor.
+
+Fundación Altruista
+Fecha de Emisión: 15 de julio de 2024

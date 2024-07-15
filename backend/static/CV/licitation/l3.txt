@@ -1,0 +1,97 @@
+Licitación para el Desarrollo de un Sistema de Control de Calidad Automatizado en la Línea de Producción
+
+Referencia de Licitación: LIC-2024-004
+1. Introducción
+
+Manufactura Global invita a empresas desarrolladoras de software e integradores de sistemas a presentar propuestas para el desarrollo e implementación de un sistema de control de calidad automatizado en nuestra línea de producción. El presupuesto asignado para este proyecto es de $250,000 USD.
+2. Objetivo del Proyecto
+
+Desarrollar e implementar un sistema que automatice la inspección de calidad de los productos en la línea de producción, utilizando tecnologías de visión artificial y aprendizaje automático para identificar defectos y asegurar el cumplimiento de los estándares de calidad.
+3. Alcance del Proyecto
+
+El sistema deberá incluir, pero no se limitará a, las siguientes características:
+
+    Inspección Automática de Calidad
+        Integración de cámaras de alta resolución y sensores en la línea de producción.
+        Uso de visión artificial para capturar imágenes de los productos en tiempo real.
+        Algoritmos de aprendizaje automático para detectar defectos y anomalías.
+
+    Gestión de Datos y Reportes
+        Recopilación y almacenamiento de datos de inspección.
+        Generación de informes detallados sobre el desempeño de la calidad.
+        Análisis de datos para identificar tendencias y áreas de mejora.
+
+    Interfaz de Usuario
+        Panel de control para supervisores y operadores de línea.
+        Visualización en tiempo real de los resultados de las inspecciones.
+        Herramientas para revisar y gestionar los productos identificados con defectos.
+
+    Integración con Sistemas Existentes
+        Conexión con sistemas ERP y MES (Manufacturing Execution Systems) existentes.
+        Automatización de alertas y acciones correctivas en caso de detección de defectos.
+
+    Formación y Soporte
+        Capacitación para el personal en el uso y mantenimiento del sistema.
+        Soporte técnico durante el período de implementación y post-implementación.
+
+4. Requisitos Técnicos
+
+    Compatibilidad: El sistema debe ser compatible con la infraestructura de producción existente.
+    Seguridad: Implementación de medidas de seguridad para proteger los datos de producción.
+    Escalabilidad: Capacidad para adaptarse a diferentes líneas de producción y volúmenes de trabajo.
+    Fiabilidad: Alta precisión en la detección de defectos y baja tasa de falsos positivos.
+
+5. Plazos y Entregables
+
+    Duración del Proyecto: 8 meses desde la adjudicación del contrato.
+    Entregables:
+        Documento de especificaciones técnicas y de diseño (primer mes).
+        Prototipo funcional y pruebas piloto (tercer mes).
+        Implementación completa en la línea de producción (sexto mes).
+        Sistema en funcionamiento y formación del personal (octavo mes).
+        Documentación completa y soporte técnico.
+
+6. Presupuesto
+
+El presupuesto máximo asignado para este proyecto es de $250,000 USD. Las propuestas deben incluir una descomposición detallada de costos, incluyendo:
+
+    Costos de desarrollo e integración.
+    Hardware necesario (cámaras, sensores, etc.).
+    Pruebas y aseguramiento de la calidad.
+    Documentación y formación.
+    Mantenimiento y soporte inicial.
+
+7. Proceso de Selección
+
+Las propuestas serán evaluadas en base a los siguientes criterios:
+
+    Experiencia y capacidad técnica del proveedor.
+    Calidad y precisión de la solución propuesta.
+    Enfoque y metodología de trabajo.
+    Detalle y realismo del cronograma propuesto.
+    Relación costo-beneficio.
+
+8. Presentación de Propuestas
+
+Las empresas interesadas deben enviar sus propuestas antes del 31 de octubre de 2024 a la siguiente dirección de correo electrónico: licitaciones@manufacturaglobal.com.
+
+Las propuestas deben incluir:
+
+    Descripción de la empresa y portafolio de proyectos similares.
+    Plan de trabajo detallado.
+    Cronograma de desarrollo.
+    Presupuesto desglosado.
+    Perfiles de los miembros clave del equipo de trabajo.
+
+9. Contacto
+
+Para consultas adicionales, contactar a:
+
+Nombre: Ana López
+Correo electrónico: ana.lopez@manufacturaglobal.com
+Teléfono: +1 666 789 0123
+
+Esperamos recibir sus propuestas y trabajar juntos en este innovador proyecto para mejorar la calidad de nuestros productos en Manufactura Global.
+
+Manufactura Global
+Fecha de Emisión: 15 de julio de 2024

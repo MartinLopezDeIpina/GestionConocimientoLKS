@@ -1,47 +1,3 @@
-import operator
-from typing import Annotated, Any
-
-import asyncio
-
-from typing_extensions import TypedDict
-
-from langgraph.graph import StateGraph, START, END
-
-from LLM.agents.AgenteCategorizadorProyectos import get_proyect_definer_agetn_run_output
-
-
-class State(TypedDict):
-    licitacion: str
-    requisitos_adicionales: list[str]
-
-    categoria_proyecto: str
-
-
-def invoke_proyect_definer_model(state: State):
-    licitacion = state["licitacion"]
-    requisitos_adicionales = state["requisitos_adicionales"]
-
-    resultado = get_proyect_definer_agetn_run_output(licitacion, requisitos_adicionales)
-    return {"categoria_proyecto": resultado}
-
-
-async def start_licitacion_graph(licitacion, requisitos_adicionales):
-    workflow = StateGraph(State)
-
-    workflow.add_node("proyect_definer_model", invoke_proyect_definer_model)
-
-    workflow.add_edge(START, "proyect_definer_model")
-    workflow.add_edge("proyect_definer_model", END)
-
-    initial_state = State(licitacion=licitacion, requisitos_adicionales=requisitos_adicionales, categoria_proyecto="")
-
-    graph = workflow.compile()
-
-    async for output in graph.astream(initial_state, stream_mode="values"):
-        print(output)
-
-
-licitacion_ejemplo = """
 Licitación para el Desarrollo de una Aplicación Web de Reserva de Tickets de Cine
 
 Referencia de Licitación: LIC-2024-001
@@ -144,12 +100,3 @@ Esperamos recibir sus propuestas y trabajar juntos en este emocionante proyecto 
 
 Cinemas XYZ
 Fecha de Emisión: 15 de julio de 2024
-"""
-
-
-requisitos_adicionales_ejemplo = ["La base de datos debe ser PostgreSQL"]
-
-
-def test_start_licitacion_graph():
-    asyncio.run(start_licitacion_graph(licitacion_ejemplo, requisitos_adicionales_ejemplo))
-
