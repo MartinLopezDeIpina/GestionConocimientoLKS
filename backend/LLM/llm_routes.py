@@ -6,6 +6,7 @@ import utils
 from LLM.DB.chromaTools import chromaTools
 from LLM.DB.modelTools import modelTools
 from LLM.LLMHandler import LLMHandler
+from LLM.LicitacionGraph import test_start_licitacion_graph
 
 llm_blueprint = Blueprint('llm', __name__)
 
@@ -70,4 +71,10 @@ def tavily_search(input_data):
 async def handle_knowledge_metric_reaact(input_data):
     llm = LLMHandler()
     return await llm.handle_knowledge_metric_reaact(input_data)
+
+
+@llm_blueprint.route('test_graph')
+def test_graph():
+    test_start_licitacion_graph()
+    return 'Ejecutado'
 
