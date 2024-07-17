@@ -28,6 +28,8 @@ Los pasos que debes seguir son los siguientes:
 3. Recomienda consultas de búsqueda para investigar información y mejorar tu respuesta de etapas.
 
 Para responder, utiliza la función {function_name}.
+
+Debes pensar paso por paso, piensa y razona cada decisión.
     """
 )
 

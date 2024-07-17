@@ -48,7 +48,7 @@ revise_instructions = PromptTemplate.from_template(
             search_queries:
                 - Cómo desplegar una aplicación web en un servidor
                 - Mejores prácticas para el despliegue de aplicaciones web
-    Explicación del ejemplo: se han juntado varias etapas como ponía en la crítica, y se ha añadido una etapa específica para la base de datos. Se ha consultado la información adicional para mejorar la respuesta. 
+    Explicación del ejemplo : se han juntado varias etapas como ponía en la crítica, y se ha añadido una etapa específica para la base de datos. Se ha consultado la información adicional para mejorar la respuesta. 
     """
 )
 

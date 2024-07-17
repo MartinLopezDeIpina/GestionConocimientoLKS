@@ -510,46 +510,11 @@ Begin!
 
         agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=False, return_intermediate_results=True)
 
-        """async for chunk in agent_executor.astream(
-                {"input": input_skill, "good_examples": good_examples}
-        ):
-
-            # Agent Action
-            if "actions" in chunk:
-                for action in chunk["actions"]:
-                    log += f"Calling Tool: `{action.tool}` with input `{action.tool_input}`\n"
-                    print(f"Calling Tool: `{action.tool}` with input `{action.tool_input}`")
-            # Observation
-            elif "steps" in chunk:
-                for step in chunk["steps"]:
-                    log += f"Tool Result: `{step.observation}`\n"
-                    print(f"Tool Result: `{step.observation}`")
-            # Final result
-            elif "output" in chunk:
-                log += f'Final Output: {chunk["output"]}'
-                print(f'Final Output: {chunk["output"]}')
-            else:
-                raise ValueError()
-            print("---")
-
-        print(log)
-        
-        return 'done'"""
-
-
-
         result = agent_executor.invoke({"input": input_skill})
         result['output'] = result['output'].replace('\n', '')
 
         print(result)
         return result
-
-
-
-
-
-
-
 
 
 def remove_spaces_inside_quotes(text):

@@ -7,6 +7,7 @@ from LLM.DB.chromaTools import chromaTools
 from LLM.DB.modelTools import modelTools
 from LLM.LLMHandler import LLMHandler
 from LLM.LicitacionGraph import test_start_licitacion_graph
+from LLM.agents.stagesCustomReflection.StagesReflectionGraph import start_stages_custom_reflection_graph
 from LLM.agents.stagesReflection.StagesReflectionGraph import start_stages_reflection_graph
 
 llm_blueprint = Blueprint('llm', __name__)
@@ -87,5 +88,16 @@ def test_stage_graph():
     categoria_proyecto = 'Desarrollo de aplicación web'
 
     start_stages_reflection_graph(licitacion, requisitos_adicionales, categoria_proyecto)
+    return 'Ejecutado'
+
+
+@llm_blueprint.route('test_custom_stage_graph')
+def test_custom_stage_graph():
+    file_path = os.path.join(current_app.static_folder, 'licitation', 'l1' + '.txt')
+    licitacion = utils.read_data_from_file(file_path)
+    requisitos_adicionales = []
+    categoria_proyecto = 'Desarrollo de aplicación web'
+
+    start_stages_custom_reflection_graph(licitacion, requisitos_adicionales, categoria_proyecto)
     return 'Ejecutado'
 
