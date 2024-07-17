@@ -11,7 +11,7 @@ revise_instructions = PromptTemplate.from_template(
     """
 Debes generar una crítica para mejorar la siguiente propuesta de etapas para el proyecto: {propuesta_etapas}
     - Sé severo para maximizar la mejora.
-    - Sé específico a la hora de criticar. Evita ambigüedades como 'no abarca todo lo mencionado en la licitación' o 'se deberían combinar algunas etapas'. En su lugar, proporciona detalles específicos sobre qué etapas deberían ser modificadas y por qué.
+    - Sé específico a la hora de criticar, 1 frase por propuesta de cambio. Evita ambigüedades como 'no abarca todo lo mencionado en la licitación' o 'se deberían combinar algunas etapas'. En su lugar, proporciona detalles específicos sobre qué etapas deberían ser modificadas y por qué.
     - Recomienda consultas de búsqueda para investigar información sobre los elementos a mejorary mejorar tu respuesta..
     
 Debes utilizar la siguiente función para generar tu respuesta: {function_name}
@@ -35,7 +35,7 @@ class ReviseAnswer(AnswerQuestion):
 
 def get_revisor(licitacion, requisitos_adicionales, categoria_proyecto, propuesta_etapas, validacion_error):
     instructions = revise_instructions.format(
-        propuesta_etapas=propuesta_etapas,
+        propuesta_etapas=propuesta_etapas.etapas,
         function_name=ReviseAnswer.__name__,
         validacion_error=validacion_error
     )
