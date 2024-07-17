@@ -15,6 +15,7 @@ class State(TypedDict):
     requisitos_adicionales: list[str]
 
     categoria_proyecto: str
+    etapas_proyecto: list[str]
 
 
 def invoke_proyect_definer_model(state: State):
@@ -33,7 +34,8 @@ async def start_licitacion_graph(licitacion, requisitos_adicionales):
     workflow.add_edge(START, "proyect_definer_model")
     workflow.add_edge("proyect_definer_model", END)
 
-    initial_state = State(licitacion=licitacion, requisitos_adicionales=requisitos_adicionales, categoria_proyecto="")
+    initial_state = State(licitacion=licitacion, requisitos_adicionales=requisitos_adicionales, categoria_proyecto=""
+                          , etapas_proyecto=[])
 
     graph = workflow.compile()
 
