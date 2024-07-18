@@ -53,7 +53,7 @@ def revisor_node(state: State):
 
 
 def start_stages_custom_reflection_graph(licitacion, requisitos_adicionales, categoria_proyecto):
-    asyncio.run(start_stages_reflection_graph_async(licitacion, requisitos_adicionales, categoria_proyecto))
+    asyncio.run(invoke_stages_sub_graph_and_get_proposed_stages(licitacion, requisitos_adicionales, categoria_proyecto))
 
 
 def initial_generator_node(state: State):
@@ -79,7 +79,7 @@ def generator_node(state: State):
     return {"propuesta_etapas": propuesta_etapas}
 
 
-async def start_stages_reflection_graph_async(licitacion, requisitos_adicionales, categoria_proyecto):
+def invoke_stages_sub_graph_and_get_proposed_stages(licitacion, requisitos_adicionales, categoria_proyecto):
     builder = StateGraph(State)
 
     builder.add_node("draft", initial_generator_node)
@@ -109,6 +109,10 @@ async def start_stages_reflection_graph_async(licitacion, requisitos_adicionales
         validation_error="",
     )
 
-    async for output in graph.astream(initial_state, stream_mode="values"):
-        print(output)
+    output = graph.invoke(initial_state)
+    etapas_proyecto = output["propuesta_etapas"]
+    etapas = etapas_proyecto.etapas
+
+    return etapas
+
 

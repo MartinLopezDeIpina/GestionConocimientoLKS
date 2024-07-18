@@ -77,7 +77,10 @@ async def handle_knowledge_metric_reaact(input_data):
 
 @llm_blueprint.route('test_graph')
 def test_graph():
-    test_start_licitacion_graph()
+    file_path = os.path.join(current_app.static_folder, 'licitation', 'l2' + '.txt')
+    licitacion = utils.read_data_from_file(file_path)
+    requisitos_adicionales = []
+    test_start_licitacion_graph(licitacion, requisitos_adicionales)
     return 'Ejecutado'
 
 @llm_blueprint.route('test_stage_graph')
