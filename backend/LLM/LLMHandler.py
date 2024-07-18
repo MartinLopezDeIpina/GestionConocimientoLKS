@@ -448,6 +448,7 @@ Thought 11: Based on the results, a worker with Over 10 years of practical exper
         good_examples_prompt = FewShotChatMessagePromptTemplate(
             examples=good_examples,
             example_prompt=good_examples_prompt_template,
+            input_variables=["input", "output"]
         )
 
         good_examples_prompt = good_examples_prompt.format()

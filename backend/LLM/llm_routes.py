@@ -6,7 +6,9 @@ import utils
 from LLM.DB.chromaTools import chromaTools
 from LLM.DB.modelTools import modelTools
 from LLM.LLMHandler import LLMHandler
-from LLM.LicitacionGraph import test_start_licitacion_graph
+from LLM.LicitacionGraph import test_start_licitacion_graph, State
+from LLM.agents.stageRequirementsReact.StageRequirementsReactGraph import RequirementsGraphState, \
+    invoke_requirements_graph
 from LLM.agents.stagesCustomReflection.StagesReflectionGraph import start_stages_custom_reflection_graph
 from LLM.agents.stagesReflection.StagesReflectionGraph import start_stages_reflection_graph
 
@@ -75,6 +77,9 @@ async def handle_knowledge_metric_reaact(input_data):
     return await llm.handle_knowledge_metric_reaact(input_data)
 
 
+# LangGraph #
+
+
 @llm_blueprint.route('test_graph')
 def test_graph():
     file_path = os.path.join(current_app.static_folder, 'licitation', 'l2' + '.txt')
@@ -82,6 +87,7 @@ def test_graph():
     requisitos_adicionales = []
     test_start_licitacion_graph(licitacion, requisitos_adicionales)
     return 'Ejecutado'
+
 
 @llm_blueprint.route('test_stage_graph')
 def test_stage_graph():
@@ -104,3 +110,18 @@ def test_custom_stage_graph():
     start_stages_custom_reflection_graph(licitacion, requisitos_adicionales, categoria_proyecto)
     return 'Ejecutado'
 
+
+@llm_blueprint.route('test_react_requirements_agent')
+def test_react_requirements_agent():
+    file_path = os.path.join(current_app.static_folder, 'licitation', 'l1' + '.txt')
+    licitacion = utils.read_data_from_file(file_path)
+    requisitos_adicionales = []
+    categoria_proyecto = 'Desarrollo de aplicación web'
+    etapas_proyecto = ['Diseño', 'Implementación del backend', 'Implementación del frontend', 'Aseguramiento de calidad', 'Despliegue', 'Mantenimiento']
+    etapa_proyecto = 'Diseño'
+
+    state = State(licitacion=licitacion, requisitos_adicionales=requisitos_adicionales, etapas_proyecto=etapas_proyecto, categoria_proyecto=categoria_proyecto)
+
+    invoke_requirements_graph(state=state, etapa_index=0)
+
+    return 'Ejecutado'
