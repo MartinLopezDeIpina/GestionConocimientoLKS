@@ -118,10 +118,9 @@ def test_react_requirements_agent():
     requisitos_adicionales = []
     categoria_proyecto = 'Desarrollo de aplicación web'
     etapas_proyecto = ['Diseño', 'Implementación del backend', 'Implementación del frontend', 'Aseguramiento de calidad', 'Despliegue', 'Mantenimiento']
-    etapa_proyecto = 'Diseño'
 
     state = State(licitacion=licitacion, requisitos_adicionales=requisitos_adicionales, etapas_proyecto=etapas_proyecto, categoria_proyecto=categoria_proyecto)
 
-    invoke_requirements_graph(state=state, etapa_index=0)
+    invoke_requirements_graph(state=state, etapa_index=2)
 
     return 'Ejecutado'
