@@ -2,6 +2,7 @@ from langchain_core.agents import AgentAction
 from langchain_core.prompts import PromptTemplate, FewShotPromptTemplate
 from langchain_core.tools import tool
 from LLM.LLM_utils import get_model, get_tool_name
+from LLM.agents.stageRequirementsReact.RetryGraph import bind_validator_with_retries
 
 model = get_model()
 
@@ -108,7 +109,8 @@ def get_react_agent(tools):
         ejemplos=ejemplos.format()
     )
     # tool_choice le obliga al LLM a elegir una tool en cada paso
-    model_react = model.bind_tools(tools, tool_choice="any")
+    #model_react = model.bind_tools(tools, tool_choice="any")
+    model_react = bind_validator_with_retries(llm=model, tools=tools, tool_choice="any")
     chain = variables | prompt | model_react
 
     return chain

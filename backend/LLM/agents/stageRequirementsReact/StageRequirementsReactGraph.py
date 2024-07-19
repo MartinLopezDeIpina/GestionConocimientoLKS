@@ -54,7 +54,7 @@ class RequisitosModificados(BaseModel):
 class RequisitosFinal(BaseModel):
     """Respuesta final de la captura de tecnologías"""
     pensamiento: Optional[str] = Field(description="Pensamiento del agente al finalizar la captura de tecnologías")
-    observacion: conlist(str, min_items=2, max_items=5)
+    observacion: conlist(str, min_items=2, max_items=4)
 
 
 tools = [

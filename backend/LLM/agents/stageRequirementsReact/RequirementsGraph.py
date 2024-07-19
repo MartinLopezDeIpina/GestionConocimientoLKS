@@ -35,6 +35,7 @@ class StageResult:
         self.index_etapa = index_etapa
         self.tecnologias = tecnologias
 
+
 def ejecutar_etapas_node(state: RequirementsGraphState):
     etapas = state["main_state"]["etapas_proyecto"]
     #prueba debug
