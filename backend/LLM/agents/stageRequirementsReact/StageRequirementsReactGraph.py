@@ -5,6 +5,7 @@ from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
 from langchain_core.tools import tool
 from langgraph.graph import StateGraph, END
+from pydantic import ValidationError
 from pydantic.v1 import BaseModel, Field, conlist
 from langchain_core.agents import AgentAction
 
@@ -16,7 +17,7 @@ search = TavilySearchAPIWrapper()
 tavily_tool = get_tavily_tool()
 
 
-class RequirementsGraphState(TypedDict):
+class StageRequirementsGraphState(TypedDict):
     main_state: State
 
     etapa_proyecto: str
@@ -72,7 +73,7 @@ tool_str_to_func = {
 }
 
 
-def run_tool(state: RequirementsGraphState):
+def run_tool(state: StageRequirementsGraphState):
     tool_name = state["intermediate_steps"][-1].tool
     tool_args = state["intermediate_steps"][-1].tool_input
     # run tool
@@ -86,6 +87,7 @@ def run_tool(state: RequirementsGraphState):
     if isinstance(out, dict):
         pensamiento = out['pensamiento']
         observacion = out['observacion']
+        state["tecnologias"] = observacion
     else:
         pensamiento = out.pensamiento
         observacion = out.observacion
@@ -102,7 +104,7 @@ def run_tool(state: RequirementsGraphState):
     return {"intermediate_steps": [action_out]}
 
 
-def react_agent_node(state: RequirementsGraphState):
+def react_agent_node(state: StageRequirementsGraphState):
     react_agent = get_react_agent(tools)
 
     out = react_agent.invoke(state)
@@ -120,7 +122,7 @@ def react_agent_node(state: RequirementsGraphState):
     }
 
 
-def router(state: RequirementsGraphState):
+def router(state: StageRequirementsGraphState):
     # return the tool name to use
     if isinstance(state["intermediate_steps"], list):
         return state["intermediate_steps"][-1].tool
@@ -130,14 +132,14 @@ def router(state: RequirementsGraphState):
         return "f__class__.__name__inal_requirements_tool"
 
 
-def invoke_requirements_graph(state: State, etapa_index: int):
-    initial_state = RequirementsGraphState(
+def invoke_requirements_graph_for_stage(state: State, etapa_index: int):
+    initial_state = StageRequirementsGraphState(
         main_state=state,
         etapa_proyecto=state["etapas_proyecto"][etapa_index],
         intermediate_steps=[]
     )
 
-    graph = StateGraph(RequirementsGraphState)
+    graph = StateGraph(StageRequirementsGraphState)
 
     graph.add_node("react_agent", react_agent_node)
     graph.add_node("busqueda_tool", run_tool)
@@ -157,4 +159,5 @@ def invoke_requirements_graph(state: State, etapa_index: int):
     graph.add_edge("RequisitosFinal", END)
 
     runnable = graph.compile()
-    runnable.invoke(initial_state)
+    result = runnable.invoke(initial_state)
+    return result["intermediate_steps"][-1].tool_input["observacion"]

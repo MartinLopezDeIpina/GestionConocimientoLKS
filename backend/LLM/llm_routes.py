@@ -7,8 +7,9 @@ from LLM.DB.chromaTools import chromaTools
 from LLM.DB.modelTools import modelTools
 from LLM.LLMHandler import LLMHandler
 from LLM.LicitacionGraph import test_start_licitacion_graph, State
-from LLM.agents.stageRequirementsReact.StageRequirementsReactGraph import RequirementsGraphState, \
-    invoke_requirements_graph
+from LLM.agents.stageRequirementsReact.RequirementsGraph import invoke_requirements_graph
+from LLM.agents.stageRequirementsReact.StageRequirementsReactGraph import StageRequirementsGraphState, \
+    invoke_requirements_graph_for_stage
 from LLM.agents.stagesCustomReflection.StagesReflectionGraph import start_stages_custom_reflection_graph
 from LLM.agents.stagesReflection.StagesReflectionGraph import start_stages_reflection_graph
 
@@ -121,6 +122,21 @@ def test_react_requirements_agent():
 
     state = State(licitacion=licitacion, requisitos_adicionales=requisitos_adicionales, etapas_proyecto=etapas_proyecto, categoria_proyecto=categoria_proyecto)
 
-    invoke_requirements_graph(state=state, etapa_index=2)
+    invoke_requirements_graph_for_stage(state=state, etapa_index=2)
+
+    return 'Ejecutado'
+
+
+@llm_blueprint.route('test_react_requirements_agent_graph')
+def test_react_requirements_agent_graph():
+    file_path = os.path.join(current_app.static_folder, 'licitation', 'l1' + '.txt')
+    licitacion = utils.read_data_from_file(file_path)
+    requisitos_adicionales = []
+    categoria_proyecto = 'Desarrollo de aplicación web'
+    etapas_proyecto = ['Diseño', 'Implementación del backend', 'Implementación del frontend', 'Aseguramiento de calidad', 'Despliegue', 'Mantenimiento']
+
+    state = State(licitacion=licitacion, requisitos_adicionales=requisitos_adicionales, etapas_proyecto=etapas_proyecto, categoria_proyecto=categoria_proyecto)
+
+    invoke_requirements_graph(state)
 
     return 'Ejecutado'

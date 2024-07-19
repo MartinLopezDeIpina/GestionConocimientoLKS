@@ -37,6 +37,10 @@ def invoke_proyect_stages_subgraph(state: State):
     return {"etapas_proyecto": proposed_steps}
 
 
+def invoke_proyect_tools_subgraph(state: State):
+    pass
+
+
 async def start_licitacion_graph(licitacion, requisitos_adicionales):
     workflow = StateGraph(State)
 
