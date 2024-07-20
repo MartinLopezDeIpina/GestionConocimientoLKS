@@ -5,14 +5,13 @@ from flask import Blueprint, current_app
 import utils
 from LLM.DB.chromaTools import chromaTools
 from LLM.DB.modelTools import modelTools
-from LLM.DatosLicitacion import DatosLicitacion
+from LLM.licitacion_graph.DatosLicitacion import DatosLicitacion
 from LLM.LLMHandler import LLMHandler
-from LLM.LicitacionGraph import test_start_licitacion_graph, State
-from LLM.agents.stageRequirementsReact.RequirementsGraph import invoke_requirements_graph
-from LLM.agents.stageRequirementsReact.StageRequirementsReactGraph import StageRequirementsGraphState, \
-    invoke_requirements_graph_for_stage
-from LLM.agents.stagesCustomReflection.StagesReflectionGraph import start_stages_custom_reflection_graph
-from LLM.agents.stagesReflection.StagesReflectionGraph import start_stages_reflection_graph
+from LLM.licitacion_graph.LicitacionGraph import test_start_licitacion_graph, State
+from LLM.licitacion_graph.subgrafo_definir_requisitos_tecnicos.RequirementsGraph import invoke_requirements_graph
+from LLM.licitacion_graph.subgrafo_definir_requisitos_tecnicos.StageRequirementsReactGraph import invoke_requirements_graph_for_stage
+from LLM.licitacion_graph.subgrafo_definir_etapas.stagesCustomReflection.StagesReflectionGraph import start_stages_custom_reflection_graph
+from LLM.licitacion_graph.subgrafo_definir_etapas.stagesReflection.StagesReflectionGraph import start_stages_reflection_graph
 
 llm_blueprint = Blueprint('llm', __name__)
 
@@ -84,7 +83,7 @@ async def handle_knowledge_metric_reaact(input_data):
 
 @llm_blueprint.route('test_graph')
 def test_graph():
-    file_path = os.path.join(current_app.static_folder, 'licitation', 'l2' + '.txt')
+    file_path = os.path.join(current_app.static_folder, 'licitation', 'l1' + '.txt')
     licitacion = utils.read_data_from_file(file_path)
     requisitos_adicionales = []
     test_start_licitacion_graph(licitacion, requisitos_adicionales)
