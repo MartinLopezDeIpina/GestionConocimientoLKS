@@ -7,8 +7,9 @@ from typing_extensions import TypedDict
 
 from langgraph.graph import StateGraph, START, END
 
-import utils
+from LLM.DatosLicitacion import DatosLicitacion
 from LLM.agents.AgenteCategorizadorProyectos import get_proyect_definer_agetn_run_output
+from LLM.agents.stageRequirementsReact.RequirementsGraph import invoke_requirements_graph, StageResult
 from LLM.agents.stagesCustomReflection.StagesReflectionGraph import invoke_stages_sub_graph_and_get_proposed_stages
 
 
@@ -18,6 +19,7 @@ class State(TypedDict):
 
     categoria_proyecto: str
     etapas_proyecto: list[str]
+    requisitos_etapas: list[StageResult]
 
 
 def invoke_proyect_definer_model(state: State):
@@ -38,7 +40,14 @@ def invoke_proyect_stages_subgraph(state: State):
 
 
 def invoke_proyect_tools_subgraph(state: State):
-    pass
+    datos_licitacion = DatosLicitacion(
+        licitacion=state["licitacion"],
+        requisitos_adicionales=state["requisitos_adicionales"],
+        categoria_proyecto=state["categoria_proyecto"],
+        etapas_proyecto=state["etapas_proyecto"]
+    )
+    steps_results = invoke_requirements_graph(datos_licitacion)
+    return {"requisitos_etapas": steps_results}
 
 
 async def start_licitacion_graph(licitacion, requisitos_adicionales):
@@ -46,13 +55,15 @@ async def start_licitacion_graph(licitacion, requisitos_adicionales):
 
     workflow.add_node("proyect_definer_model", invoke_proyect_definer_model)
     workflow.add_node("proyect_stages_subgraph", invoke_proyect_stages_subgraph)
+    workflow.add_node("proyect_tools_subgraph", invoke_proyect_tools_subgraph)
 
     workflow.add_edge(START, "proyect_definer_model")
     workflow.add_edge("proyect_definer_model", "proyect_stages_subgraph")
-    workflow.add_edge("proyect_stages_subgraph", END)
+    workflow.add_edge("proyect_stages_subgraph", "proyect_tools_subgraph")
+    workflow.add_edge("proyect_tools_subgraph", END)
 
     initial_state = State(licitacion=licitacion, requisitos_adicionales=requisitos_adicionales, categoria_proyecto=""
-                          , etapas_proyecto=[])
+                          , etapas_proyecto=[], requisitos_etapas=[])
 
     graph = workflow.compile()
 

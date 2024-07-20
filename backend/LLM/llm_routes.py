@@ -5,6 +5,7 @@ from flask import Blueprint, current_app
 import utils
 from LLM.DB.chromaTools import chromaTools
 from LLM.DB.modelTools import modelTools
+from LLM.DatosLicitacion import DatosLicitacion
 from LLM.LLMHandler import LLMHandler
 from LLM.LicitacionGraph import test_start_licitacion_graph, State
 from LLM.agents.stageRequirementsReact.RequirementsGraph import invoke_requirements_graph
@@ -135,8 +136,13 @@ def test_react_requirements_agent_graph():
     categoria_proyecto = 'Desarrollo de aplicación web'
     etapas_proyecto = ['Diseño', 'Implementación del backend', 'Implementación del frontend', 'Aseguramiento de calidad', 'Despliegue', 'Mantenimiento']
 
-    state = State(licitacion=licitacion, requisitos_adicionales=requisitos_adicionales, etapas_proyecto=etapas_proyecto, categoria_proyecto=categoria_proyecto)
+    datos_licitacion = DatosLicitacion(
+        licitacion=licitacion,
+        requisitos_adicionales=requisitos_adicionales,
+        categoria_proyecto=categoria_proyecto,
+        etapas_proyecto=etapas_proyecto
+    )
 
-    invoke_requirements_graph(state)
+    invoke_requirements_graph(datos_licitacion)
 
     return 'Ejecutado'

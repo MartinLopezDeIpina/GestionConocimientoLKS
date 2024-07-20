@@ -1,16 +1,12 @@
 import operator
 from typing import TypedDict, Annotated, Optional
-
-from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
 from langchain_core.tools import tool
 from langgraph.graph import StateGraph, END
-from pydantic import ValidationError
 from pydantic.v1 import BaseModel, Field, conlist
 from langchain_core.agents import AgentAction
-
+from LLM.DatosLicitacion import DatosLicitacion
 from LLM.LLM_utils import get_tavily_tool, get_tool_name
-from LLM.LicitacionGraph import State
 from LLM.agents.stageRequirementsReact.ReactAgent import get_react_agent
 
 search = TavilySearchAPIWrapper()
@@ -18,7 +14,7 @@ tavily_tool = get_tavily_tool()
 
 
 class StageRequirementsGraphState(TypedDict):
-    main_state: State
+    datos_licitacion: DatosLicitacion
 
     etapa_proyecto: str
     intermediate_steps: Annotated[list[tuple[AgentAction, str]], operator.add]
@@ -54,7 +50,7 @@ class RequisitosModificados(BaseModel):
 class RequisitosFinal(BaseModel):
     """Respuesta final de la captura de tecnologías"""
     pensamiento: Optional[str] = Field(description="Pensamiento del agente al finalizar la captura de tecnologías")
-    observacion: conlist(str, min_items=2, max_items=4)
+    observacion: conlist(str, min_items=2, max_items=5)
 
 
 tools = [
@@ -132,10 +128,10 @@ def router(state: StageRequirementsGraphState):
         return "f__class__.__name__inal_requirements_tool"
 
 
-def invoke_requirements_graph_for_stage(state: State, etapa_index: int):
+def invoke_requirements_graph_for_stage(datos_licitacion: DatosLicitacion, etapa_index: int):
     initial_state = StageRequirementsGraphState(
-        main_state=state,
-        etapa_proyecto=state["etapas_proyecto"][etapa_index],
+        datos_licitacion=datos_licitacion,
+        etapa_proyecto=datos_licitacion.etapas_proyecto[etapa_index],
         intermediate_steps=[]
     )
 

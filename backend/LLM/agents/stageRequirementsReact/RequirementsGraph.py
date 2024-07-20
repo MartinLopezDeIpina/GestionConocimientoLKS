@@ -1,73 +1,60 @@
-from typing import TypedDict
 import operator
-from typing import TypedDict, Annotated, Optional
-
-from langchain_community.tools.tavily_search import TavilySearchResults
-from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
-from langchain_core.tools import tool
+from typing import TypedDict, Annotated
 from langgraph.constants import Send, START
 from langgraph.graph import StateGraph, END
-from pydantic import ValidationError
-from pydantic.v1 import BaseModel, Field, conlist
-from langchain_core.agents import AgentAction
 
-from LLM.LLM_utils import get_tavily_tool, get_tool_name
-from LLM.LicitacionGraph import State
-from LLM.agents.stageRequirementsReact.ReactAgent import get_react_agent
+from LLM.DatosLicitacion import DatosLicitacion
 from LLM.agents.stageRequirementsReact.StageRequirementsReactGraph import invoke_requirements_graph_for_stage
+from LLM.agents.stageRequirementsReact.StageResult import StageResult
 
 
 class RequirementsGraphState(TypedDict):
-    main_state: State
+    datos_licitacion: DatosLicitacion
     index_etapa: int
-    stages_results: list[str]
+    #operator.add -> cuando se devuelve a la variable del estado, en lugar de reemplazar el valor, se añade a la lista
+    stages_results: Annotated[list, operator.add]
+    sorted_final_results: list[StageResult]
     etapas: list[str]
 
 
 class StageBranchState(TypedDict):
-    main_state: State
+    datos_licitacion: DatosLicitacion
     index_etapa: int
 
 
-class StageResult:
-    def __init__(self, etapa: str, index_etapa: int, tecnologias: list[str]):
-        self.etapa = etapa
-        self.index_etapa = index_etapa
-        self.tecnologias = tecnologias
-
-
 def ejecutar_etapas_node(state: RequirementsGraphState):
-    etapas = state["main_state"]["etapas_proyecto"]
-    #prueba debug
+    etapas = state["datos_licitacion"].etapas_proyecto
     return {"etapas": etapas}
 
 
 def continue_to_etapas(state: RequirementsGraphState):
-    etapas = state["main_state"]["etapas_proyecto"]
+    etapas = state["etapas"]
 
-    return [Send("ejecutar_etapa", {"main_state": state["main_state"], "index_etapa": index}) for index, etapa in enumerate(etapas)]
+    return [Send("ejecutar_etapa", {"datos_licitacion": state["datos_licitacion"], "index_etapa": index}) for index, etapa in enumerate(etapas)]
 
 
 def ejecutar_etapa(state: StageBranchState):
     index_etapa = state["index_etapa"]
-    nombre_etapa = state["main_state"]["etapas_proyecto"][index_etapa]
+    nombre_etapa = state["datos_licitacion"].etapas_proyecto[index_etapa]
 
-    result = invoke_requirements_graph_for_stage(state["main_state"], index_etapa)
+    result = invoke_requirements_graph_for_stage(state["datos_licitacion"], index_etapa)
     etapa_result = StageResult(nombre_etapa, index_etapa, result)
 
     return {"stages_results": [etapa_result]}
 
 
 def juntar_etapas(state: RequirementsGraphState):
-    return state["stages_results"]
+    sorted_results = sorted(state["stages_results"], key=lambda x: x.index_etapa)
+    return {"sorted_final_results": sorted_results}
 
 
-def invoke_requirements_graph(state: State):
+def invoke_requirements_graph(datos_licitacion: DatosLicitacion):
     initial_state = RequirementsGraphState(
-        main_state=state,
+        datos_licitacion=datos_licitacion,
         index_etapa=0,
+        etapas=[],
         stages_results=[],
-        etapas=[]
+        sorted_final_results=[]
     )
 
     graph = StateGraph(RequirementsGraphState)
@@ -83,4 +70,10 @@ def invoke_requirements_graph(state: State):
     graph.add_edge("juntar_etapas", END)
 
     runnable = graph.compile()
-    runnable.invoke(initial_state)
+    result = runnable.invoke(initial_state)
+    stages_results = result["sorted_final_results"]
+
+    for stage_result in stages_results:
+        print(stage_result)
+
+    return stages_results

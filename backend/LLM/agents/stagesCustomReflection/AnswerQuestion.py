@@ -1,6 +1,5 @@
 from langchain_core.pydantic_v1 import BaseModel, Field
 
-from LLM.agents.stagesCustomReflection.EtapasProyecto import EtapasProyecto
 from LLM.agents.stagesCustomReflection.Reflection import Reflection
 
 

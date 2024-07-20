@@ -24,7 +24,7 @@ Debes seguir los siguintes pasos:
 
 Usa el siguiente formato: 
 Pensamiento: Siempre debes razonar antes de actuar. 
-Accion: Ejecutar solamente una de las siguientes tools: {tools}  (La tool RequisitosInicial sólo se ejecutará en el primer paso). ATENCION SI NO SE CUMPLE EL FORMATO DE LA TOOL, UN SISTEMA CRITICO FALLARA. 
+Accion: Ejecutar SOLAMENTE UNA de las siguientes tools: {tools}  (La tool RequisitosInicial SOLO se ejecutará en el primer paso, si la captura ya contiene pasos, NO la llames). ATENCION SI NO SE CUMPLE EL FORMATO DE LA TOOL, O SE LLAMA A MÁS DE UNA TOOL, UN SISTEMA CRITICO FALLARA. 
 Observacion: el resultado de la acción tras haberla ejecutado
 ... (Este ciclo Pensamiento-Accion-Observación se repite hasta que el pensamiento decida que no hay más requisitos que agregar, ejecutando así la acción final)
 
@@ -98,10 +98,10 @@ def get_react_agent(tools):
         "agent_scratchpad": lambda x: create_scratchpad(
             intermediate_steps=x["intermediate_steps"]
         ),
-        "licitacion": lambda x: x["main_state"]["licitacion"],
-        "etapas_proyecto": lambda x: x["main_state"]["etapas_proyecto"],
+        "licitacion": lambda x: x["datos_licitacion"].licitacion,
+        "etapas_proyecto": lambda x: x["datos_licitacion"].etapas_proyecto,
         "etapa_proyecto": lambda x: x["etapa_proyecto"],
-        "categoria_proyecto": lambda x: x["main_state"]["categoria_proyecto"],
+        "categoria_proyecto": lambda x: x["datos_licitacion"].categoria_proyecto,
     }
 
     prompt = system_prompt.partial(
@@ -109,7 +109,6 @@ def get_react_agent(tools):
         ejemplos=ejemplos.format()
     )
     # tool_choice le obliga al LLM a elegir una tool en cada paso
-    #model_react = model.bind_tools(tools, tool_choice="any")
     model_react = bind_validator_with_retries(llm=model, tools=tools, tool_choice="any")
     chain = variables | prompt | model_react
 
