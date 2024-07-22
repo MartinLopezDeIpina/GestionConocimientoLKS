@@ -12,6 +12,7 @@ from LLM.licitacion_graph.subgrafo_definir_requisitos_tecnicos.RequirementsGraph
 from LLM.licitacion_graph.subgrafo_definir_requisitos_tecnicos.StageRequirementsReactGraph import invoke_requirements_graph_for_stage
 from LLM.licitacion_graph.subgrafo_definir_etapas.stagesCustomReflection.StagesReflectionGraph import start_stages_custom_reflection_graph
 from LLM.licitacion_graph.subgrafo_definir_etapas.stagesReflection.StagesReflectionGraph import start_stages_reflection_graph
+from LLM.licitacion_graph.subgrafo_definir_conocimientos.LATS_define_kwoledge_graph import invoke_knowledge_graph
 
 llm_blueprint = Blueprint('llm', __name__)
 
@@ -143,5 +144,13 @@ def test_react_requirements_agent_graph():
     )
 
     invoke_requirements_graph(datos_licitacion)
+
+    return 'Ejecutado'
+
+
+@llm_blueprint.route('test_lats_subgraph')
+def test_lats_subgraph():
+    input = 'Hazme una lista de las 10 tecnologías más importantes para un desarrollador web'
+    invoke_knowledge_graph(input)
 
     return 'Ejecutado'
