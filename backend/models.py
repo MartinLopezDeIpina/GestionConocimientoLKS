@@ -1,13 +1,10 @@
 from pgvector.sqlalchemy import Vector
 from sqlalchemy import ForeignKey, PrimaryKeyConstraint, event
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, mapped_column, make_transient_to_detached, Session
+from sqlalchemy.orm import relationship, mapped_column
 from sqlalchemy.orm.attributes import get_history
 
 import utils
 from database import db
-
-Base = declarative_base()
 
 
 class NodoArbol(db.Model):
