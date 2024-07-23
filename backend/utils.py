@@ -1,4 +1,5 @@
 from flask import jsonify
+from langchain_openai import OpenAIEmbeddings
 
 from database import db
 from models import NodoArbol, RelacionesNodo, Usuario, ConocimientoUsuario
@@ -100,13 +101,32 @@ def add_node_to_json(json, nodo, relaciones, nodo_dict):
 
 
 def get_nodos_de_los_que_depende_nodo(nodo):
+    if nodo.nodoID == get_root_node_id():
+        return []
+
     relaciones = RelacionesNodo.query.filter_by(descendente_id=nodo.nodoID).all()
+    relacion = relaciones[len(relaciones) - 1]
     nodos_dependencia = []
-    for relacion in relaciones:
-        nodo_dependencia = NodoArbol.query.filter_by(nodoID=relacion.ascendente_id).first()
-        nodos_dependencia.append(nodo_dependencia)
-        nodos_dependencia.extend(get_nodos_de_los_que_depende_nodo(nodo_dependencia))
+
+    nodo_dependencia = NodoArbol.query.filter_by(nodoID=relacion.ascendente_id).first()
+    nodos_dependencia.append(nodo_dependencia)
+    nodos_dependencia.extend(get_nodos_de_los_que_depende_nodo(nodo_dependencia))
+
     return nodos_dependencia
+
+
+def get_nodos_descendientes_id(nodo_id):
+    acumulador = []
+    nodos_descendientes_id = get_nodos_descendientes_id_recursivo(nodo_id, acumulador)
+    return nodos_descendientes_id
+
+
+def get_nodos_descendientes_id_recursivo(nodo_id, acumulador):
+    relaciones = RelacionesNodo.query.filter_by(ascendente_id=nodo_id).all()
+    for relacion in relaciones:
+        acumulador.append(relacion.descendente_id)
+        get_nodos_descendientes_id_recursivo(relacion.descendente_id, acumulador)
+    return acumulador
 
 
 def create_user_personal_tree_from_json(json, email):
@@ -179,16 +199,10 @@ def get_json_tree_from_unordered_nodes(nodo, nodos, relaciones, json):
     return json
 
 
-def get_nodos_descendientes_id(nodo_id):
-    acumulador = []
-    nodos_descendientes_id = get_nodos_descendientes_id_recursivo(nodo_id, acumulador)
-    return nodos_descendientes_id
+def get_embedding(text):
+    embeddings = OpenAIEmbeddings()
+    return embeddings.embed_query(text)
 
 
-def get_nodos_descendientes_id_recursivo(nodo_id, acumulador):
-    relaciones = RelacionesNodo.query.filter_by(ascendente_id=nodo_id).all()
-    for relacion in relaciones:
-        acumulador.append(relacion.descendente_id)
-        get_nodos_descendientes_id_recursivo(relacion.descendente_id, acumulador)
-    return acumulador
+
 

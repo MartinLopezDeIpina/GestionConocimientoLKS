@@ -92,18 +92,18 @@ def init_routes(app):
 
         tree.create_node(nodos[0].nombre, nodos[0].nodoID)
 
-        add_node_to_tree(tree, nodos[0], relaciones, nodo_dict)
+        add_node_to_treeLib_tree(tree, nodos[0], relaciones, nodo_dict)
 
         print(tree.show(stdout=False, sorting=False))
         tree_str = tree.show(stdout=False, sorting=False)
         return '<pre>' + tree_str + '</pre>'
 
-    def add_node_to_tree(tree, nodo, relaciones, nodo_dict):
+    def add_node_to_treeLib_tree(tree, nodo, relaciones, nodo_dict):
         relaciones_nodo = [relacion for relacion in relaciones if relacion.ascendente_id == nodo.nodoID]
         for relacion in relaciones_nodo:
             descendente = nodo_dict[relacion.descendente_id]
             tree.create_node(descendente.nombre, descendente.nodoID, parent=nodo.nodoID)
-            add_node_to_tree(tree, descendente, relaciones, nodo_dict)
+            add_node_to_treeLib_tree(tree, descendente, relaciones, nodo_dict)
 
     @app.route('/api/json_tree')
     def json_tree():
@@ -111,7 +111,6 @@ def init_routes(app):
 
         tree = utils.get_nodos_json(nodos)
         return jsonify({"tree": [tree]})
-
 
     @app.route('/api/get_llm_json_tree')
     def get_llm_json_tree():
