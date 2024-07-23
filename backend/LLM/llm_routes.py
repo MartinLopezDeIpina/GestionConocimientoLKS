@@ -9,6 +9,8 @@ from LLM.DB.modelTools import modelTools
 from LLM.licitacion_graph.DatosLicitacion import DatosLicitacion
 from LLM.LLMHandler import LLMHandler
 from LLM.licitacion_graph.LicitacionGraph import test_start_licitacion_graph, State
+from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_tecnologias_posibles.CRAG_subgrafo_tecnologias_posibles import \
+    invoke_tecnologias_posibles_graph
 from LLM.licitacion_graph.subgrafo_definir_requisitos_tecnicos.RequirementsGraph import invoke_requirements_graph
 from LLM.licitacion_graph.subgrafo_definir_requisitos_tecnicos.StageRequirementsReactGraph import invoke_requirements_graph_for_stage
 from LLM.licitacion_graph.subgrafo_definir_etapas.stagesCustomReflection.StagesReflectionGraph import start_stages_custom_reflection_graph
@@ -167,5 +169,12 @@ def test_react_requirements_agent_graph():
 def test_lats_subgraph():
     input = 'Hazme una lista de las 10 tecnologías más importantes para un desarrollador web'
     invoke_knowledge_graph(input)
+
+    return 'Ejecutado'
+
+
+@llm_blueprint.route('test_tecnologias_posibles_subgraph/<herramienta_necesaria>')
+def test_tecnologias_posibles_subgraph(herramienta_necesaria):
+    invoke_tecnologias_posibles_graph(herramienta_necesaria)
 
     return 'Ejecutado'
