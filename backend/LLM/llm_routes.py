@@ -1,6 +1,7 @@
 import os
 
-from flask import Blueprint, current_app
+from flask import Blueprint, current_app, jsonify
+from sqlalchemy.orm import session
 
 import utils
 from LLM.DB.chromaTools import chromaTools
@@ -80,6 +81,20 @@ async def handle_knowledge_metric_reaact(input_data):
 
 
 # LangGraph #
+
+
+@llm_blueprint.route('semantic_search/<input_data>')
+def semantic_search(input_data):
+    nodos = utils.nodo_arbol_semantic_search(input_data)
+
+    nodos_dict = dict()
+    for nodo in nodos:
+        nodos_dict[nodo.nodoID] = {
+            'nodoID': nodo.nodoID,
+            'nombre': nodo.nombre,
+            'embedding': nodo.embedding.tolist()}
+
+    return jsonify(nodos_dict)
 
 
 @llm_blueprint.route('test_graph')

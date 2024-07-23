@@ -1,7 +1,7 @@
 from langchain_core.agents import AgentAction
 from langchain_core.prompts import PromptTemplate, FewShotPromptTemplate
-from LLM.utils.LLM_utils import get_model, get_tool_name
-from LLM.utils.RetryGraph_decorator import bind_validator_with_retries
+from LLM.llm_utils.LLM_utils import get_model, get_tool_name
+from LLM.llm_utils.RetryGraph_decorator import bind_validator_with_retries
 
 model = get_model()
 

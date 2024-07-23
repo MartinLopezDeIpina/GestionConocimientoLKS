@@ -8,7 +8,7 @@ from langgraph.prebuilt import ToolExecutor, ToolInvocation
 from collections import defaultdict
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.LATS_tree_model import Node
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.TreeState import TreeState
-from LLM.utils.LLM_utils import get_tavily_tool, get_model
+from LLM.llm_utils.LLM_utils import get_tavily_tool, get_model
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.LATS_reflection import reflection_chain
 from typing import Literal
 from langgraph.graph import END, StateGraph, START

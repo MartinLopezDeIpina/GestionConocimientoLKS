@@ -7,7 +7,7 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_core.runnables import chain as as_runnable
 
-from LLM.utils import LLM_utils
+from LLM.llm_utils import LLM_utils
 
 llm = LLM_utils.get_model()
 

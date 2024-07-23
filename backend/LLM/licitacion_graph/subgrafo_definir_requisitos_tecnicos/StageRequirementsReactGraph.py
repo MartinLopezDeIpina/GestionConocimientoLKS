@@ -6,7 +6,7 @@ from langgraph.graph import StateGraph, END
 from pydantic.v1 import BaseModel, Field, conlist
 from langchain_core.agents import AgentAction
 from LLM.licitacion_graph.DatosLicitacion import DatosLicitacion
-from LLM.utils.LLM_utils import get_tavily_tool, get_tool_name
+from LLM.llm_utils.LLM_utils import get_tavily_tool, get_tool_name
 from LLM.licitacion_graph.subgrafo_definir_requisitos_tecnicos.ReactAgent import get_react_agent
 
 search = TavilySearchAPIWrapper()

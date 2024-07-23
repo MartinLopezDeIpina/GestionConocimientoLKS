@@ -1,5 +1,6 @@
 from flask import jsonify
 from langchain_openai import OpenAIEmbeddings
+from sqlalchemy import select, not_, exists
 
 from database import db
 from models import NodoArbol, RelacionesNodo, Usuario, ConocimientoUsuario
@@ -203,6 +204,22 @@ def get_embedding(text):
     embeddings = OpenAIEmbeddings()
     return embeddings.embed_query(text)
 
+
+# Dado un texto, devuelve los nodos más cercanos en el espacio de embeddings
+# Solo se devuelven los nodos hoja
+# Por ejemplo, si queremos buscar frameworks backend, queremos que nos devuelva Django, Flask, etc.
+def nodo_arbol_semantic_search(search_text):
+    nodos = []
+
+    search_embeddings = get_embedding(search_text)
+    result = db.session.scalars(select(NodoArbol)
+                                .where(not_(exists().where(NodoArbol.nodoID == RelacionesNodo.ascendente_id)))
+                                .order_by(NodoArbol.embedding.l2_distance(search_embeddings)).
+                                limit(10))
+    for nodo in result:
+        nodos.append(nodo)
+
+    return nodos
 
 
 
