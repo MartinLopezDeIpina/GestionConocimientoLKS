@@ -11,11 +11,15 @@ from LLM.LLMHandler import LLMHandler
 from LLM.licitacion_graph.LicitacionGraph import test_start_licitacion_graph, State
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_tecnologias_posibles.CRAG_subgrafo_tecnologias_posibles import \
     invoke_tecnologias_posibles_graph
+from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_tecnologias_posibles.subgrafo_proponer_tecnologia_nuevas.subgrafo_proponer_tecnologias_nuevas import \
+    invoke_subgrafo_proponer_tecnologia_nueva
 from LLM.licitacion_graph.subgrafo_definir_requisitos_tecnicos.RequirementsGraph import invoke_requirements_graph
 from LLM.licitacion_graph.subgrafo_definir_requisitos_tecnicos.StageRequirementsReactGraph import invoke_requirements_graph_for_stage
 from LLM.licitacion_graph.subgrafo_definir_etapas.stagesCustomReflection.StagesReflectionGraph import start_stages_custom_reflection_graph
 from LLM.licitacion_graph.subgrafo_definir_etapas.stagesReflection.StagesReflectionGraph import start_stages_reflection_graph
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.LATS_define_kwoledge_graph import invoke_knowledge_graph
+from database import db
+from models import NodoArbol
 
 llm_blueprint = Blueprint('llm', __name__)
 
@@ -175,6 +179,25 @@ def test_lats_subgraph():
 
 @llm_blueprint.route('test_tecnologias_posibles_subgraph/<herramienta_necesaria>')
 def test_tecnologias_posibles_subgraph(herramienta_necesaria):
-    invoke_tecnologias_posibles_graph(herramienta_necesaria)
+    tecnologias = invoke_tecnologias_posibles_graph(herramienta_necesaria)
 
+    tecnologias_dict = dict()
+    for tecnologia in tecnologias:
+        tecnologias_dict[tecnologia.nodoID] = {
+            'nodoID': tecnologia.nodoID,
+            'nombre': tecnologia.nombre
+        }
+
+    return jsonify(tecnologias_dict)
+
+
+@llm_blueprint.route('test_subgrafo_proponer_tecnologias_nuevas')
+def test_subgrafo_proponer_tecnologias_nuevas():
+    herramienta_necesaria = 'Herramienta de gestión de proyectos'
+    nodo1: NodoArbol = db.session.query(NodoArbol).filter_by(nodoID=40).first()
+    nodo2: NodoArbol = db.session.query(NodoArbol).filter_by(nodoID=37).first()
+    nodo3: NodoArbol = db.session.query(NodoArbol).filter_by(nodoID=45).first()
+    tecnoligas_rechazadas = [nodo1, nodo2, nodo3]
+
+    invoke_subgrafo_proponer_tecnologia_nueva(herramienta_necesaria, tecnoligas_rechazadas)
     return 'Ejecutado'

@@ -1,6 +1,6 @@
 from langchain.globals import set_debug
 from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
-from langchain_openai import ChatOpenAI
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_community.tools.tavily_search import TavilySearchResults
 
 
@@ -21,3 +21,4 @@ def get_tool_name(tool_obj):
         return tool_obj.__name__
     else:
         return tool_obj.name
+

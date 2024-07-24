@@ -2,6 +2,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.pydantic_v1 import BaseModel, Field
 
 from LLM.llm_utils import LLM_utils
+from database import db
 from models import NodoArbol
 
 
@@ -20,6 +21,15 @@ class TecnologiaPuntuadaPydantic(BaseModel):
 class GradeDocumentsPydantic(BaseModel):
     """Puntuación binaria para verificar la validez de las tecnologías recuperados."""
     puntuacion_binaria: list[TecnologiaPuntuadaPydantic] = Field(description="Las tecnologías son una propuesta válida True o False")
+
+    def map_graded_documents_to_passed_node_list(self) -> list[NodoArbol]:
+        nodos = []
+        for documento in self.puntuacion_binaria:
+            if documento.puntuacion:
+                nodo = NodoArbol.query.filter(NodoArbol.nodoID == documento.tecnologia.nodoID).first()
+                nodos.append(nodo)
+
+        return nodos
 
 
 llm = LLM_utils.get_model()
@@ -45,7 +55,8 @@ retrieval_grader = grade_prompt | structured_llm_grader
 def invoke_grader_get_tecnologias_validas(herramienta: str, propuestas: list[NodoArbol]):
     # No añadir el embedding para no pasárselo al LLM
     propuesta_json = [{"nodoID": propuesta.nodoID, "nombre": propuesta.nombre} for propuesta in propuestas]
-
     propuestas_puntuadas = retrieval_grader.invoke({"herramienta": herramienta, "propuestas": propuesta_json})
 
-    return propuestas_puntuadas
+    nodos = propuestas_puntuadas.map_graded_documents_to_passed_node_list()
+
+    return nodos

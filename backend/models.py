@@ -1,3 +1,6 @@
+import json
+from dataclasses import dataclass
+
 from pgvector.sqlalchemy import Vector
 from sqlalchemy import ForeignKey, PrimaryKeyConstraint, event
 from sqlalchemy.orm import relationship, mapped_column
@@ -7,6 +10,8 @@ import utils
 from database import db
 
 
+# dataclass hace que se pueda serializar automáticamente a JSON
+@dataclass
 class NodoArbol(db.Model):
     nodoID = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(250), nullable=False)

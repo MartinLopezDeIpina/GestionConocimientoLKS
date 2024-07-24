@@ -202,7 +202,8 @@ def get_json_tree_from_unordered_nodes(nodo, nodos, relaciones, json):
 
 def get_embedding(text):
     embeddings = OpenAIEmbeddings()
-    return embeddings.embed_query(text)
+    embedded_text = embeddings.embed_query(text)
+    return embedded_text
 
 
 # Dado un texto, devuelve los nodos más cercanos en el espacio de embeddings
