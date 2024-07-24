@@ -5,7 +5,7 @@ from langchain_community.tools.tavily_search import TavilySearchResults
 
 
 def get_model():
-    model = ChatOpenAI(model="gpt-3.5-turbo", temperature=0, verbose=True)
+    model = ChatOpenAI(model="gpt-4o-mini", temperature=0, verbose=True)
     set_debug(True)
     return model
 

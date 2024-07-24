@@ -6,8 +6,9 @@ from langchain_openai import ChatOpenAI
 
 from LLM.licitacion_graph.subgrafo_definir_etapas.stagesCustomReflection.AnswerQuestion import AnswerQuestion
 from LLM.licitacion_graph.subgrafo_definir_etapas.stagesCustomReflection.State import State
+from LLM.llm_utils import LLM_utils
 
-model = ChatOpenAI(model="gpt-3.5-turbo", temperature=0, verbose=True)
+model = LLM_utils.get_model()
 set_debug(True)
 
 

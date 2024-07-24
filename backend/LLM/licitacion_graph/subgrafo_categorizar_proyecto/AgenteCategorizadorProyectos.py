@@ -3,12 +3,14 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_openai import ChatOpenAI
 
+from LLM.llm_utils import LLM_utils
+
 
 class Categoria(BaseModel):
     categoria_proyecto: str = Field(description="categoría del proyecto software")
 
 
-model = ChatOpenAI(model="gpt-3.5-turbo", temperature=0, verbose=True)
+model = LLM_utils.get_model()
 set_debug(False)
 
 prompt_template = PromptTemplate.from_template(

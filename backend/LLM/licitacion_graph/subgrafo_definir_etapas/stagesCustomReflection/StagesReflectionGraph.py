@@ -10,11 +10,11 @@ from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
 
 from LLM.licitacion_graph.subgrafo_definir_etapas.stagesCustomReflection.State import State
+from LLM.llm_utils import LLM_utils
 
 MAX_ITERATIONS = 3
 
-search = TavilySearchAPIWrapper()
-tavily_tool = TavilySearchResults(api_wrapper=search, max_results=5)
+tavily_tool = LLM_utils.get_tavily_tool()
 
 
 def run_queries(search_queries: list[str], **kwargs):

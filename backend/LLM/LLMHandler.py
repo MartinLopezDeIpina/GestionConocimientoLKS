@@ -7,6 +7,7 @@ from pydantic_core import from_json
 import utils
 from LLM.DB.chromaTools import chromaTools
 from LLM.DB.modelTools import modelTools
+from LLM.llm_utils import LLM_utils
 from config import Config
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts.few_shot import FewShotChatMessagePromptTemplate
@@ -24,7 +25,7 @@ import logging
 class LLMHandler:
 
     def __init__(self):
-        self.llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0, verbose=False)
+        self.llm = LLM_utils.get_model()
         set_debug(True)
 
         chroma_tools = chromaTools()
