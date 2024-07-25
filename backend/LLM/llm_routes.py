@@ -10,10 +10,6 @@ from LLM.LLMHandler import LLMHandler
 from LLM.licitacion_graph.LicitacionGraph import test_start_licitacion_graph, State
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subgrafo_generacion_lodo_lats import \
     invoke_tecnologias_posibles_graph_lats
-from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subgrafo_prueba import \
-    invoke_subgrafo_prueba
-from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subgrafo_prueba_herramientas.subgrafo_prueba_herramientas import \
-    invoke_subgrafo_prueba_herramientas
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subgrafo_tecnologias_posibles_herramienta.CRAG_subgrafo_tecnologias_posibles import \
     invoke_tecnologias_posibles_graph
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subgrafo_tecnologias_posibles_herramienta.subgrafo_proponer_tecnologia_nuevas.subgrafo_proponer_tecnologias_nuevas_graph import \
@@ -231,20 +227,6 @@ def test_subgrafo_tecnologias_posibles_generacion_lats():
                                        )
 
     invoke_tecnologias_posibles_graph_lats(datos_licitacion)
-    return 'Ejecutado'
-
-
-
-@llm_blueprint.route('test_subgrafo_prueba')
-def test_subgrafo_prueba():
-    invoke_subgrafo_prueba()
-    return 'Ejecutado'
-
-
-@llm_blueprint.route('test_subgrafo_herramientas_prueba')
-def test_subgrafo_herramientas_prueba():
-    herramientas_necesarias = ['Herramienta de diseño', 'Herramienta de prototipado', 'otra herramienta xd']
-    invoke_subgrafo_prueba_herramientas(herramientas_necesarias)
     return 'Ejecutado'
 
 
