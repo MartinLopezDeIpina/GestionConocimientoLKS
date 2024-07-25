@@ -5,9 +5,9 @@ from langgraph.checkpoint import MemorySaver
 from langgraph.constants import START, END
 from langgraph.graph import StateGraph
 
-from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_tecnologias_posibles.subgrafo_proponer_tecnologia_nuevas.Buscar_nodo_padre_agent import \
+from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subgrafo_tecnologias_posibles_herramienta.subgrafo_proponer_tecnologia_nuevas.Buscar_nodo_padre_agent import \
     invoke_buscar_nodo_padre_agent
-from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_tecnologias_posibles.subgrafo_proponer_tecnologia_nuevas.Proposer_agent import \
+from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subgrafo_tecnologias_posibles_herramienta.subgrafo_proponer_tecnologia_nuevas.Proposer_agent import \
     invoke_proposer_get_tecnologia_propuesta
 from database import db
 from models import NodoArbol, RelacionesNodo
@@ -74,7 +74,6 @@ def invoke_subgrafo_proponer_tecnologia_nueva(herramienta_necesaria: str, tecnol
     workflow.add_node("invoke_buscador_de_padre_agent", invoke_buscador_de_padre_agent)
     workflow.add_node("buscar_nodo_padre", invoke_buscador_de_padre_agent)
     workflow.add_node("anadir_nodo_al_arbol", anadir_nodo_al_arbol)
-
 
     workflow.add_edge(START, "invoke_proposer_agent")
     workflow.add_edge("invoke_proposer_agent", "get_input_humano")

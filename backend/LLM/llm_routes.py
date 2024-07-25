@@ -1,7 +1,6 @@
 import os
 
 from flask import Blueprint, current_app, jsonify
-from sqlalchemy.orm import session
 
 import utils
 from LLM.DB.chromaTools import chromaTools
@@ -9,15 +8,24 @@ from LLM.DB.modelTools import modelTools
 from LLM.licitacion_graph.DatosLicitacion import DatosLicitacion
 from LLM.LLMHandler import LLMHandler
 from LLM.licitacion_graph.LicitacionGraph import test_start_licitacion_graph, State
-from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_tecnologias_posibles.CRAG_subgrafo_tecnologias_posibles import \
+from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subgrafo_generacion_lodo_lats import \
+    invoke_tecnologias_posibles_graph_lats
+from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subgrafo_prueba import \
+    invoke_subgrafo_prueba
+from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subgrafo_prueba_herramientas.subgrafo_prueba_herramientas import \
+    invoke_subgrafo_prueba_herramientas
+from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subgrafo_tecnologias_posibles_herramienta.CRAG_subgrafo_tecnologias_posibles import \
     invoke_tecnologias_posibles_graph
-from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_tecnologias_posibles.subgrafo_proponer_tecnologia_nuevas.subgrafo_proponer_tecnologias_nuevas import \
+from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subgrafo_tecnologias_posibles_herramienta.subgrafo_proponer_tecnologia_nuevas.subgrafo_proponer_tecnologias_nuevas_graph import \
     invoke_subgrafo_proponer_tecnologia_nueva
+from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subrafo_juntar_herramientas_de_etapa import \
+    invoke_subgrafo_juntar_herramientas_de_etapa
 from LLM.licitacion_graph.subgrafo_definir_requisitos_tecnicos.RequirementsGraph import invoke_requirements_graph
 from LLM.licitacion_graph.subgrafo_definir_requisitos_tecnicos.StageRequirementsReactGraph import invoke_requirements_graph_for_stage
 from LLM.licitacion_graph.subgrafo_definir_etapas.stagesCustomReflection.StagesReflectionGraph import start_stages_custom_reflection_graph
 from LLM.licitacion_graph.subgrafo_definir_etapas.stagesReflection.StagesReflectionGraph import start_stages_reflection_graph
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.LATS_define_kwoledge_graph import invoke_knowledge_graph
+from LLM.licitacion_graph.subgrafo_definir_requisitos_tecnicos.StageResult import StageResult
 from database import db
 from models import NodoArbol
 
@@ -201,3 +209,48 @@ def test_subgrafo_proponer_tecnologias_nuevas():
 
     invoke_subgrafo_proponer_tecnologia_nueva(herramienta_necesaria, tecnoligas_rechazadas)
     return 'Ejecutado'
+    
+
+@llm_blueprint.route('test_subgrafo_tecnologias_posibles_generacion_lats')
+def test_subgrafo_tecnologias_posibles_generacion_lats():
+    file_path = os.path.join(current_app.static_folder, 'licitation', 'l1' + '.txt')
+    licitacion = utils.read_data_from_file(file_path)
+    requisitos_adicionales = []
+    categoria_proyecto = 'Desarrollo de aplicación web'
+    etapas_proyecto = ['Diseño', 'Implementación del backend']
+
+    stage_result_diseño = StageResult('Diseño', 0, ['Herramienta de diseño', 'Herramienta de prototipado'])
+    stage_result_backend = StageResult('Implementación del backend', 1, ['Herramienta de gestión de proyectos', 'Herramienta de control de versiones'])
+    stage_results = [stage_result_diseño, stage_result_backend]
+
+    datos_licitacion = DatosLicitacion(licitacion=licitacion,
+                                       requisitos_adicionales=requisitos_adicionales,
+                                       categoria_proyecto=categoria_proyecto,
+                                       etapas_proyecto=etapas_proyecto,
+                                       requisitos_etapas=stage_results
+                                       )
+
+    invoke_tecnologias_posibles_graph_lats(datos_licitacion)
+
+
+
+@llm_blueprint.route('test_subgrafo_prueba')
+def test_subgrafo_prueba():
+    invoke_subgrafo_prueba()
+    return 'Ejecutado'
+
+
+@llm_blueprint.route('test_subgrafo_herramientas_prueba')
+def test_subgrafo_herramientas_prueba():
+    herramientas_necesarias = ['Herramienta de diseño', 'Herramienta de prototipado', 'otra herramienta xd']
+    invoke_subgrafo_prueba_herramientas(herramientas_necesarias)
+    return 'Ejecutado'
+
+
+@llm_blueprint.route('test_subgrafo_juntar_herramientas_de_etapa')
+def test_subgrafo_juntar_herramientas_de_etapa():
+    herramientas_necesarias = ['patatas fritas', 'patatas cocidas', 'almendras garrapiñadas']
+    resultado = invoke_subgrafo_juntar_herramientas_de_etapa(herramientas_necesarias)
+    print(resultado)
+    return 'Ejecutado'
+

@@ -168,3 +168,6 @@ def invoke_knowledge_graph(input_question: str):
         print(best_trajectory[-1].content)
     else:
         print(f"last step: {last_step}")
+
+    # TODO: esto no sé si está bien mirarlo cuando acabes el grafo lats
+    return last_step

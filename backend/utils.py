@@ -1,6 +1,7 @@
 from flask import jsonify
 from langchain_openai import OpenAIEmbeddings
 from sqlalchemy import select, not_, exists
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 from database import db
 from models import NodoArbol, RelacionesNodo, Usuario, ConocimientoUsuario
@@ -213,12 +214,21 @@ def nodo_arbol_semantic_search(search_text):
     nodos = []
 
     search_embeddings = get_embedding(search_text)
-    result = db.session.scalars(select(NodoArbol)
-                                .where(not_(exists().where(NodoArbol.nodoID == RelacionesNodo.ascendente_id)))
-                                .order_by(NodoArbol.embedding.l2_distance(search_embeddings)).
-                                limit(10))
-    for nodo in result:
-        nodos.append(nodo)
+
+    # Crear una sesión para hacer la consulta para poder llamarla desde threads concurrentes
+    Session = scoped_session(sessionmaker(bind=db.engine))
+    session = Session()
+    try:
+        result = session.scalars(select(NodoArbol)
+                                 .where(not_(exists().where(NodoArbol.nodoID == RelacionesNodo.ascendente_id)))
+                                 .order_by(NodoArbol.embedding.l2_distance(search_embeddings)).
+                                 limit(10))
+        result_ids = [nodo.nodoID for nodo in result]
+    finally:
+        Session.remove()
+
+    for nodo_id in result_ids:
+        nodos.append(NodoArbol.query.filter_by(nodoID=nodo_id).first())
 
     return nodos
 
