@@ -219,9 +219,9 @@ def test_subgrafo_tecnologias_posibles_generacion_lats():
     categoria_proyecto = 'Desarrollo de aplicación web'
     etapas_proyecto = ['Diseño', 'Implementación del backend']
 
-    stage_result_diseño = StageResult('Diseño', 0, ['Herramienta de diseño', 'Herramienta de prototipado'])
+    stage_result_diseno = StageResult('Diseño', 0, ['Herramienta de diseño', 'Herramienta de prototipado'])
     stage_result_backend = StageResult('Implementación del backend', 1, ['Herramienta de gestión de proyectos', 'Herramienta de control de versiones'])
-    stage_results = [stage_result_diseño, stage_result_backend]
+    stage_results = [stage_result_diseno, stage_result_backend]
 
     datos_licitacion = DatosLicitacion(licitacion=licitacion,
                                        requisitos_adicionales=requisitos_adicionales,
@@ -231,6 +231,7 @@ def test_subgrafo_tecnologias_posibles_generacion_lats():
                                        )
 
     invoke_tecnologias_posibles_graph_lats(datos_licitacion)
+    return 'Ejecutado'
 
 
 

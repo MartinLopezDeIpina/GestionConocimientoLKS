@@ -8,6 +8,11 @@ from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nod
 from models import NodoArbol
 
 
+class HerramientaJuntoTecnologiasPropuestas(TypedDict):
+    herramienta: str
+    tecnologias: list[NodoArbol]
+
+
 class StateHerramienta(TypedDict):
     herramienta_necesaria: str
     result: list[NodoArbol]
@@ -15,7 +20,7 @@ class StateHerramienta(TypedDict):
 
 class State(TypedDict):
     herramientas_necesarias: list[str]
-    resultados_herramientas: Annotated[list[list[NodoArbol]], operator.add]
+    resultados_herramientas: Annotated[list[HerramientaJuntoTecnologiasPropuestas], operator.add]
 
 
 def invoke_herramientas(state: State):
@@ -30,7 +35,9 @@ def invoke_herramientas(state: State):
 def ejecutar_herramienta(state: StateHerramienta):
     herramienta_necesaria = state["herramienta_necesaria"]
 
-    result = invoke_tecnologias_posibles_graph(herramienta_necesaria)
+    tecnologias = invoke_tecnologias_posibles_graph(herramienta_necesaria)
+
+    result = HerramientaJuntoTecnologiasPropuestas(herramienta=herramienta_necesaria, tecnologias=tecnologias)
 
     return {"resultados_herramientas": [result]}
 
@@ -50,6 +57,7 @@ def invoke_subgrafo_juntar_herramientas_de_etapa(herramientas_necesarias: list[s
 
     graph = workflow.compile()
     result = graph.invoke(initial_state)
+
     return result["resultados_herramientas"]
 
 
