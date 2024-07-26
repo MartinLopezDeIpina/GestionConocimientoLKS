@@ -14,7 +14,6 @@ from models import NodoArbol
 class State(TypedDict):
     datos_licitacion: DatosLicitacion
     requisitos_etapas: Annotated[list[StageResult], operator.add]
-    propuesta_proyecto: PropuestaProyecto
 
 
 class StateEtapa(TypedDict):
@@ -56,7 +55,10 @@ def invoke_agente_selector_tecnologias(state: State):
 
     propuesta_proyecto = invoke_seleccionar_tecnologias(datos_licitacion)
 
-    return {"propuesta_proyecto": propuesta_proyecto}
+    datos_licitacion.set_tecnologias_etapas(propuesta_proyecto)
+
+    return {"datos_licitacion": datos_licitacion}
+
 
 
 def invoke_tecnologias_posibles_graph_lats(datos_licitacion: DatosLicitacion):
@@ -74,11 +76,11 @@ def invoke_tecnologias_posibles_graph_lats(datos_licitacion: DatosLicitacion):
     initial_state = State(
         datos_licitacion=datos_licitacion,
         requisitos_etapas=[],
-        propuesta_proyecto=None
     )
 
     graph = workflow.compile()
     result = graph.invoke(initial_state)
+    print(result)
 
 
 

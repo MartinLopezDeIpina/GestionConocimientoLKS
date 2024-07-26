@@ -1,28 +1,8 @@
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.pydantic_v1 import BaseModel, Field
-
 from LLM.licitacion_graph.DatosLicitacion import DatosLicitacion
-from LLM.licitacion_graph.subgrafo_definir_requisitos_tecnicos.StageResult import StageResult
+from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.clases_para_lats import \
+    PropuestaProyecto
 from LLM.llm_utils import LLM_utils
-from models import NodoArbol
-
-
-class HerramientaJuntoNodoID(BaseModel):
-    """Herramienta necesaria para una etapa de proyecto software junto con el nodo ID de la tecnología escogida"""
-    herramienta: str = Field(description="Herramienta necesaria")
-    nombre_nodo_escogido: str = Field(description="Nombre del nodo de la tecnología escogida")
-    nodo_id_escogido: int = Field(description="Nodo ID de la tecnología escogida")
-
-
-class PropuestaEtapa(BaseModel):
-    """Propuesta de etapa de proyecto software, con sus herramientas necesarias y las tecnologías escogidas"""
-    etapa: str = Field(description="Etapa del proyecto")
-    herramientas_junto_nodo_id_escogido: list[HerramientaJuntoNodoID]
-
-
-class PropuestaProyecto(BaseModel):
-    """Propuesta de proyecto software, con sus etapas y tecnologías necesarias"""
-    etapas_proyecto: list[PropuestaEtapa] = Field(description="Etapas del proyecto")
 
 
 llm = LLM_utils.get_model()
