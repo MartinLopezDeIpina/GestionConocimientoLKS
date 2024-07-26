@@ -2,6 +2,7 @@ import operator
 from typing import TypedDict, Annotated
 from langgraph.constants import START, END, Send
 from langgraph.graph import StateGraph
+from pydantic.v1 import BaseModel
 
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subgrafo_tecnologias_posibles_herramienta.CRAG_subgrafo_tecnologias_posibles import \
     invoke_tecnologias_posibles_graph

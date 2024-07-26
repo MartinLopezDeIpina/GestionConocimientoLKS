@@ -9,3 +9,11 @@ class DatosLicitacion:
         self.categoria_proyecto = categoria_proyecto
         self.etapas_proyecto = etapas_proyecto
         self.requisitos_etapas = requisitos_etapas
+
+    def get_requisitos_etapas_str(self):
+        result = ""
+        for etapa in self.requisitos_etapas:
+            result += f"{etapa.get_final_etapa_str()}\n"
+
+        return result
+

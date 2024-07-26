@@ -8,6 +8,8 @@ from LLM.DB.modelTools import modelTools
 from LLM.licitacion_graph.DatosLicitacion import DatosLicitacion
 from LLM.LLMHandler import LLMHandler
 from LLM.licitacion_graph.LicitacionGraph import test_start_licitacion_graph, State
+from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.agente_selector_tecnologias import \
+    invoke_seleccionar_tecnologias
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subgrafo_generacion_lodo_lats import \
     invoke_tecnologias_posibles_graph_lats
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subgrafo_tecnologias_posibles_herramienta.CRAG_subgrafo_tecnologias_posibles import \
@@ -15,7 +17,7 @@ from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nod
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subgrafo_tecnologias_posibles_herramienta.subgrafo_proponer_tecnologia_nuevas.subgrafo_proponer_tecnologias_nuevas_graph import \
     invoke_subgrafo_proponer_tecnologia_nueva
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subrafo_juntar_herramientas_de_etapa import \
-    invoke_subgrafo_juntar_herramientas_de_etapa
+    invoke_subgrafo_juntar_herramientas_de_etapa, HerramientaJuntoTecnologiasPropuestas
 from LLM.licitacion_graph.subgrafo_definir_requisitos_tecnicos.RequirementsGraph import invoke_requirements_graph
 from LLM.licitacion_graph.subgrafo_definir_requisitos_tecnicos.StageRequirementsReactGraph import invoke_requirements_graph_for_stage
 from LLM.licitacion_graph.subgrafo_definir_etapas.stagesCustomReflection.StagesReflectionGraph import start_stages_custom_reflection_graph
@@ -236,4 +238,44 @@ def test_subgrafo_juntar_herramientas_de_etapa():
     resultado = invoke_subgrafo_juntar_herramientas_de_etapa(herramientas_necesarias)
     print(resultado)
     return 'Ejecutado'
+
+
+@llm_blueprint.route('test_agente_selector_tecnologias')
+def test_agente_selector_tecnologias():
+    file_path = os.path.join(current_app.static_folder, 'licitation', 'l1' + '.txt')
+    licitacion = utils.read_data_from_file(file_path)
+    requisitos_adicionales = []
+    categoria_proyecto = 'Desarrollo de aplicación web'
+    etapas_proyecto = ['Diseño', 'Implementación del Frontend']
+
+    t_figma = NodoArbol.query.filter_by(nombre="Figma").first()
+    t_UML = NodoArbol.query.filter_by(nombre="UML").first()
+    t_react = NodoArbol.query.filter_by(nombre="ReactJS").first()
+    t_angular = NodoArbol.query.filter_by(nombre="Angular").first()
+    t_vue = NodoArbol.query.filter_by(nombre="Vue.js").first()
+
+    stage_result_diseno = StageResult('Diseño',
+                                      0,
+                                      ['Herramienta de diseño',
+                                       'Herramienta de prototipado'],
+                                      [
+                                          HerramientaJuntoTecnologiasPropuestas(herramienta='Herramienta de diseño', tecnologias=[t_figma, t_UML]),
+                                      ]
+                                      )
+    stage_result_frontend = StageResult('Implementación del frontend', 2, ['Framework frontend'],
+                                        [HerramientaJuntoTecnologiasPropuestas(
+                                            herramienta='Framework frontend', tecnologias=[t_react, t_angular, t_vue])])
+    stage_results = [stage_result_diseno, stage_result_frontend]
+
+    datos_licitacion = DatosLicitacion(licitacion=licitacion,
+                                       requisitos_adicionales=requisitos_adicionales,
+                                       categoria_proyecto=categoria_proyecto,
+                                       etapas_proyecto=etapas_proyecto,
+                                       requisitos_etapas=stage_results
+                                       )
+
+    resultado = invoke_seleccionar_tecnologias(datos_licitacion)
+    print(resultado)
+    return 'Ejecutado'
+
 
