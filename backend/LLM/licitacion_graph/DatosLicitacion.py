@@ -15,7 +15,14 @@ class DatosLicitacion:
         self.etapas_proyecto = etapas_proyecto
         self.requisitos_etapas = requisitos_etapas
 
-    def get_requisitos_etapas_str(self):
+    def __str__(self):
+        result = ""
+        result += f"Licitacion: {self.licitacion}\n"
+        result += f"Categoria: {self.categoria_proyecto}\n"
+        result += f"Requisitos adicionales: {self.requisitos_adicionales}\n"
+        result += f"Etapas proyecto: {self.get_requisitos_etapas_str()}\n"
+
+    def get_requisitos_etapas_str(self) -> str:
         result = ""
         for etapa in self.requisitos_etapas:
             result += f"{etapa.get_final_etapa_str()}\n"

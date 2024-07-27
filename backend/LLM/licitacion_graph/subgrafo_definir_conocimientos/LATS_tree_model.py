@@ -83,7 +83,8 @@ class Node:
 
     def get_messages(self, include_reflections: bool = True):
         if include_reflections:
-            return self.messages + [self.reflection.as_message()]
+            combined = self.messages + [self.reflection.as_message()]
+            return combined
         return self.messages
 
     def get_trajectory(self, include_reflections: bool = True) -> list[BaseMessage]:

@@ -60,8 +60,7 @@ def invoke_agente_selector_tecnologias(state: State):
     return {"datos_licitacion": datos_licitacion}
 
 
-
-def invoke_tecnologias_posibles_graph_lats(datos_licitacion: DatosLicitacion):
+def get_lats_generar_candidatos_runnable():
     workflow = StateGraph(State)
 
     workflow.add_node("invoke_cada_herramienta_dentro_de_etapa_crag_subgraph", invoke_cada_herramienta_dentro_de_etapa_crag_subgraph)
@@ -73,14 +72,8 @@ def invoke_tecnologias_posibles_graph_lats(datos_licitacion: DatosLicitacion):
     workflow.add_edge("juntar_etapas", "invoke_agente_selector_tecnologias")
     workflow.add_edge("invoke_agente_selector_tecnologias", END)
 
-    initial_state = State(
-        datos_licitacion=datos_licitacion,
-        requisitos_etapas=[],
-    )
-
     graph = workflow.compile()
-    result = graph.invoke(initial_state)
-    print(result)
+    return graph
 
 
 
