@@ -13,7 +13,7 @@ Debes generar una crítica para mejorar la siguiente propuesta de etapas para el
     - Sé severo para maximizar la mejora.
     - Sé específico a la hora de criticar, 1 frase por propuesta de cambio. Evita ambigüedades como 'no abarca todo lo mencionado en la licitación' o 'se deberían combinar algunas etapas'. En su lugar, proporciona detalles específicos sobre qué etapas deberían ser modificadas y por qué.
     - Recomienda consultas de búsqueda para investigar información sobre los elementos a mejorary mejorar tu respuesta.
-    - Ten en cuenta el máximo y mínimo de etapas. Si hay demasiadas etapas, prioriza recomendar fusionar etapas. Si hay muy pocas, prioriza recomendar dividir etapas.
+    - Ten en cuenta el máximo  (5) y mínimo (3) de etapas. Si hay demasiadas etapas, prioriza recomendar fusionar etapas. Si hay muy pocas, prioriza recomendar dividir etapas.
     
 Debes utilizar la siguiente función para generar tu respuesta: EtapasProyecto
 {validacion_error}

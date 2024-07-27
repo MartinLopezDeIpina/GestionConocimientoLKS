@@ -49,9 +49,16 @@ def invoke_proyect_tools_subgraph(state: State):
 
 
 def invoke_lats_subgrafo_definir_conocimientos(state: State):
-    datos_licitacion = state["datos_licitacion"]
+    datos_licitacion = DatosLicitacion(
+        licitacion=state["licitacion"],
+        requisitos_adicionales=state["requisitos_adicionales"],
+        categoria_proyecto=state["categoria_proyecto"],
+        etapas_proyecto=state["etapas_proyecto"],
+        requisitos_etapas=state["requisitos_etapas"]
+    )
 
     proyecto = invoke_knowledge_graph(datos_licitacion)
+
 
 async def start_licitacion_graph(licitacion, requisitos_adicionales):
     workflow = StateGraph(State)

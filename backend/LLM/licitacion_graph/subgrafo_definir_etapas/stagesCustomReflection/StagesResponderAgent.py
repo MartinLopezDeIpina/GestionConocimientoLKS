@@ -10,7 +10,7 @@ actor_prompt_template = PromptTemplate.from_template(
 Eres un agente especializado en determinar las etapas de un proyecto software categorizado como {categoria_proyecto}.
 Se debe generar una lista de etapas técnicas típicas para un proyecto software de la categoría {categoria_proyecto} a partir de una licitación y requisitos adicionales.
 No serán necesarias etapas de gestión de proyectos como análisis de requisitos o de viabilidad, solo etapas técnicas.
-Las etapas deben ser generales, sin entrar en demasiado detalle, aproximadamente entre 3 y 7 etapas. Si las etapas son más que 6-7 entonces algunas son demasiados esepcíficas. Si son menos de 3-4, entonces algunas son demasiado generales.
+Las etapas deben ser generales, sin entrar en demasiado detalle, aproximadamente entre 3 y 5 etapas. Si las etapas son más que 5 entonces algunas son demasiados esepcíficas. Si son menos de 3, entonces algunas son demasiado generales.
 Por ejemplo, para un proyecto de desarrolo de una aplicación web, las etapas podrían ser: diseño, implementación del backend, implementación del frontend, aseguramiento de calidad, despliegue, mantenimiento. También se podrían incluir etapas relacionadas con el dominio si son necesarias.
 La licitación es la siguiente: \n{licitacion}
 Los requisitos adicionales son: \n{requisitos_adicionales}

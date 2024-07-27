@@ -29,7 +29,8 @@ def generate_initial_response(state: TreeState) -> dict:
     datos_licitacion = state["datos_licitacion"]
     res = candidates_generator.invoke(
         {
-            "datos_licitacion": datos_licitacion
+            "datos_licitacion": datos_licitacion,
+            "mensajes_feedback": []
         })["datos_licitacion"]
     output_messages = [AIMessage(content=res.get_requisitos_etapas_str())]
     reflection = reflection_chain.invoke(
@@ -50,7 +51,7 @@ def generate_initial_response(state: TreeState) -> dict:
 # for a single input to sample actions from the environment
 async def generate_candidates(datos_licitacion: DatosLicitacion, messages: list[BaseMessage], config: RunnableConfig):
     #De default venía a 5
-    n = config["configurable"].get("N", 2)
+    n = config["configurable"].get("N", 5)
 
     tasks = [generate_candidate_async(datos_licitacion, messages) for _ in range(n)]
     candidates = await asyncio.gather(*tasks)
@@ -62,7 +63,8 @@ async def generate_candidate_async(datos_licitacion: DatosLicitacion, messages: 
 
     candidate = candidates_generator.invoke(
         {
-            "datos_licitacion": datos_licitacion
+            "datos_licitacion": datos_licitacion,
+            "mensajes_feedback": messages
         }
     )
     return candidate
@@ -113,7 +115,7 @@ def should_loop(state: TreeState) -> Literal["expand", "__end__"]:
     root = state["root"]
     if root.is_solved:
         return END
-    if root.height > 1:
+    if root.height > 5:
         return END
     return "expand"
 

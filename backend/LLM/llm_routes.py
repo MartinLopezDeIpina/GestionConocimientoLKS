@@ -314,7 +314,6 @@ def test_lats():
                                        )
 
     resultado = invoke_knowledge_graph(datos_licitacion)
-    print(resultado)
     return 'Ejecutado'
 
 

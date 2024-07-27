@@ -1,4 +1,5 @@
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.messages import BaseMessage
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from LLM.licitacion_graph.DatosLicitacion import DatosLicitacion
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.clases_para_lats import \
     PropuestaProyecto
@@ -13,6 +14,9 @@ Eres un agente especializado en seleccionar las tecnologías más adecuadas para
 El proyecto software deriva de una licitación, por lo que ten encuenta los requisitos de la licitación, también pueden haber requisitos adicionales.
 Se te proporcionará una lista de etapas, junto con una lista de herramientas necesarias, a su vez, cada herramienta necesaria tiene una lista de tecnologías posibles.
 Debes seleccionar únicamente una tecnología por cada herramienta necesaria.
+ATENCION: La tecnología seleccionada debe ser parte de la lista proporcionada. Si se selecciona otra tecnología, un sistema crítico fallará. Incluso si en la reflexión
+se mencionan otras tecnologías, sólo puedes seleccionar una de la lista proporcionada.
+
 
 Utiliza el siguiente criterio con el siguiente orden de prioridad: 
 1. Requisitos del proyecto.
@@ -28,25 +32,33 @@ agent_selector_prompt = ChatPromptTemplate.from_messages(
          La licitación: {licitacion}
          Requisitos adicionales: {requisitos_adicionales}
          Lista de etapas junto a las herramientas necesarias y sus tecnologías posibles: {etapas_proyecto}
-            """),
+            """)
     ]
 )
 
-agente_selector_tecnologias = agent_selector_prompt | structured_llm_agente_selector
 
+def invoke_seleccionar_tecnologias(datos_licitacion: DatosLicitacion, mensajes_feedback: list[BaseMessage]):
+    # Copiarlo para poder hacerle apend
+    current_prompt = agent_selector_prompt.copy()
 
-def invoke_seleccionar_tecnologias(datos_licitacion: DatosLicitacion):
     licitacion = datos_licitacion.licitacion
     requisitos_adicionales = datos_licitacion.requisitos_adicionales
     categoria_proyecto = datos_licitacion.categoria_proyecto
-
     requisitos_etapas = datos_licitacion.get_requisitos_etapas_str()
 
-    proyecto = agente_selector_tecnologias.invoke({
+    prompt_dict = {
         "licitacion": licitacion,
         "requisitos_adicionales": requisitos_adicionales,
         "categoria_proyecto": categoria_proyecto,
-        "etapas_proyecto": requisitos_etapas
-    })
+        "etapas_proyecto": requisitos_etapas,
+    }
 
+    # En caso de que el feedback esté vacío (cuando se crea el nodo raíz) no añadir el placeholder
+    if mensajes_feedback:
+        current_prompt.messages.append(MessagesPlaceholder(variable_name="mensajes_feedback"))
+        prompt_dict["mensajes_feedback"] = mensajes_feedback
+
+    current_agent = current_prompt | structured_llm_agente_selector.with_config(run_name="AgentSelector")
+
+    proyecto = current_agent.invoke(prompt_dict)
     return proyecto

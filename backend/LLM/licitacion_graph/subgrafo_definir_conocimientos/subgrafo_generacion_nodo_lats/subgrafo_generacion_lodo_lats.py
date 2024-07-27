@@ -1,5 +1,7 @@
 import operator
 from typing import TypedDict, Annotated
+
+from langchain_core.messages import BaseMessage
 from langgraph.constants import START, Send, END
 from langgraph.graph import StateGraph
 from LLM.licitacion_graph.DatosLicitacion import DatosLicitacion
@@ -14,6 +16,7 @@ from models import NodoArbol
 class State(TypedDict):
     datos_licitacion: DatosLicitacion
     requisitos_etapas: Annotated[list[StageResult], operator.add]
+    mensajes_feedback: list[BaseMessage]
 
 
 class StateEtapa(TypedDict):
@@ -52,8 +55,9 @@ def juntar_etapas(state: State):
 
 def invoke_agente_selector_tecnologias(state: State):
     datos_licitacion = state["datos_licitacion"]
+    mensajes_feedback = state["mensajes_feedback"]
 
-    propuesta_proyecto = invoke_seleccionar_tecnologias(datos_licitacion)
+    propuesta_proyecto = invoke_seleccionar_tecnologias(datos_licitacion, mensajes_feedback)
 
     datos_licitacion.set_tecnologias_etapas(propuesta_proyecto)
 
