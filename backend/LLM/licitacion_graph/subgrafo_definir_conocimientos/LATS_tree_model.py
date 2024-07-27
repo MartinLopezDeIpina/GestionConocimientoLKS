@@ -3,6 +3,8 @@ import math
 from collections import deque
 from typing import Optional
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, ToolMessage
+
+from LLM.licitacion_graph.DatosLicitacion import DatosLicitacion
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.LATS_reflection import Reflection
 
 
@@ -11,6 +13,7 @@ class Node:
         self,
         messages: list[BaseMessage],
         reflection: Reflection,
+        candidate_value: DatosLicitacion,
         parent: Optional[Node] = None,
     ):
         self.messages = messages
@@ -24,6 +27,7 @@ class Node:
         if self._is_solved:
             self._mark_tree_as_solved()
         self.backpropagate(reflection.normalized_score)
+        self.candidate_value = candidate_value
 
     def __repr__(self) -> str:
         return (

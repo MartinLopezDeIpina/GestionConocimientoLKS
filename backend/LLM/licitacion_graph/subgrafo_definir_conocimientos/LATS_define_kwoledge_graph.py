@@ -39,7 +39,7 @@ def generate_initial_response(state: TreeState) -> dict:
             "candidato": output_messages
          }
     )
-    root = Node(output_messages, reflection=reflection)
+    root = Node(output_messages, reflection=reflection, candidate_value=res)
     return {
         **state,
         "root": root,
@@ -64,9 +64,8 @@ async def generate_candidate_async(datos_licitacion: DatosLicitacion, messages: 
         {
             "datos_licitacion": datos_licitacion
         }
-    )["datos_licitacion"]
-    candidate_message = AIMessage(content=candidate.get_requisitos_etapas_str())
-    return candidate_message
+    )
+    return candidate
 
 
 def expand(state: TreeState, config: RunnableConfig):
@@ -78,13 +77,14 @@ def expand(state: TreeState, config: RunnableConfig):
     # Generate N candidates from the single child candidate
     # TODO: Ponerle temperatura al llm para que no devuelva siempre lo mismo aquí.h
     # TODO: No funciona concurrencia
-    new_candidates_messages = asyncio.run(
+    new_candidates = asyncio.run(
         generate_candidates(
             datos_licitacion=datos_licitacion,
             messages=messages,
             config=config,
         )
     )
+    new_candidates_messages = [AIMessage(content=c["datos_licitacion"].get_requisitos_etapas_str()) for c in new_candidates]
 
     # Reflect on each candidate
     # For tasks with external validation, you'd add that here.
@@ -100,13 +100,12 @@ def expand(state: TreeState, config: RunnableConfig):
     )
     # Grow tree
     child_nodes = [
-        Node(cand, parent=best_candidate, reflection=reflection)
-        for cand, reflection in zip(messages, reflections)
+        Node(cand, parent=best_candidate, reflection=reflection, candidate_value=cand_value)
+        for cand, reflection, cand_value in zip(new_candidates_messages, reflections, new_candidates)
     ]
     best_candidate.children.extend(child_nodes)
     # We have already extended the tree directly, so we just return the state
     return state
-
 
 
 def should_loop(state: TreeState) -> Literal["expand", "__end__"]:
@@ -114,7 +113,7 @@ def should_loop(state: TreeState) -> Literal["expand", "__end__"]:
     root = state["root"]
     if root.is_solved:
         return END
-    if root.height > 5:
+    if root.height > 1:
         return END
     return "expand"
 
@@ -146,12 +145,6 @@ def invoke_knowledge_graph(datos_licitacion: DatosLicitacion):
         print("rolled out: ", step_state["root"].height)
         print("---")
 
-    if "expand" in last_step:
-        solution_node = last_step["expand"]["root"].get_best_solution()
-        best_trajectory = solution_node.get_trajectory(include_reflections=False)
-        print(best_trajectory[-1].content)
-    else:
-        print(f"last step: {last_step}")
+    solution_node = last_step["expand"]["root"].get_best_solution()
 
-    # TODO: esto no sé si está bien mirarlo cuando acabes el grafo lats
-    return last_step
+    return solution_node.candidate_value
