@@ -142,15 +142,20 @@ def test_custom_stage_graph():
 
 @llm_blueprint.route('test_react_requirements_agent')
 def test_react_requirements_agent():
+
     file_path = os.path.join(current_app.static_folder, 'licitation', 'l1' + '.txt')
     licitacion = utils.read_data_from_file(file_path)
     requisitos_adicionales = []
     categoria_proyecto = 'Desarrollo de aplicación web'
-    etapas_proyecto = ['Diseño', 'Implementación del backend', 'Implementación del frontend', 'Aseguramiento de calidad', 'Despliegue', 'Mantenimiento']
+    etapas_proyecto = ['Diseño', 'Implementación del Frontend']
 
-    state = State(licitacion=licitacion, requisitos_adicionales=requisitos_adicionales, etapas_proyecto=etapas_proyecto, categoria_proyecto=categoria_proyecto)
+    datos_licitacion = DatosLicitacion(licitacion=licitacion,
+                                       requisitos_adicionales=requisitos_adicionales,
+                                       categoria_proyecto=categoria_proyecto,
+                                       etapas_proyecto=etapas_proyecto
+                                       )
 
-    invoke_requirements_graph_for_stage(state=state, etapa_index=2)
+    resultado = invoke_requirements_graph_for_stage(datos_licitacion, 1)
 
     return 'Ejecutado'
 

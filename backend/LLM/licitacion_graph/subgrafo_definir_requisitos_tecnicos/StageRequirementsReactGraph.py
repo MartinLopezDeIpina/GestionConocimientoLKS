@@ -12,12 +12,16 @@ from LLM.licitacion_graph.subgrafo_definir_requisitos_tecnicos.ReactAgent import
 search = TavilySearchAPIWrapper()
 tavily_tool = get_tavily_tool()
 
+MAX_ITERACIONES = 5
+
 
 class StageRequirementsGraphState(TypedDict):
     datos_licitacion: DatosLicitacion
 
     etapa_proyecto: str
     intermediate_steps: Annotated[list[tuple[AgentAction, str]], operator.add]
+
+    iteraciones: int
 
 
 @tool
@@ -59,7 +63,7 @@ tools = [
     RequisitosModificados,
     RequisitosFinal,
 ]
-
+tools_final = [RequisitosFinal]
 
 tool_str_to_func = {
     "busqueda_tool": busqueda_tool,
@@ -101,7 +105,14 @@ def run_tool(state: StageRequirementsGraphState):
 
 
 def react_agent_node(state: StageRequirementsGraphState):
-    react_agent = get_react_agent(tools)
+    iteraciones = state["iteraciones"]
+    iteraciones += 1
+
+    # En caso de haberse pasado las iteraciones máximas, devolver siempre la llamada del final
+    if iteraciones > MAX_ITERACIONES:
+        react_agent = get_react_agent(tools_final)
+    else:
+        react_agent = get_react_agent(tools)
 
     out = react_agent.invoke(state)
 
@@ -114,7 +125,7 @@ def react_agent_node(state: StageRequirementsGraphState):
     )
 
     return {
-        "intermediate_steps": [action_out]
+        "intermediate_steps": [action_out], "iteraciones": iteraciones
     }
 
 
@@ -132,7 +143,8 @@ def invoke_requirements_graph_for_stage(datos_licitacion: DatosLicitacion, etapa
     initial_state = StageRequirementsGraphState(
         datos_licitacion=datos_licitacion,
         etapa_proyecto=datos_licitacion.etapas_proyecto[etapa_index],
-        intermediate_steps=[]
+        intermediate_steps=[],
+        iteraciones=0
     )
 
     graph = StateGraph(StageRequirementsGraphState)
