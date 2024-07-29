@@ -87,7 +87,9 @@ class Node:
 
     def get_messages(self, include_reflections: bool = True):
         if include_reflections:
-            combined = self.messages + [self.reflection.as_message()]
+            reflection = [self.reflection.as_message()]
+            self_message = self.messages
+            combined = self_message + reflection
             return combined
         return self.messages
 

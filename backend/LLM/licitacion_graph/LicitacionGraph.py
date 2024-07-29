@@ -19,6 +19,8 @@ class State(TypedDict):
     etapas_proyecto: list[str]
     requisitos_etapas: list[StageResult]
 
+    resultado: DatosLicitacion
+
 
 def invoke_proyect_definer_model(state: State):
     licitacion = state["licitacion"]
@@ -58,6 +60,7 @@ def invoke_lats_subgrafo_definir_conocimientos(state: State):
     )
 
     proyecto = invoke_knowledge_graph(datos_licitacion)
+    return {"resultado": proyecto}
 
 
 async def start_licitacion_graph(licitacion, requisitos_adicionales):

@@ -102,7 +102,7 @@ def expand(state: TreeState, config: RunnableConfig):
     )
     # Grow tree
     child_nodes = [
-        Node(cand, parent=best_candidate, reflection=reflection, candidate_value=cand_value)
+        Node([cand], parent=best_candidate, reflection=reflection, candidate_value=cand_value)
         for cand, reflection, cand_value in zip(new_candidates_messages, reflections, new_candidates)
     ]
     best_candidate.children.extend(child_nodes)
@@ -144,9 +144,9 @@ def invoke_knowledge_graph(datos_licitacion: DatosLicitacion):
         last_step = step
         step_name, step_state = next(iter(step.items()))
         print(step_name)
-        print("rolled out: ", step_state["root"].height)
+        #print("rolled out: ", step_state["root"].height)
         print("---")
 
-    solution_node = last_step["expand"]["root"].get_best_solution()
+    solution_node = last_step["root"].get_best_solution()
 
     return solution_node.candidate_value
