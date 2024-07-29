@@ -144,12 +144,15 @@ def invoke_knowledge_graph(datos_licitacion: DatosLicitacion):
         last_step = step
         step_name, step_state = next(iter(step.items()))
         print(step_name)
-        print("rolled out: ", step_state["root"].height)
+        #print("rolled out: ", step_state["root"].height)
         print("---")
 
     if "expand" in last_step:
         solution_node = last_step["expand"]["root"].get_best_solution()
     else:
         solution_node = last_step["root"].get_best_solution()
+
+    datos_licitacion = solution_node.candidate_value
+    print(datos_licitacion.get_requisitos_etapas_str())
 
     return solution_node.candidate_value
