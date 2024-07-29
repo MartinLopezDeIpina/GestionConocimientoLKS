@@ -180,14 +180,6 @@ def test_react_requirements_agent_graph():
     return 'Ejecutado'
 
 
-@llm_blueprint.route('test_lats_subgraph')
-def test_lats_subgraph():
-    input = 'Hazme una lista de las 10 tecnologías más importantes para un desarrollador web'
-    invoke_knowledge_graph(input)
-
-    return 'Ejecutado'
-
-
 @llm_blueprint.route('test_tecnologias_posibles_subgraph/<herramienta_necesaria>')
 def test_tecnologias_posibles_subgraph(herramienta_necesaria):
     tecnologias = invoke_tecnologias_posibles_graph(herramienta_necesaria)
@@ -290,13 +282,20 @@ def test_lats():
     licitacion = utils.read_data_from_file(file_path)
     requisitos_adicionales = []
     categoria_proyecto = 'Desarrollo de aplicación web'
-    etapas_proyecto = ['Diseño', 'Implementación del Frontend']
+    etapas_proyecto = ['Diseño', 'Implementación del Frontend', 'Implementación del backend', 'Despliegue']
 
     t_figma = NodoArbol.query.filter_by(nombre="Figma").first()
     t_UML = NodoArbol.query.filter_by(nombre="UML").first()
     t_react = NodoArbol.query.filter_by(nombre="ReactJS").first()
     t_angular = NodoArbol.query.filter_by(nombre="Angular").first()
     t_vue = NodoArbol.query.filter_by(nombre="Vue.js").first()
+    t_spring = NodoArbol.query.filter_by(nombre="Spring Boot").first()
+    t_node = NodoArbol.query.filter_by(nombre="Node.js").first()
+    t_jsf = NodoArbol.query.filter_by(nombre="JSF").first()
+    t_mysql = NodoArbol.query.filter_by(nombre="MySQL").first()
+    t_mongo = NodoArbol.query.filter_by(nombre="Mongo DB").first()
+    t_docker = NodoArbol.query.filter_by(nombre="Docker").first()
+    t_kubernetes = NodoArbol.query.filter_by(nombre="Kubernetes").first()
 
     stage_result_diseno = StageResult('Diseño',
                                       0,
@@ -304,12 +303,26 @@ def test_lats():
                                        'Herramienta de prototipado'],
                                       [
                                           HerramientaJuntoTecnologiasPropuestas(herramienta='Herramienta de diseño', tecnologias=[t_figma, t_UML]),
+                                          HerramientaJuntoTecnologiasPropuestas(herramienta='Herramienta de prototipado', tecnologias=[t_figma, t_UML])
                                       ]
                                       )
     stage_result_frontend = StageResult('Implementación del frontend', 2, ['Framework frontend'],
                                         [HerramientaJuntoTecnologiasPropuestas(
-                                            herramienta='Framework frontend', tecnologias=[t_react, t_angular, t_vue])])
-    stage_results = [stage_result_diseno, stage_result_frontend]
+                                            herramienta='Framework frontend', tecnologias=[t_react, t_angular, t_vue])
+                                        ])
+    stage_result_backend = StageResult('Implementación del backend', 3, ['Framework backend', 'Base de datos'],
+                                        [
+                                            HerramientaJuntoTecnologiasPropuestas(
+                                             herramienta='Framework backend', tecnologias=[t_spring, t_node, t_jsf]),
+                                            HerramientaJuntoTecnologiasPropuestas(
+                                                herramienta='Base de datos', tecnologias=[t_mysql, t_mongo])
+                                        ])
+    stage_result_despliegue = StageResult('Despliegue', 4, ['Contenedores'],
+                                         [HerramientaJuntoTecnologiasPropuestas(
+                                             herramienta='Contenedores', tecnologias=[t_docker, t_kubernetes])
+                                         ])
+
+    stage_results = [stage_result_diseno, stage_result_frontend, stage_result_backend, stage_result_despliegue]
 
     datos_licitacion = DatosLicitacion(licitacion=licitacion,
                                        requisitos_adicionales=requisitos_adicionales,
