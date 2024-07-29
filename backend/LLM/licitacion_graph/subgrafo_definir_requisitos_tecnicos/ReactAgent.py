@@ -1,19 +1,17 @@
 from langchain_core.agents import AgentAction
-from langchain_core.prompts import PromptTemplate, FewShotPromptTemplate
+from langchain_core.prompts import PromptTemplate, FewShotPromptTemplate, FewShotChatMessagePromptTemplate, \
+    ChatPromptTemplate
 from LLM.llm_utils.LLM_utils import get_model, get_tool_name
 from LLM.llm_utils.RetryGraph_decorator import bind_validator_with_retries
+from LLM.llm_utils.add_modify_messages_to_chatprompttemplate_decorator import get_modified_messages_chat_prompt_template
 
 model = get_model()
 
 
-system_prompt = PromptTemplate.from_template("""
+system_prompt = """
 Eres un experto en la captura de requisitos tecnológicos (herramientas) para proyectos de software de {categoria_proyecto}.
 Debes determinar qué tipo de herramientas serán necesarias para la etapa '{etapa_proyecto}' de un proyecto de software extraído de una licitación.
 El tipo de herramienta será lo más concreto posible, sin especificar la implementación de la tecnología. Por ejemplo, 'Arquitectura de microservicios' es demasiado genral, ya que no podría ser instanciado por ninguna implementación. En su lugar, podrías decir 'Herramienta de orquestación de componentes de microservicios'. Por otro lado, 'Docker' o 'Spring Boot' son ejemplos de herramientas concretas, no de tipos de herramientas.
-
-La licitación es la siguiente: \n\n{licitacion}\n
-Se han identificado las siguintes etapas del proyecto: \n\n{etapas_proyecto}\n
-Tú debes encargarte únicamente de la etapa '{etapa_proyecto}'.
 
 Debes seguir los siguintes pasos: 
 1. Generar una lista de herramientas iniciales. 
@@ -29,15 +27,11 @@ Observacion: el resultado de la acción tras haberla ejecutado
 
 Es muy importante que la cantidad de herramientas iniciales sean AL MENOS 2 y MAXIMO 5. SI SE MANDAN MAS DE 5, UN SISTEMA CRITICO FALLARA.
 
-Aquí tienes algunos ejemplos:
-{ejemplos}
-
 En caso de que la captura de requisitos tecnológicos ya haya comenzado, continúa con el siguiente paso:
 
 Estado de la captura de requisitos tecnológicos:
 {agent_scratchpad}
-""")
-
+"""
 
 ejemplos = [
     {
@@ -57,17 +51,22 @@ ejemplos = [
     }
 ]
 
+user_prompt = """
+La licitación es la siguiente: \n\n{licitacion}\n
+Se han identificado las siguintes etapas del proyecto: \n\n{etapas_proyecto}\n
+Tú debes encargarte únicamente de la etapa '{etapa_proyecto}'.
+"""
+
 
 plantilla_ejemplo = PromptTemplate.from_template("""
 Ejemplo etapa {etapa} en '{categoria}':
 {tecnologias}
 """)
 
-ejemplos = FewShotPromptTemplate(
+
+few_shot_chat_prompt_template = FewShotChatMessagePromptTemplate(
     example_prompt=plantilla_ejemplo,
     examples=ejemplos,
-    input_variables=["etapa", "categoria", "tecnologias"],
-    suffix="..."
 )
 
 
@@ -90,7 +89,7 @@ def get_tools_names(tools):
     return ", ".join(tool_names)
 
 
-def get_react_agent(tools):
+def get_react_agent(tools, mensajes_modificacion):
     tools_names = get_tools_names(tools)
 
     variables = {
@@ -103,13 +102,21 @@ def get_react_agent(tools):
         "categoria_proyecto": lambda x: x["datos_licitacion"].categoria_proyecto,
     }
 
-    prompt = system_prompt.partial(
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", system_prompt),
+            few_shot_chat_prompt_template,
+            ("human", user_prompt),
+        ]
+    )
+    complete_prompt = get_modified_messages_chat_prompt_template(prompt, mensajes_modificacion)
+    complete_prompt = complete_prompt.partial(
         tools=tools_names,
         ejemplos=ejemplos.format()
     )
     # tool_choice le obliga al LLM a elegir una tool en cada paso
     model_react = bind_validator_with_retries(llm=model, tools=tools, tool_choice="any")
-    chain = variables | prompt | model_react
+    chain = variables | complete_prompt | model_react
 
     return chain
 

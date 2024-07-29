@@ -5,6 +5,7 @@ from langchain_core.messages import BaseMessage
 from langgraph.constants import START, Send, END
 from langgraph.graph import StateGraph
 from LLM.licitacion_graph.DatosLicitacion import DatosLicitacion
+from LLM.licitacion_graph.modifier_agent import Modificacion
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.agente_selector_tecnologias import \
     invoke_seleccionar_tecnologias, PropuestaProyecto
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subrafo_juntar_herramientas_de_etapa import \
@@ -18,6 +19,10 @@ class State(TypedDict):
     requisitos_etapas: Annotated[list[StageResult], operator.add]
     mensajes_feedback: list[BaseMessage]
 
+    modificaciones_a_realizar: Modificacion
+    mensajes_modificacion: list[BaseMessage]
+
+
 
 class StateEtapa(TypedDict):
     requisitos_etapa: StageResult
@@ -25,7 +30,14 @@ class StateEtapa(TypedDict):
 
 def invoke_cada_etapa_tecnologias_posibles(state: State):
     datos_licitacion = state["datos_licitacion"]
+    modificaciones_a_realizar = state["modificaciones_a_realizar"]
+
     requisitos_etapas = datos_licitacion.requisitos_etapas
+
+    # En caso de estar modificando, solo se toman las etapas a modificar
+    if modificaciones_a_realizar:
+        indices = modificaciones_a_realizar.index_etapas_a_modificar
+        requisitos_etapas = [requisitos_etapas[i] for i in indices]
 
     return [Send("invoke_cada_herramienta_dentro_de_etapa_crag_subgraph",
                  {
@@ -46,18 +58,25 @@ def invoke_cada_herramienta_dentro_de_etapa_crag_subgraph(state: StateEtapa):
 
 def juntar_etapas(state: State):
     datos_licitacion = state["datos_licitacion"]
+    modificaciones_a_realizar = state["modificaciones_a_realizar"]
 
     sorted_results = sorted(state["requisitos_etapas"], key=lambda x: x.index_etapa, reverse=True)
 
-    datos_licitacion.requisitos_etapas = sorted_results
+    if modificaciones_a_realizar:
+        for result in sorted_results:
+            datos_licitacion.requisitos_etapas[result.index_etapa] = result
+    else:
+        datos_licitacion.requisitos_etapas = sorted_results
+
     return {"datos_licitacion": datos_licitacion}
 
 
 def invoke_agente_selector_tecnologias(state: State):
     datos_licitacion = state["datos_licitacion"]
     mensajes_feedback = state["mensajes_feedback"]
+    mensajes_modificacion = state["mensajes_modificacion"]
 
-    propuesta_proyecto = invoke_seleccionar_tecnologias(datos_licitacion, mensajes_feedback)
+    propuesta_proyecto = invoke_seleccionar_tecnologias(datos_licitacion, mensajes_feedback, mensajes_modificacion)
 
     datos_licitacion.set_tecnologias_etapas(propuesta_proyecto)
 

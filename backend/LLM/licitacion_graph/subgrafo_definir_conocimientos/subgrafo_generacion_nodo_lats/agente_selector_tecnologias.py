@@ -4,7 +4,7 @@ from LLM.licitacion_graph.DatosLicitacion import DatosLicitacion
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.clases_para_lats import \
     PropuestaProyecto
 from LLM.llm_utils import LLM_utils
-
+from LLM.llm_utils.add_modify_messages_to_chatprompttemplate_decorator import get_modified_messages_chat_prompt_template
 
 llm = LLM_utils.get_model()
 structured_llm_agente_selector = llm.with_structured_output(PropuestaProyecto)
@@ -37,7 +37,7 @@ agent_selector_prompt = ChatPromptTemplate.from_messages(
 )
 
 
-def invoke_seleccionar_tecnologias(datos_licitacion: DatosLicitacion, mensajes_feedback: list[BaseMessage]):
+def invoke_seleccionar_tecnologias(datos_licitacion: DatosLicitacion, mensajes_feedback: list[BaseMessage], mensajes_modificacion: list[BaseMessage]):
     # Copiarlo para poder hacerle apend
     current_prompt = agent_selector_prompt.copy()
 
@@ -57,6 +57,8 @@ def invoke_seleccionar_tecnologias(datos_licitacion: DatosLicitacion, mensajes_f
     if mensajes_feedback:
         current_prompt.messages.append(MessagesPlaceholder(variable_name="mensajes_feedback"))
         prompt_dict["mensajes_feedback"] = mensajes_feedback
+
+    current_prompt = get_modified_messages_chat_prompt_template(current_prompt, mensajes_modificacion)
 
     current_agent = current_prompt | structured_llm_agente_selector.with_config(run_name="AgentSelector")
 

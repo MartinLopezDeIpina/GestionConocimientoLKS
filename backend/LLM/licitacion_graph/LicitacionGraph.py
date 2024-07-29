@@ -28,12 +28,13 @@ class State(TypedDict):
 
 def invoke_proyect_definer_model(state: State):
     datos_licitacion = state["datos_licitacion"]
+    mensajes = state["mensajes"]
 
-    categoria_proyecto = get_proyect_definer_agetn_run_output(datos_licitacion)
+    categoria_proyecto = get_proyect_definer_agetn_run_output(datos_licitacion, mensajes)
 
     datos_licitacion.categoria_proyecto = categoria_proyecto
 
-    return {"datos_licitacion": datos_licitacion}
+    return {"datos_licitacion": datos_licitacion, "modificacion_a_realizar": None}
 
 
 def invoke_proyect_stages_subgraph(state: State):
@@ -48,20 +49,21 @@ def invoke_proyect_stages_subgraph(state: State):
 def invoke_proyect_tools_subgraph(state: State):
     datos_licitacion = state["datos_licitacion"]
     modificacion_a_realizar = state["modificacion_a_realizar"]
+    mensajes = state["mensajes"]
 
-    steps_results = invoke_requirements_graph(datos_licitacion, modificacion_a_realizar)
+    datos_licitacion = invoke_requirements_graph(datos_licitacion, modificacion_a_realizar, mensajes)
 
-    datos_licitacion.requisitos_etapas = steps_results
-
-    return {"datos_licitacion": datos_licitacion}
+    return {"datos_licitacion": datos_licitacion, "modificacion_a_realizar": None}
 
 
 def invoke_lats_subgrafo_definir_conocimientos(state: State):
     datos_licitacion = state["datos_licitacion"]
+    modificacion_a_realizar = state["modificacion_a_realizar"]
+    mensajes = state["mensajes"]
 
-    proyecto = invoke_knowledge_graph(datos_licitacion)
+    proyecto = invoke_knowledge_graph(datos_licitacion, modificacion_a_realizar, mensajes)
 
-    return {"datos_licitacion": proyecto}
+    return {"datos_licitacion": proyecto, "modificacion_a_realizar": None}
 
 
 # Para poner el breakpoint delante

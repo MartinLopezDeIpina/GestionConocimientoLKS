@@ -1,6 +1,7 @@
 import operator
 from typing import typeddict, annotated, optional
 from langchain_community.utilities.tavily_search import tavilysearchapiwrapper
+from langchain_core.messages import BaseMessage
 from langchain_core.tools import tool
 from langgraph.graph import stategraph, end
 from pydantic.v1 import basemodel, field, conlist
@@ -22,6 +23,8 @@ class stagerequirementsgraphstate(typeddict):
     intermediate_steps: annotated[list[tuple[agentaction, str]], operator.add]
 
     iteraciones: int
+
+    mensajes_modificacion: list[BaseMessage]
 
 
 @tool
@@ -108,11 +111,12 @@ def react_agent_node(state: stagerequirementsgraphstate):
     iteraciones = state["iteraciones"]
     iteraciones += 1
 
+    mensajes_modificacion = state["mensajes_modificacion"]
     # en caso de haberse pasado las iteraciones máximas, devolver siempre la llamada del final
     if iteraciones > max_iteraciones:
-        react_agent = get_react_agent(tools_final)
+        react_agent = get_react_agent(tools_final, mensajes_modificacion)
     else:
-        react_agent = get_react_agent(tools)
+        react_agent = get_react_agent(tools, mensajes_modificacion)
 
     out = react_agent.invoke(state)
 
@@ -139,12 +143,13 @@ def router(state: stagerequirementsgraphstate):
         return "f__class__.__name__inal_requirements_tool"
 
 
-def invoke_requirements_graph_for_stage(datos_licitacion: datoslicitacion, etapa_index: int):
+def invoke_requirements_graph_for_stage(datos_licitacion: datoslicitacion, etapa_index: int, mensajes_modificacion: list[BaseMessage]):
     initial_state = stagerequirementsgraphstate(
         datos_licitacion=datos_licitacion,
         etapa_proyecto=datos_licitacion.etapas_proyecto[etapa_index],
         intermediate_steps=[],
-        iteraciones=0
+        iteraciones=0,
+        mensajes_modificacion=mensajes_modificacion
     )
 
     graph = stategraph(stagerequirementsgraphstate)

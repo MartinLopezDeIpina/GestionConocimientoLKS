@@ -9,6 +9,7 @@ from langgraph.prebuilt import ToolExecutor, ToolInvocation
 from collections import defaultdict
 
 from LLM.licitacion_graph.DatosLicitacion import DatosLicitacion
+from LLM.licitacion_graph.modifier_agent import Modificacion
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.LATS_tree_model import Node
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.TreeState import TreeState
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subgrafo_generacion_lodo_lats import \
@@ -30,7 +31,9 @@ def generate_initial_response(state: TreeState) -> dict:
     res = candidates_generator.invoke(
         {
             "datos_licitacion": datos_licitacion,
-            "mensajes_feedback": []
+            "mensajes_feedback": [],
+            "modificaciones_a_realizar": state["modificaciones_a_realizar"],
+            "mensajes_modificacion": state["mensajes_modificacion"]
         })["datos_licitacion"]
     output_messages = [AIMessage(content=res.get_requisitos_etapas_str())]
     reflection = reflection_chain.invoke(
@@ -49,22 +52,24 @@ def generate_initial_response(state: TreeState) -> dict:
 
 # This generates N candidate values
 # for a single input to sample actions from the environment
-async def generate_candidates(datos_licitacion: DatosLicitacion, messages: list[BaseMessage], config: RunnableConfig):
+async def generate_candidates(datos_licitacion: DatosLicitacion, messages: list[BaseMessage], config: RunnableConfig, modificaciones_a_realizar: Modificacion = None, mensajes_modificacion: list[BaseMessage] = None):
     #De default venía a 5
     n = config["configurable"].get("N", 5)
 
-    tasks = [generate_candidate_async(datos_licitacion, messages) for _ in range(n)]
+    tasks = [generate_candidate_async(datos_licitacion, messages, modificaciones_a_realizar, mensajes_modificacion) for _ in range(n)]
     candidates = await asyncio.gather(*tasks)
 
     return candidates
 
 
-async def generate_candidate_async(datos_licitacion: DatosLicitacion, messages: list[BaseMessage]):
+async def generate_candidate_async(datos_licitacion: DatosLicitacion, messages: list[BaseMessage], modificaciones_a_realizar: Modificacion = None, mensajes_modificacion: list[BaseMessage] = None):
 
     candidate = candidates_generator.invoke(
         {
             "datos_licitacion": datos_licitacion,
-            "mensajes_feedback": messages
+            "mensajes_feedback": messages,
+            "modificaciones_a_realizar": modificaciones_a_realizar,
+            "mensajes_modificacion": mensajes_modificacion
         }
     )
     return candidate
@@ -84,6 +89,8 @@ def expand(state: TreeState, config: RunnableConfig):
             datos_licitacion=datos_licitacion,
             messages=messages,
             config=config,
+            modificaciones_a_realizar=state["modificaciones_a_realizar"],
+            mensajes_modificacion=state["mensajes_modificacion"]
         )
     )
     new_candidates_messages = [AIMessage(content=c["datos_licitacion"].get_requisitos_etapas_str()) for c in new_candidates]
@@ -120,7 +127,7 @@ def should_loop(state: TreeState) -> Literal["expand", "__end__"]:
     return "expand"
 
 
-def invoke_knowledge_graph(datos_licitacion: DatosLicitacion):
+def invoke_knowledge_graph(datos_licitacion: DatosLicitacion, modificacion_a_realizar: Modificacion, mensajes: list[BaseMessage]):
     builder = StateGraph(TreeState)
     builder.add_node("start", generate_initial_response)
     builder.add_node("expand", expand)
@@ -140,7 +147,11 @@ def invoke_knowledge_graph(datos_licitacion: DatosLicitacion):
     graph = builder.compile()
 
     last_step = None
-    for step in graph.stream({"datos_licitacion": datos_licitacion}):
+    for step in graph.stream({
+        "datos_licitacion": datos_licitacion,
+        "modificaciones_a_realizar": modificacion_a_realizar,
+        "mensajes_modificacion": mensajes
+    }):
         last_step = step
         step_name, step_state = next(iter(step.items()))
         print(step_name)
