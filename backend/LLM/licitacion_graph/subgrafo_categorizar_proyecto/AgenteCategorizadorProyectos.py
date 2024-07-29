@@ -1,5 +1,5 @@
 from langchain.globals import set_debug
-from langchain_core.prompts import PromptTemplate
+from langchain_core.prompts import PromptTemplate, ChatPromptTemplate
 from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_openai import ChatOpenAI
 
@@ -11,10 +11,9 @@ class Categoria(BaseModel):
 
 
 model = LLM_utils.get_model()
-set_debug(False)
+structured_llm_categorizador = model.with_structured_output(Categoria)
 
-prompt_template = PromptTemplate.from_template(
-"""
+system = """
 Eres un agente especializado en la categorización de proyectos de software. Dada una licitación y una lista de requisitos adicionales, debes determinar la categoría del proyecto. El nivel descriptivo de la categoría debe ser lo más específico posible sin mencionar el dominio. Es decir, si la licitación requiere desarrollar una aplicación web para reservar asientos en un cine, 'desarrollo de aplicación web para cine' es demasiado específico, mientras que 'desarrollo de aplicación' es demasiado ambígüo, la categroría correcta sería 'Desarrollo de aplicación web'.
 Algunos proyectos software pueden requerir el desarrollo de un sistema que no se limita a un tipo de aplicación, en cuyo caso, evita categorías específicas y opta por categorías más generales.
 Algunos ejemplos de categorías podrían ser las siguientes, aunque no se limitan a ellas:
@@ -28,18 +27,23 @@ Algunos ejemplos de categorías podrían ser las siguientes, aunque no se limita
     Desarrollo de software personalizado: Proyectos que implican la creación de soluciones de software a medida para necesidades específicas de una organización.
 
 Utiliza esta información para categorizar correctamente el proyecto basado en la licitación y los requisitos adicionales proporcionados.
-
-Licitación: {licitacion}
-Requisitos adicionales: {requisitos_adicionales}
 """
+
+modifier_agent_prompt = ChatPromptTemplate.from_messages(
+    [
+        ("system", system),
+        ("human", "Licitación: {licitacion}\n\nRequisitos adicionales: {requisitos_adicionales}"),
+
+    ]
 )
+
+agente_categorizador = modifier_agent_prompt | structured_llm_categorizador
 
 
 def get_proyect_definer_agetn_run_output(licitacion, requisitos_adicionales):
     requisitos_adicionales = "\n".join(requisitos_adicionales)
 
-    chain = prompt_template | model.with_structured_output(Categoria)
-    result = chain.invoke({"licitacion": licitacion, "requisitos_adicionales": requisitos_adicionales})
+    result = agente_categorizador.invoke({"licitacion": licitacion, "requisitos_adicionales": requisitos_adicionales})
     return result.categoria_proyecto
 
 

@@ -53,6 +53,7 @@ def anadir_nodo_al_arbol(state: State):
     return {"nodo_anadido": nodo_anadido}
 
 
+# Para añadir el breakpoint delante.
 def get_input_humano(state: State):
     pass
 
@@ -117,4 +118,3 @@ def invoke_subgrafo_proponer_tecnologia_nueva(herramienta_necesaria: str, tecnol
         return nodo_anadido
     else:
         return None
-
