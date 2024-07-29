@@ -3,6 +3,7 @@ from langchain_core.prompts import PromptTemplate, ChatPromptTemplate
 from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_openai import ChatOpenAI
 
+from LLM.licitacion_graph.DatosLicitacion import DatosLicitacion
 from LLM.llm_utils import LLM_utils
 
 
@@ -40,7 +41,9 @@ modifier_agent_prompt = ChatPromptTemplate.from_messages(
 agente_categorizador = modifier_agent_prompt | structured_llm_categorizador
 
 
-def get_proyect_definer_agetn_run_output(licitacion, requisitos_adicionales):
+def get_proyect_definer_agetn_run_output(datos_licitacion: DatosLicitacion):
+    licitacion = datos_licitacion.licitacion
+    requisitos_adicionales = datos_licitacion.requisitos_adicionales
     requisitos_adicionales = "\n".join(requisitos_adicionales)
 
     result = agente_categorizador.invoke({"licitacion": licitacion, "requisitos_adicionales": requisitos_adicionales})

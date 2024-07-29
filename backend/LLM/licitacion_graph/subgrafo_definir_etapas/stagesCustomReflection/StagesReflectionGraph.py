@@ -1,6 +1,7 @@
 import asyncio
 from langgraph.graph import END, START, StateGraph
 
+from LLM.licitacion_graph.DatosLicitacion import DatosLicitacion
 from LLM.licitacion_graph.subgrafo_definir_etapas.stagesCustomReflection.AnswerQuestion import AnswerQuestion
 from LLM.licitacion_graph.subgrafo_definir_etapas.stagesCustomReflection.EtapasProyecto import EtapasProyecto
 from LLM.licitacion_graph.subgrafo_definir_etapas.stagesCustomReflection.StagesResponderAgent import get_initial_generador, get_generador
@@ -79,7 +80,10 @@ def generator_node(state: State):
     return {"propuesta_etapas": propuesta_etapas}
 
 
-def invoke_stages_sub_graph_and_get_proposed_stages(licitacion, requisitos_adicionales, categoria_proyecto):
+def invoke_stages_sub_graph_and_get_proposed_stages(datos_licitacion: DatosLicitacion):
+    licitacion = datos_licitacion.licitacion
+    requisitos_adicionales = datos_licitacion.requisitos_adicionales
+    categoria_proyecto = datos_licitacion.categoria_proyecto
     builder = StateGraph(State)
 
     builder.add_node("draft", initial_generator_node)

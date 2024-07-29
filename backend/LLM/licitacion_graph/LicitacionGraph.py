@@ -19,14 +19,7 @@ from LLM.licitacion_graph.subgrafo_definir_etapas.stagesCustomReflection.StagesR
 
 
 class State(TypedDict):
-    licitacion: str
-    requisitos_adicionales: list[str]
-
-    categoria_proyecto: str
-    etapas_proyecto: list[str]
-    requisitos_etapas: list[StageResult]
-
-    resultado: DatosLicitacion
+    datos_licitacion: DatosLicitacion
     proyecto_valido: bool
     feedback: str
     modificacion_a_realizar: Modificacion
@@ -34,51 +27,41 @@ class State(TypedDict):
 
 
 def invoke_proyect_definer_model(state: State):
-    licitacion = state["licitacion"]
-    requisitos_adicionales = state["requisitos_adicionales"]
-    mensajes = state["mensajes"]
+    datos_licitacion = state["datos_licitacion"]
 
-    resultado = get_proyect_definer_agetn_run_output(
-        licitacion=licitacion,
-        requisitos_adicionales=requisitos_adicionales,
-        mensajes=mensajes
-    )
+    categoria_proyecto = get_proyect_definer_agetn_run_output(datos_licitacion)
 
-    return {"categoria_proyecto": resultado, "modificaciones_a_realizar"}
+    datos_licitacion.categoria_proyecto = categoria_proyecto
+
+    return {"datos_licitacion": datos_licitacion}
 
 
 def invoke_proyect_stages_subgraph(state: State):
-    licitacion = state["licitacion"]
-    requisitos_adicionales = state["requisitos_adicionales"]
-    categoria_proyecto = state["categoria_proyecto"]
+    datos_licitacion = state["datos_licitacion"]
 
-    proposed_steps = invoke_stages_sub_graph_and_get_proposed_stages(licitacion, requisitos_adicionales,
-                                                                     categoria_proyecto)
-    return {"etapas_proyecto": proposed_steps}
+    proposed_steps = invoke_stages_sub_graph_and_get_proposed_stages(datos_licitacion)
+
+    datos_licitacion.etapas_proyecto = proposed_steps
+    return {"datos_licitacion": datos_licitacion}
 
 
 def invoke_proyect_tools_subgraph(state: State):
-    datos_licitacion = DatosLicitacion(
-        licitacion=state["licitacion"],
-        requisitos_adicionales=state["requisitos_adicionales"],
-        categoria_proyecto=state["categoria_proyecto"],
-        etapas_proyecto=state["etapas_proyecto"]
-    )
-    steps_results = invoke_requirements_graph(datos_licitacion)
-    return {"requisitos_etapas": steps_results}
+    datos_licitacion = state["datos_licitacion"]
+    modificacion_a_realizar = state["modificacion_a_realizar"]
+
+    steps_results = invoke_requirements_graph(datos_licitacion, modificacion_a_realizar)
+
+    datos_licitacion.requisitos_etapas = steps_results
+
+    return {"datos_licitacion": datos_licitacion}
 
 
 def invoke_lats_subgrafo_definir_conocimientos(state: State):
-    datos_licitacion = DatosLicitacion(
-        licitacion=state["licitacion"],
-        requisitos_adicionales=state["requisitos_adicionales"],
-        categoria_proyecto=state["categoria_proyecto"],
-        etapas_proyecto=state["etapas_proyecto"],
-        requisitos_etapas=state["requisitos_etapas"]
-    )
+    datos_licitacion = state["datos_licitacion"]
 
     proyecto = invoke_knowledge_graph(datos_licitacion)
-    return {"resultado": proyecto}
+
+    return {"datos_licitacion": proyecto}
 
 
 # Para poner el breakpoint delante
@@ -96,11 +79,11 @@ def conditional_proyecto_valido(state: State):
 
 
 def invoke_proyect_modifier_graph(state: State):
-    datos_licitacion = state["resultado"]
+    datos_licitacion = state["datos_licitacion"]
+    requisitos_adicionales = datos_licitacion.requisitos_adicionales
     propuesta_proyecto_str = datos_licitacion.get_requisitos_etapas_str()
     feedback = state["feedback"]
     mensajes = state["mensajes"]
-    requisitos_adicionales = state["requisitos_adicionales"]
 
     mensajes.append(AIMessage(content=propuesta_proyecto_str))
     mensajes.append(HumanMessage(content=feedback))
@@ -110,7 +93,7 @@ def invoke_proyect_modifier_graph(state: State):
     modificacion_a_realizar = invoke_modificar_propuesta(datos_licitacion, feedback)
 
     return {"modificacion_a_realizar": modificacion_a_realizar, "mensajes": mensajes,
-            "requisitos_adicionales": requisitos_adicionales}
+            "datos_licitacion": datos_licitacion}
 
 
 def conditional_modificacion_a_realizar(state: State):
@@ -141,9 +124,19 @@ async def start_licitacion_graph(licitacion, requisitos_adicionales):
     workflow.add_edge("lats_subgrafo_definir_conocimientos", "proyecto_valido")
     workflow.add_conditional_edges("proyecto_valido", conditional_proyecto_valido)
 
-    initial_state = State(licitacion=licitacion, requisitos_adicionales=requisitos_adicionales, categoria_proyecto=""
-                          , etapas_proyecto=[], requisitos_etapas=[], proyecto_valido=False, feedback="",
-                          modificacion_a_realizar=None, mensajes=[], resultado=None)
+    initial_state = State(
+        datos_licitacion=DatosLicitacion(
+            licitacion=licitacion,
+            requisitos_adicionales=requisitos_adicionales,
+            categoria_proyecto="",
+            etapas_proyecto=[],
+            requisitos_etapas=[],
+        ),
+        proyecto_valido=False,
+        feedback="",
+        modificacion_a_realizar=None,
+        mensajes=[],
+    )
 
     memory = MemorySaver()
     thread_id = str(uuid.uuid4())
