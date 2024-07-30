@@ -125,7 +125,7 @@ def react_agent_node(state: StageRequirementsGraphState):
     action_out = AgentAction(
         tool=tool_name,
         tool_input=tool_args,
-        log="tbd"
+        log="TBD"
     )
 
     return {
