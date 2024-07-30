@@ -1,3 +1,4 @@
+from langchain_core.messages import BaseMessage
 from typing_extensions import TypedDict
 
 from LLM.licitacion_graph.DatosLicitacion import DatosLicitacion

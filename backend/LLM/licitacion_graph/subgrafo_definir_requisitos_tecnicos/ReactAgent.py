@@ -1,6 +1,6 @@
 from langchain_core.agents import AgentAction
 from langchain_core.prompts import PromptTemplate, FewShotPromptTemplate, FewShotChatMessagePromptTemplate, \
-    ChatPromptTemplate
+    ChatPromptTemplate, HumanMessagePromptTemplate
 from LLM.llm_utils.LLM_utils import get_model, get_tool_name
 from LLM.llm_utils.RetryGraph_decorator import bind_validator_with_retries
 from LLM.llm_utils.add_modify_messages_to_chatprompttemplate_decorator import get_modified_messages_chat_prompt_template
@@ -58,15 +58,18 @@ Tú debes encargarte únicamente de la etapa '{etapa_proyecto}'.
 """
 
 
-plantilla_ejemplo = PromptTemplate.from_template("""
-Ejemplo etapa {etapa} en '{categoria}':
-{tecnologias}
-""")
+plantilla_ejemplo = ChatPromptTemplate.from_messages([
+    HumanMessagePromptTemplate.from_template(
+        "Ejemplo etapa {etapa} en '{categoria}':\n{tecnologias}"
+    )
+])
 
 
 few_shot_chat_prompt_template = FewShotChatMessagePromptTemplate(
     example_prompt=plantilla_ejemplo,
     examples=ejemplos,
+    # Dejarlo vacío porquqe son variables solo para los ejemplos
+    input_variables=[]
 )
 
 
@@ -74,6 +77,8 @@ def create_scratchpad(intermediate_steps: list[AgentAction]):
     steps = []
     for i, action in enumerate(intermediate_steps):
         if action.log != "TBD":
+            if "observacion" not in action.tool_input:
+                print("problemas_debug")
             steps.append(
                 f"Pensamiento: {action.tool_input['pensamiento']}\n"
                 f"Accion: {action.tool}\n"
@@ -112,7 +117,6 @@ def get_react_agent(tools, mensajes_modificacion):
     complete_prompt = get_modified_messages_chat_prompt_template(prompt, mensajes_modificacion)
     complete_prompt = complete_prompt.partial(
         tools=tools_names,
-        ejemplos=ejemplos.format()
     )
     # tool_choice le obliga al LLM a elegir una tool en cada paso
     model_react = bind_validator_with_retries(llm=model, tools=tools, tool_choice="any")

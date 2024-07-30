@@ -26,6 +26,7 @@ class RequirementsGraphState(TypedDict):
 class StageBranchState(TypedDict):
     datos_licitacion: DatosLicitacion
     index_etapa: int
+    mensajes_modificacion: list[BaseMessage]
 
 
 def ejecutar_etapas_node(state: RequirementsGraphState):
@@ -42,7 +43,7 @@ def ejecutar_etapas_node(state: RequirementsGraphState):
 def continue_to_etapas(state: RequirementsGraphState):
     etapas = state["etapas"]
 
-    return [Send("ejecutar_etapa", {"datos_licitacion": state["datos_licitacion"], "index_etapa": index}) for index, etapa in enumerate(etapas)]
+    return [Send("ejecutar_etapa", {"datos_licitacion": state["datos_licitacion"], "index_etapa": index, "mensajes_modificacion": state["mensajes_modificacion"]}) for index, etapa in enumerate(etapas)]
 
 
 def ejecutar_etapa(state: StageBranchState):

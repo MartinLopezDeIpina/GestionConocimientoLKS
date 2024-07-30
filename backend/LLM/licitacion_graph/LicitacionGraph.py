@@ -116,15 +116,15 @@ async def start_licitacion_graph(licitacion, requisitos_adicionales):
     workflow.add_node("proyect_stages_subgraph", invoke_proyect_stages_subgraph)
     workflow.add_node("proyect_tools_subgraph", invoke_proyect_tools_subgraph)
     workflow.add_node("lats_subgrafo_definir_conocimientos", invoke_lats_subgrafo_definir_conocimientos)
-    workflow.add_node("proyecto_valido", input_humano_proyecto_valido)
+    workflow.add_node("nodo_proyecto_valido", input_humano_proyecto_valido)
     workflow.add_node("invoke_proyect_modifier_graph", invoke_proyect_modifier_graph)
 
     workflow.add_edge(START, "proyect_definer_model")
     workflow.add_edge("proyect_definer_model", "proyect_stages_subgraph")
     workflow.add_edge("proyect_stages_subgraph", "proyect_tools_subgraph")
     workflow.add_edge("proyect_tools_subgraph", "lats_subgrafo_definir_conocimientos")
-    workflow.add_edge("lats_subgrafo_definir_conocimientos", "proyecto_valido")
-    workflow.add_conditional_edges("proyecto_valido", conditional_proyecto_valido)
+    workflow.add_edge("lats_subgrafo_definir_conocimientos", "nodo_proyecto_valido")
+    workflow.add_conditional_edges("nodo_proyecto_valido", conditional_proyecto_valido)
 
     initial_state = State(
         datos_licitacion=DatosLicitacion(
@@ -146,7 +146,7 @@ async def start_licitacion_graph(licitacion, requisitos_adicionales):
         "thread_id": thread_id
     }}
 
-    graph = workflow.compile(checkpointer=memory, interrupt_before=["proyecto_valido"])
+    graph = workflow.compile(checkpointer=memory, interrupt_before=["nodo_proyecto_valido"])
 
     result = None
 
