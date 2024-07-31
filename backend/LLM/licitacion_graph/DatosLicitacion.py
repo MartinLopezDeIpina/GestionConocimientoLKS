@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.clases_para_lats import \
     PropuestaProyecto
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subrafo_juntar_herramientas_de_etapa import \
@@ -6,6 +8,7 @@ from LLM.licitacion_graph.subgrafo_definir_requisitos_tecnicos.StageResult impor
 from models import NodoArbol
 
 
+@dataclass
 class DatosLicitacion:
     def __init__(self, licitacion: str, requisitos_adicionales: list[str], categoria_proyecto: str = "",
                  etapas_proyecto=None, requisitos_etapas: list[StageResult] = None):

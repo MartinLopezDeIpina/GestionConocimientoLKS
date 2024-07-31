@@ -16,7 +16,6 @@ class RequirementsGraphState(TypedDict):
     index_etapa: int
     #operator.add -> cuando se devuelve a la variable del estado, en lugar de reemplazar el valor, se añade a la lista
     stages_results: Annotated[list, operator.add]
-    sorted_final_results: list[StageResult]
     etapas: list[str]
 
     modificacion_a_realizar: Modificacion
@@ -78,7 +77,6 @@ def invoke_requirements_graph(datos_licitacion: DatosLicitacion, modificaciones_
         index_etapa=0,
         etapas=[],
         stages_results=[],
-        sorted_final_results=[],
         modificacion_a_realizar=modificaciones_a_realizar,
         mensajes_modificacion=modification_messages
     )
@@ -97,6 +95,6 @@ def invoke_requirements_graph(datos_licitacion: DatosLicitacion, modificaciones_
 
     runnable = graph.compile()
     result = runnable.invoke(initial_state)
-    datos_licitacion = result["sorted_final_results"]
+    datos_licitacion = result["datos_licitacion"]
 
     return datos_licitacion

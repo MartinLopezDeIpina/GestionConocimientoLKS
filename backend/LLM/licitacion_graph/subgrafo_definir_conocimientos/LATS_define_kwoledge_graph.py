@@ -163,7 +163,4 @@ def invoke_knowledge_graph(datos_licitacion: DatosLicitacion, modificacion_a_rea
     else:
         solution_node = last_step["root"].get_best_solution()
 
-    datos_licitacion = solution_node.candidate_value
-    print(datos_licitacion.get_requisitos_etapas_str())
-
     return solution_node.candidate_value

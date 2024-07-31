@@ -21,7 +21,7 @@ Debes seguir los siguintes pasos:
 
 Usa el siguiente formato: 
 Pensamiento: Siempre debes razonar antes de actuar. 
-Accion: Ejecutar SOLAMENTE UNA de las siguientes tools: {tools}  (La tool RequisitosInicial SOLO se ejecutará en el primer paso, si la captura ya contiene pasos, NO la llames). ATENCION SI NO SE CUMPLE EL FORMATO DE LA TOOL, O SE LLAMA A MÁS DE UNA TOOL, UN SISTEMA CRITICO FALLARA. 
+Accion: Ejecutar SOLAMENTE UNA de las siguientes tools: {tools}  (La tool inicial SOLO se ejecutará en el primer paso, si la captura ya contiene pasos, NO la llames). ATENCION SI NO SE CUMPLE EL FORMATO DE LA TOOL, O SE LLAMA A MÁS DE UNA TOOL, UN SISTEMA CRITICO FALLARA. 
 Observacion: el resultado de la acción tras haberla ejecutado
 ... (Este ciclo Pensamiento-Accion-Observación se repite hasta que el pensamiento decida que no hay más requisitos que agregar, ejecutando así la acción final)
 

@@ -20,7 +20,6 @@ from LLM.licitacion_graph.subgrafo_definir_etapas.stagesCustomReflection.StagesR
 
 class State(TypedDict):
     datos_licitacion: DatosLicitacion
-    proyecto_valido: bool
     feedback: str
     modificacion_a_realizar: Modificacion
     mensajes: list[BaseMessage]
@@ -71,15 +70,6 @@ def input_humano_proyecto_valido(state: State):
     pass
 
 
-def conditional_proyecto_valido(state: State):
-    proyecto_valido = state["proyecto_valido"]
-
-    if proyecto_valido:
-        return END
-    else:
-        return "invoke_proyect_modifier_graph"
-
-
 def invoke_proyect_modifier_graph(state: State):
     datos_licitacion = state["datos_licitacion"]
     requisitos_adicionales = datos_licitacion.requisitos_adicionales
@@ -124,7 +114,7 @@ async def start_licitacion_graph(licitacion, requisitos_adicionales):
     workflow.add_edge("proyect_stages_subgraph", "proyect_tools_subgraph")
     workflow.add_edge("proyect_tools_subgraph", "lats_subgrafo_definir_conocimientos")
     workflow.add_edge("lats_subgrafo_definir_conocimientos", "nodo_proyecto_valido")
-    workflow.add_conditional_edges("nodo_proyecto_valido", conditional_proyecto_valido)
+    workflow.add_edge("nodo_proyecto_valido", "invoke_proyect_modifier_graph")
 
     initial_state = State(
         datos_licitacion=DatosLicitacion(
@@ -134,7 +124,6 @@ async def start_licitacion_graph(licitacion, requisitos_adicionales):
             etapas_proyecto=[],
             requisitos_etapas=[],
         ),
-        proyecto_valido=False,
         feedback="",
         modificacion_a_realizar=None,
         mensajes=[],
@@ -152,10 +141,10 @@ async def start_licitacion_graph(licitacion, requisitos_adicionales):
 
     while True:
         # Si se ejecuta el grafo por primera vez (no ha habido ningún human-in-the-loop) pasarle el initial state
-        graph.invoke(initial_state if not result else None, config=config)
+        graph_result = graph.invoke(initial_state if not result else None, config=config)
+        result = graph_result["datos_licitacion"]
 
-        result = graph.get_state(config).values["resultado"]
-        print(f"Se ha obtenido el siguiente resultado: \n{result}\n\n")
+        print(f"Se ha obtenido el siguiente resultado: \n{result.get_requisitos_etapas_str()}\n\n")
 
         input_valida = input("¿Es una propuesta válida? (s/n): ")
         propuesta_valida = input_valida.lower() in ["s", "si"]
@@ -165,10 +154,17 @@ async def start_licitacion_graph(licitacion, requisitos_adicionales):
 
         feedback = input("¿Qué cambios se deben realizar?: ")
 
-        graph.update_state(config=config, values={"proyecto_valido": propuesta_valida, "feedback": feedback})
+        updated_state = {
+            "datos_licitacion": result,
+            "feedback": feedback,
+            "modificacion_a_realizar": None,
+            "mensajes": graph_result["mensajes"]
+        }
+
+        graph.update_state(config=config, values=updated_state)
 
     return result
 
 
 def test_start_licitacion_graph(licitacion, requisitos_adicionales):
-    asyncio.run(start_licitacion_graph(licitacion, requisitos_adicionales))
+    asyncio.run(start_licitacion_graph(licitacion=licitacion, requisitos_adicionales=requisitos_adicionales))
