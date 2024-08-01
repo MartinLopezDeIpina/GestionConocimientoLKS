@@ -51,7 +51,7 @@ def ejecutar_etapa(state: StageBranchState):
     mensajes_modificacion = state["mensajes_modificacion"]
 
     result = invoke_requirements_graph_for_stage(state["datos_licitacion"], index_etapa, mensajes_modificacion)
-    etapa_result = StageResult(nombre_etapa, index_etapa, result)
+    etapa_result = StageResult(etapa=nombre_etapa, index_etapa=index_etapa, herramientas=result, tecnologias_junto_herramientas=[])
 
     return {"stages_results": [etapa_result]}
 

@@ -115,14 +115,15 @@ async def start_licitacion_graph(licitacion, requisitos_adicionales):
     workflow.add_edge("proyect_tools_subgraph", "lats_subgrafo_definir_conocimientos")
     workflow.add_edge("lats_subgrafo_definir_conocimientos", "nodo_proyecto_valido")
     workflow.add_edge("nodo_proyecto_valido", "invoke_proyect_modifier_graph")
+    workflow.add_conditional_edges("invoke_proyect_modifier_graph", conditional_modificacion_a_realizar)
 
     initial_state = State(
         datos_licitacion=DatosLicitacion(
             licitacion=licitacion,
-            requisitos_adicionales=requisitos_adicionales,
             categoria_proyecto="",
-            etapas_proyecto=[],
+            requisitos_adicionales=requisitos_adicionales,
             requisitos_etapas=[],
+            etapas_proyecto=[],
         ),
         feedback="",
         modificacion_a_realizar=None,

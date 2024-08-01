@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from pydantic.v1 import BaseModel
+
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.clases_para_lats import \
     PropuestaProyecto
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subrafo_juntar_herramientas_de_etapa import \
@@ -7,16 +9,12 @@ from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nod
 from LLM.licitacion_graph.subgrafo_definir_requisitos_tecnicos.StageResult import StageResult
 from models import NodoArbol
 
-
-@dataclass
-class DatosLicitacion:
-    def __init__(self, licitacion: str, requisitos_adicionales: list[str], categoria_proyecto: str = "",
-                 etapas_proyecto=None, requisitos_etapas: list[StageResult] = None):
-        self.licitacion = licitacion
-        self.requisitos_adicionales = requisitos_adicionales
-        self.categoria_proyecto = categoria_proyecto
-        self.etapas_proyecto = etapas_proyecto
-        self.requisitos_etapas = requisitos_etapas
+class DatosLicitacion(BaseModel):
+    licitacion: str
+    categoria_proyecto: str
+    requisitos_adicionales: list[str]
+    requisitos_etapas: list[StageResult]
+    etapas_proyecto: list[str]
 
     def __str__(self):
         result = ""

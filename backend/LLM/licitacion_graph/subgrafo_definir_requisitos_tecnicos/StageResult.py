@@ -1,18 +1,18 @@
+from pydantic.v1 import BaseModel
+
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subrafo_juntar_herramientas_de_etapa import \
     HerramientaJuntoTecnologiasPropuestas
 
 
-class StageResult:
+class StageResult(BaseModel):
     etapa: str
     index_etapa: int
     herramientas: list[str]
     tecnologias_junto_herramientas: list[HerramientaJuntoTecnologiasPropuestas]
 
-    def __init__(self, etapa: str, index_etapa: int, herramientas: list[str], tecnologias_junto_herramientas: list[HerramientaJuntoTecnologiasPropuestas] = None):
-        self.etapa = etapa
-        self.index_etapa = index_etapa
-        self.herramientas = herramientas
-        self.tecnologias_junto_herramientas = tecnologias_junto_herramientas
+    # En pydantic hay que poner esto para que pueda serializar clases que no sean de pydantic. En este caso, NodoArbol que está dentro de HerramientaJuntoTecnologiasPropuestas
+    class Config:
+        arbitrary_types_allowed = True
 
     def __str__(self):
         return f"\n{self.etapa}: \n{self.herramientas}"
