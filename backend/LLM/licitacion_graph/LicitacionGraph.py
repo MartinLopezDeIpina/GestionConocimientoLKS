@@ -52,7 +52,7 @@ def invoke_proyect_tools_subgraph(state: State):
 
     datos_licitacion = invoke_requirements_graph(datos_licitacion, modificacion_a_realizar, mensajes)
 
-    return {"datos_licitacion": datos_licitacion, "modificacion_a_realizar": None}
+    return {"datos_licitacion": datos_licitacion}
 
 
 def invoke_lats_subgrafo_definir_conocimientos(state: State):
@@ -62,7 +62,7 @@ def invoke_lats_subgrafo_definir_conocimientos(state: State):
 
     proyecto = invoke_knowledge_graph(datos_licitacion, modificacion_a_realizar, mensajes)
 
-    return {"datos_licitacion": proyecto, "modificacion_a_realizar": None}
+    return {"datos_licitacion": proyecto}
 
 
 # Para poner el breakpoint delante

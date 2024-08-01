@@ -19,7 +19,7 @@ class StageResult(BaseModel):
         return f"\n{self.etapa}: \n{self.herramientas}"
 
     def get_final_etapa_str(self):
-        result = f"\n{self.etapa}: \n"
+        result = f"\nEtapa{self.index_etapa} - {self.etapa}: \n"
         for tecnologias_h in self.tecnologias_junto_herramientas:
             result += f"\n{tecnologias_h["herramienta"]}:\n"
             for tecnologia in tecnologias_h["tecnologias_ids"]:

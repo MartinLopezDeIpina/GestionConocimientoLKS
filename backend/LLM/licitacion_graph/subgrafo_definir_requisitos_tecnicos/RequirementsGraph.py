@@ -13,9 +13,9 @@ from LLM.licitacion_graph.subgrafo_definir_requisitos_tecnicos.StageResult impor
 
 class RequirementsGraphState(TypedDict):
     datos_licitacion: DatosLicitacion
-    index_etapa: int
     #operator.add -> cuando se devuelve a la variable del estado, en lugar de reemplazar el valor, se añade a la lista
     stages_results: Annotated[list, operator.add]
+    etapas_proyecto: list[str]
     etapas: list[str]
 
     modificacion_a_realizar: Modificacion
@@ -41,8 +41,15 @@ def ejecutar_etapas_node(state: RequirementsGraphState):
 
 def continue_to_etapas(state: RequirementsGraphState):
     etapas = state["etapas"]
+    etapas_proyecto = state["etapas_proyecto"]
 
-    return [Send("ejecutar_etapa", {"datos_licitacion": state["datos_licitacion"], "index_etapa": index, "mensajes_modificacion": state["mensajes_modificacion"]}) for index, etapa in enumerate(etapas)]
+    return [Send(
+        "ejecutar_etapa",
+        {
+                "datos_licitacion": state["datos_licitacion"],
+                "index_etapa": etapas_proyecto.index(etapa),
+                "mensajes_modificacion": state["mensajes_modificacion"]
+        }) for etapa in etapas]
 
 
 def ejecutar_etapa(state: StageBranchState):
@@ -59,12 +66,14 @@ def ejecutar_etapa(state: StageBranchState):
 def juntar_etapas(state: RequirementsGraphState):
     datos_licitacion = state["datos_licitacion"]
     modificacion_a_realizar = state["modificacion_a_realizar"]
+    etapas_proyecto = datos_licitacion.etapas_proyecto
 
     sorted_results = sorted(state["stages_results"], key=lambda x: x.index_etapa)
 
     if modificacion_a_realizar:
         for result in sorted_results:
-            datos_licitacion.requisitos_etapas[result.index_etapa] = result
+            index_etapa = etapas_proyecto.index(result.etapa)
+            datos_licitacion.requisitos_etapas[index_etapa] = result
     else:
         datos_licitacion.requisitos_etapas = sorted_results
 
@@ -72,9 +81,10 @@ def juntar_etapas(state: RequirementsGraphState):
 
 
 def invoke_requirements_graph(datos_licitacion: DatosLicitacion, modificaciones_a_realizar: Modificacion, modification_messages: list[BaseMessage]):
+
     initial_state = RequirementsGraphState(
         datos_licitacion=datos_licitacion,
-        index_etapa=0,
+        etapas_proyecto=datos_licitacion.etapas_proyecto,
         etapas=[],
         stages_results=[],
         modificacion_a_realizar=modificaciones_a_realizar,

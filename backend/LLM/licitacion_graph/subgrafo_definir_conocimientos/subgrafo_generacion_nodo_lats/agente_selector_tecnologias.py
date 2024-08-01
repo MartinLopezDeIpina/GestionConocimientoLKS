@@ -51,6 +51,7 @@ def invoke_seleccionar_tecnologias(datos_licitacion: DatosLicitacion, mensajes_f
         "requisitos_adicionales": requisitos_adicionales,
         "categoria_proyecto": categoria_proyecto,
         "etapas_proyecto": requisitos_etapas,
+        "mensajes_modificacion": mensajes_modificacion
     }
 
     # En caso de que el feedback esté vacío (cuando se crea el nodo raíz) no añadir el placeholder

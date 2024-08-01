@@ -60,7 +60,7 @@ def juntar_etapas(state: State):
     datos_licitacion = state["datos_licitacion"]
     modificaciones_a_realizar = state["modificaciones_a_realizar"]
 
-    sorted_results = sorted(state["requisitos_etapas"], key=lambda x: x.index_etapa, reverse=True)
+    sorted_results = sorted(state["requisitos_etapas"], key=lambda x: x.index_etapa)
 
     if modificaciones_a_realizar:
         for result in sorted_results:

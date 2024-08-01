@@ -53,6 +53,7 @@ ejemplos = [
 
 user_prompt = """
 La licitación es la siguiente: \n\n{licitacion}\n
+También se tienen los siguientes requisitos adicionales: \n\n{requisitos_adicionales}\n
 Se han identificado las siguintes etapas del proyecto: \n\n{etapas_proyecto}\n
 Tú debes encargarte únicamente de la etapa '{etapa_proyecto}'.
 """
@@ -102,6 +103,7 @@ def get_react_agent(tools, mensajes_modificacion):
             intermediate_steps=x["intermediate_steps"]
         ),
         "licitacion": lambda x: x["datos_licitacion"].licitacion,
+        "requisitos_adicionales": lambda x: x["datos_licitacion"].requisitos_adicionales,
         "etapas_proyecto": lambda x: x["datos_licitacion"].etapas_proyecto,
         "etapa_proyecto": lambda x: x["etapa_proyecto"],
         "categoria_proyecto": lambda x: x["datos_licitacion"].categoria_proyecto,
