@@ -10,12 +10,23 @@ import utils
 from database import db
 
 
-# dataclass hace que se pueda serializar automáticamente a JSON
 @dataclass
 class NodoArbol(db.Model):
     nodoID = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(250), nullable=False)
     embedding = mapped_column(Vector(1536))
+
+    @staticmethod
+    def from_dict(data):
+        nodoID = data['nodoID']
+        return NodoArbol.query.filter_by(nodoID=nodoID).first()
+
+    def to_dict(self):
+        return {
+            'nodoID': self.nodoID,
+            'nombre': self.nombre,
+            'embedding': self.embedding
+        }
 
 
 @event.listens_for(NodoArbol, 'after_update')

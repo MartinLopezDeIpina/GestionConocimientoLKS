@@ -2,6 +2,7 @@ from pydantic.v1 import BaseModel
 
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subrafo_juntar_herramientas_de_etapa import \
     HerramientaJuntoTecnologiasPropuestas
+from models import NodoArbol
 
 
 class StageResult(BaseModel):
@@ -21,9 +22,9 @@ class StageResult(BaseModel):
         result = f"\n{self.etapa}: \n"
         for tecnologias_h in self.tecnologias_junto_herramientas:
             result += f"\n{tecnologias_h["herramienta"]}:\n"
-            for tecnologia in tecnologias_h["tecnologias"]:
+            for tecnologia in tecnologias_h["tecnologias_ids"]:
                 if tecnologia:
-                    # No usar el serializador de NodoArbol porque no queremos pasar el embedding
-                    nodo_dict = {"nodoID": tecnologia.nodoID, "nombre": tecnologia.nombre}
+                    nodo = NodoArbol.query.get(tecnologia)
+                    nodo_dict = {"nodoID": nodo.nodoID, "nombre": nodo.nombre}
                     result += f"\t-{nodo_dict}\n"
         return result

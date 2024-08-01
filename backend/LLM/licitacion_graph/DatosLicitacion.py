@@ -38,12 +38,10 @@ class DatosLicitacion(BaseModel):
             for herramienta_junto_nodo_id in etapa.herramientas_junto_nodo_id_escogido:
                 herramientas.append(herramienta_junto_nodo_id.herramienta)
 
-                nodo = NodoArbol.query.get(herramienta_junto_nodo_id.nodo_id_escogido)
-                if nodo:
-                    herramienta_junto_nodo.append(HerramientaJuntoTecnologiasPropuestas(
-                        herramienta=herramienta_junto_nodo_id.herramienta,
-                        tecnologias=[nodo]
-                    ))
+                herramienta_junto_nodo.append(HerramientaJuntoTecnologiasPropuestas(
+                    herramienta=herramienta_junto_nodo_id.herramienta,
+                    tecnologias_ids=[herramienta_junto_nodo_id.nodo_id_escogido]
+                ))
 
             stage_result = StageResult(
                 index_etapa=index_etapa,

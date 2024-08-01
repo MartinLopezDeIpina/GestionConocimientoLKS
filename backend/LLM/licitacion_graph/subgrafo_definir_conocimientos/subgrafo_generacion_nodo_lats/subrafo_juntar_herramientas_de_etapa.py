@@ -11,7 +11,7 @@ from models import NodoArbol
 
 class HerramientaJuntoTecnologiasPropuestas(TypedDict):
     herramienta: str
-    tecnologias: list[NodoArbol]
+    tecnologias_ids: list[int]
 
 
 class StateHerramienta(TypedDict):
@@ -37,8 +37,10 @@ def ejecutar_herramienta(state: StateHerramienta):
     herramienta_necesaria = state["herramienta_necesaria"]
 
     tecnologias = invoke_tecnologias_posibles_graph(herramienta_necesaria)
+    # Guardar solo los ids porque a la hora de hacer el human-in-the-loop hay que serializar los objetos.
+    tecnologias_ids = [nodo.nodoID for nodo in tecnologias]
 
-    result = HerramientaJuntoTecnologiasPropuestas(herramienta=herramienta_necesaria, tecnologias=tecnologias)
+    result = HerramientaJuntoTecnologiasPropuestas(herramienta=herramienta_necesaria, tecnologias_ids=tecnologias_ids)
 
     return {"resultados_herramientas": [result]}
 

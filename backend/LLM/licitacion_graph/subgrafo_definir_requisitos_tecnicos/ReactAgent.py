@@ -105,6 +105,7 @@ def get_react_agent(tools, mensajes_modificacion):
         "etapas_proyecto": lambda x: x["datos_licitacion"].etapas_proyecto,
         "etapa_proyecto": lambda x: x["etapa_proyecto"],
         "categoria_proyecto": lambda x: x["datos_licitacion"].categoria_proyecto,
+        "mensajes_modificacion": lambda x: x["mensajes_modificacion"],
     }
 
     prompt = ChatPromptTemplate.from_messages(

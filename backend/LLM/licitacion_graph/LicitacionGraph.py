@@ -91,12 +91,8 @@ def invoke_proyect_modifier_graph(state: State):
 def conditional_modificacion_a_realizar(state: State):
     modificacion_a_realizar = state["modificacion_a_realizar"]
 
-    if modificacion_a_realizar.sugrafo_a_llamar == "INICIAL":
-        return "proyect_definer_model"
-    elif modificacion_a_realizar.sugrafo_a_llamar == "DEFINIR_HERRAMIENTAS_DE_ETAPAS":
-        return "proyect_tools_subgraph"
-    elif modificacion_a_realizar.sugrafo_a_llamar == "DEFINIR_CONOCIMIENTOS":
-        return "lats_subgrafo_definir_conocimientos"
+    next_step = modificacion_a_realizar.sugrafo_a_llamar.value
+    return next_step
 
 
 async def start_licitacion_graph(licitacion, requisitos_adicionales):
