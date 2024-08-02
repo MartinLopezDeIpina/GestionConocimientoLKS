@@ -1,3 +1,5 @@
+import copy
+
 from langchain_core.messages import BaseMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from LLM.licitacion_graph.DatosLicitacion import DatosLicitacion
@@ -38,8 +40,8 @@ agent_selector_prompt = ChatPromptTemplate.from_messages(
 
 
 def invoke_seleccionar_tecnologias(datos_licitacion: DatosLicitacion, mensajes_feedback: list[BaseMessage], mensajes_modificacion: list[BaseMessage]):
-    # Copiarlo para poder hacerle apend
-    current_prompt = agent_selector_prompt.copy()
+    # copiarlo deep para crear uno nuevo en cada invocación
+    current_prompt = copy.deepcopy(agent_selector_prompt)
 
     licitacion = datos_licitacion.licitacion
     requisitos_adicionales = datos_licitacion.requisitos_adicionales
@@ -54,12 +56,13 @@ def invoke_seleccionar_tecnologias(datos_licitacion: DatosLicitacion, mensajes_f
         "mensajes_modificacion": mensajes_modificacion
     }
 
+    current_prompt = get_modified_messages_chat_prompt_template(current_prompt, mensajes_modificacion)
+
     # En caso de que el feedback esté vacío (cuando se crea el nodo raíz) no añadir el placeholder
     if mensajes_feedback:
         current_prompt.messages.append(MessagesPlaceholder(variable_name="mensajes_feedback"))
         prompt_dict["mensajes_feedback"] = mensajes_feedback
 
-    current_prompt = get_modified_messages_chat_prompt_template(current_prompt, mensajes_modificacion)
 
     current_agent = current_prompt | structured_llm_agente_selector.with_config(run_name="AgentSelector")
 

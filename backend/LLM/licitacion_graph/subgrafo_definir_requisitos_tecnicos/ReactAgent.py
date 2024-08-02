@@ -1,12 +1,12 @@
 from langchain_core.agents import AgentAction
+from langchain_core.messages import AIMessage
 from langchain_core.prompts import PromptTemplate, FewShotPromptTemplate, FewShotChatMessagePromptTemplate, \
-    ChatPromptTemplate, HumanMessagePromptTemplate
+    ChatPromptTemplate, HumanMessagePromptTemplate, MessagesPlaceholder
 from LLM.llm_utils.LLM_utils import get_model, get_tool_name
 from LLM.llm_utils.RetryGraph_decorator import bind_validator_with_retries
 from LLM.llm_utils.add_modify_messages_to_chatprompttemplate_decorator import get_modified_messages_chat_prompt_template
 
 model = get_model()
-
 
 system_prompt = """
 Eres un experto en la captura de requisitos tecnológicos (herramientas) para proyectos de software de {categoria_proyecto}.
@@ -28,9 +28,6 @@ Observacion: el resultado de la acción tras haberla ejecutado
 Es muy importante que la cantidad de herramientas iniciales sean AL MENOS 2 y MAXIMO 5. SI SE MANDAN MAS DE 5, UN SISTEMA CRITICO FALLARA.
 
 En caso de que la captura de requisitos tecnológicos ya haya comenzado, continúa con el siguiente paso:
-
-Estado de la captura de requisitos tecnológicos:
-{agent_scratchpad}
 """
 
 ejemplos = [
@@ -47,7 +44,8 @@ ejemplos = [
     {
         "etapa": "Aseguramiento de calidad",
         "categoria": "Desarrollo de aplicación web",
-        "tecnologias": ["Herramienta de pruebas automatizadas", "Herramienta de gestión de incidencias", "Herramienta de análisis estático de código"]
+        "tecnologias": ["Herramienta de pruebas automatizadas", "Herramienta de gestión de incidencias",
+                        "Herramienta de análisis estático de código"]
     }
 ]
 
@@ -58,13 +56,11 @@ Se han identificado las siguintes etapas del proyecto: \n\n{etapas_proyecto}\n
 Tú debes encargarte únicamente de la etapa '{etapa_proyecto}'.
 """
 
-
 plantilla_ejemplo = ChatPromptTemplate.from_messages([
     HumanMessagePromptTemplate.from_template(
         "Ejemplo etapa {etapa} en '{categoria}':\n{tecnologias}"
     )
 ])
-
 
 few_shot_chat_prompt_template = FewShotChatMessagePromptTemplate(
     example_prompt=plantilla_ejemplo,
@@ -81,11 +77,13 @@ def create_scratchpad(intermediate_steps: list[AgentAction]):
             if "observacion" not in action.tool_input:
                 print("problemas_debug")
             steps.append(
-                f"Pensamiento: {action.tool_input['pensamiento']}\n"
-                f"Accion: {action.tool}\n"
-                f"Observacion: {action.tool_input['observacion']}"
+                AIMessage(content=
+                          f"Pensamiento: {action.tool_input['pensamiento']}\n" +
+                          f"Accion: {action.tool}\n"
+                          f"Observacion: {action.tool_input['observacion']}"
+                          )
             )
-    return "\n---\n".join(steps)
+    return steps
 
 
 def get_tools_names(tools):
@@ -118,6 +116,9 @@ def get_react_agent(tools, mensajes_modificacion):
         ]
     )
     complete_prompt = get_modified_messages_chat_prompt_template(prompt, mensajes_modificacion)
+
+    complete_prompt.append(MessagesPlaceholder(variable_name="agent_scratchpad"))
+
     complete_prompt = complete_prompt.partial(
         tools=tools_names,
     )
@@ -126,5 +127,3 @@ def get_react_agent(tools, mensajes_modificacion):
     chain = variables | complete_prompt | model_react
 
     return chain
-
-

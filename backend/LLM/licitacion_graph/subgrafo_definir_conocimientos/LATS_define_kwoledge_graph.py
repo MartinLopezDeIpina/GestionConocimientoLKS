@@ -54,7 +54,8 @@ def generate_initial_response(state: TreeState) -> dict:
 # for a single input to sample actions from the environment
 async def generate_candidates(datos_licitacion: DatosLicitacion, messages: list[BaseMessage], config: RunnableConfig, modificaciones_a_realizar: Modificacion = None, mensajes_modificacion: list[BaseMessage] = None):
     #De default venía a 5
-    n = config["configurable"].get("N", 5)
+    # TODO: ponerlo a 5, 1 para debuguear
+    n = config["configurable"].get("N", 1)
 
     tasks = [generate_candidate_async(datos_licitacion, messages, modificaciones_a_realizar, mensajes_modificacion) for _ in range(n)]
     candidates = await asyncio.gather(*tasks)
@@ -122,7 +123,7 @@ def should_loop(state: TreeState) -> Literal["expand", "__end__"]:
     root = state["root"]
     if root.is_solved:
         return END
-    if root.height > 5:
+    if root.height > 4:
         return END
     return "expand"
 
@@ -163,4 +164,9 @@ def invoke_knowledge_graph(datos_licitacion: DatosLicitacion, modificacion_a_rea
     else:
         solution_node = last_step["root"].get_best_solution()
 
-    return solution_node.candidate_value
+    result = solution_node.candidate_value
+
+    if not isinstance(result, DatosLicitacion):
+        result = result["datos_licitacion"]
+
+    return result

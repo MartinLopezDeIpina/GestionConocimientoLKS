@@ -75,10 +75,8 @@ def invoke_proyect_modifier_graph(state: State):
     requisitos_adicionales = datos_licitacion.requisitos_adicionales
     propuesta_proyecto_str = datos_licitacion.get_requisitos_etapas_str()
     feedback = state["feedback"]
-    mensajes = state["mensajes"]
 
-    mensajes.append(AIMessage(content=propuesta_proyecto_str))
-    mensajes.append(HumanMessage(content=feedback))
+    mensajes = [AIMessage(content=propuesta_proyecto_str), HumanMessage(content=feedback)]
 
     requisitos_adicionales.append(feedback)
 
@@ -138,6 +136,7 @@ async def start_licitacion_graph(licitacion, requisitos_adicionales):
 
     while True:
         # Si se ejecuta el grafo por primera vez (no ha habido ningún human-in-the-loop) pasarle el initial state
+
         graph_result = graph.invoke(initial_state if not result else None, config=config)
         result = graph_result["datos_licitacion"]
 

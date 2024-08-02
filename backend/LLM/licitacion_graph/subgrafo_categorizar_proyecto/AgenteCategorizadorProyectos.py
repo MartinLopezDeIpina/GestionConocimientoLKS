@@ -51,7 +51,12 @@ def get_proyect_definer_agetn_run_output(datos_licitacion: DatosLicitacion, mens
     requisitos_adicionales = datos_licitacion.requisitos_adicionales
     requisitos_adicionales = "\n".join(requisitos_adicionales)
 
-    result = agente_categorizador.invoke({"licitacion": licitacion, "requisitos_adicionales": requisitos_adicionales})
+    result = agente_categorizador.invoke(
+        {
+            "licitacion": licitacion,
+            "requisitos_adicionales": requisitos_adicionales,
+            "mensajes_modificacion": mensajes
+        })
     return result.categoria_proyecto
 
 
