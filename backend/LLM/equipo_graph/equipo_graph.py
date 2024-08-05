@@ -62,7 +62,7 @@ def node_elegir_trabajadores(state: State):
     datos_equipo = state["datos_equipo"]
 
     usuarios = db.session.query(Usuario).all()
-    user_ids = [usuario.id for usuario in usuarios]
+    user_ids = [usuario.email for usuario in usuarios]
     job_ids = get_list_from_dict(datos_equipo.composicion_puestos_de_trabajo)
 
     users = get_usuarios_skills_dict()
@@ -73,7 +73,7 @@ def node_elegir_trabajadores(state: State):
     for i, user_id in enumerate(user_ids):
         for j, job_id in enumerate(job_ids):
             # Calculate the number of matching skills
-            matching_skills = len(jobs[job_id].intersection(users[user_id]))
+            matching_skills = len(set(jobs[job_id]) & set(users[user_id]))
             # Use negative because the algorithm minimizes cost, but we want to maximize matching skills
             cost_matrix[i][j] = -matching_skills
 
@@ -88,7 +88,9 @@ def node_elegir_trabajadores(state: State):
         user_id = user_ids[r]
         job_id = job_ids[c]
         assignments[job_id] = user_id
-        fulfilled_skills[job_id] = jobs[job_id].intersection(users[user_id])
+        fulfilled_skills[job_id] = list(set(jobs[job_id]) & set(users[user_id]))
+        
+    print(assignments)
 
 
 def get_usuarios_skills_dict():
@@ -110,22 +112,17 @@ def get_list_from_dict(dict):
     return result_list
 
 
-
-
-
-
-
-
-
 def start_equipo_graph(datos_licitacion: DatosLicitacion):
     workflow = StateGraph(State)
 
     workflow.add_node("node_generar_puestos_de_trabajo", node_generar_puestos_de_trabajo)
     workflow.add_node("node_generar_tecnologias_por_puesto", node_generar_tecnologias_por_puesto)
+    workflow.add_node("node_elegir_trabajadores", node_elegir_trabajadores)
 
     workflow.add_edge(START, "node_generar_puestos_de_trabajo")
     workflow.add_edge("node_generar_puestos_de_trabajo", "node_generar_tecnologias_por_puesto")
-    workflow.add_edge("node_generar_tecnologias_por_puesto", END)
+    workflow.add_edge("node_generar_tecnologias_por_puesto", "node_elegir_trabajadores")
+    workflow.add_edge("node_elegir_trabajadores", END)
 
     cantidad_trabajadores = get_cantidad_trabajadores_user_input()
 
