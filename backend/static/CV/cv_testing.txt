@@ -1,0 +1,80 @@
+Curriculum Vitae
+Datos Personales
+
+Nombre: Ana Martínez
+
+Dirección: Calle Principal 789, Ciudad, País
+
+Teléfono: +34 654 321 987
+
+Correo Electrónico: ana.martinez@email.com
+
+LinkedIn: linkedin.com/in/anamartinez
+
+GitHub: github.com/anamartinez
+Perfil Profesional
+
+Especialista en Testing con más de 8 años de experiencia en aseguramiento de la calidad de software. Experta en el diseño y ejecución de casos de prueba manuales y automatizados. Amplia experiencia en metodologías ágiles y DevOps, asegurando la entrega de software de alta calidad y rendimiento. Comprometida con la mejora continua y la optimización de procesos de prueba para garantizar la satisfacción del cliente y la eficiencia del equipo.
+Experiencia Profesional
+
+Especialista en Testing
+Tech Solutions, Madrid, España
+Marzo 2017 - Presente
+
+    Diseñar estrategias de prueba y casos de prueba para aplicaciones web y móviles, utilizando herramientas como Selenium y Jira.
+    Implementar y mantener frameworks de automatización de pruebas para mejorar la eficiencia y la cobertura de pruebas.
+    Colaborar estrechamente con equipos de desarrollo y operaciones para integrar pruebas en pipelines de CI/CD.
+    Identificar, reportar y dar seguimiento a defectos encontrados durante las pruebas, utilizando herramientas de gestión de defectos.
+    Capacitar a equipos en prácticas de prueba y aseguramiento de la calidad.
+
+Analista de Pruebas
+DataTech, Barcelona, España
+Septiembre 2013 - Febrero 2017
+
+    Ejecutar pruebas funcionales y no funcionales, incluyendo pruebas de carga y rendimiento, para sistemas de gestión empresarial.
+    Documentar resultados de pruebas y colaborar en la elaboración de informes de calidad.
+    Participar en reuniones de planificación y retrospectivas para mejorar procesos de desarrollo.
+    Desarrollar scripts de pruebas automatizadas utilizando herramientas como Selenium y Python.
+
+Practicante de Pruebas de Software
+Innovative Software, Valencia, España
+Enero 2011 - Agosto 2013
+
+    Aprender y aplicar principios de pruebas de software en proyectos reales.
+    Ejecutar pruebas manuales y documentar resultados.
+    Colaborar con equipos de desarrollo para resolver problemas identificados durante las pruebas.
+
+Educación
+
+Máster en Ingeniería de Software
+Universidad Politécnica de Madrid, Madrid, España
+2011 - 2013
+
+Grado en Ingeniería Informática
+Universidad de Valencia, Valencia, España
+2007 - 2011
+Habilidades
+
+    Herramientas de Pruebas: Selenium, Jira, Postman, JMeter
+    Lenguajes de Programación: Python, Java, JavaScript
+    Metodologías: Agile (Scrum, Kanban), DevOps, TDD (Desarrollo Dirigido por Pruebas)
+    Técnicas de Pruebas: Pruebas Funcionales, No Funcionales, Automatización de Pruebas
+
+Proyectos Destacados
+
+Automatización de Pruebas de Regresión (Selenium, Python)
+
+    Implementé un framework de automatización de pruebas que redujo el tiempo de ejecución de pruebas de regresión en un 50%.
+
+Pruebas de Carga para Plataforma de E-Commerce (JMeter)
+
+    Diseñé y ejecuté pruebas de carga y rendimiento para una plataforma de comercio electrónico, identificando y resolviendo cuellos de botella antes del lanzamiento.
+
+Idiomas
+
+    Español: Nativo
+    Inglés: Avanzado (C1)
+
+Referencias
+
+Disponibles a petición.

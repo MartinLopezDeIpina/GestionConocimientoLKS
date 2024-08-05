@@ -5,9 +5,10 @@ from flask import Blueprint, current_app, jsonify
 import utils
 from LLM.DB.chromaTools import chromaTools
 from LLM.DB.modelTools import modelTools
+from LLM.equipo_graph.equipo_graph import start_equipo_graph
 from LLM.licitacion_graph.DatosLicitacion import DatosLicitacion
 from LLM.LLMHandler import LLMHandler
-from LLM.licitacion_graph.LicitacionGraph import test_start_licitacion_graph, State
+from LLM.licitacion_graph.LicitacionGraph import test_start_licitacion_graph, State, start_licitacion_graph
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.agente_selector_tecnologias import \
     invoke_seleccionar_tecnologias
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subgrafo_generacion_lodo_lats import \
@@ -332,6 +333,185 @@ def test_lats():
                                        )
 
     resultado = invoke_knowledge_graph(datos_licitacion)
+    return 'Ejecutado'
+
+
+@llm_blueprint.route('test_equipo_graph')
+def test_equipo_graph():
+    categoria_proyecto = "Desarrollo de aplicación web"
+    requisitos_etapas = [
+        StageResult(
+            etapa="Diseño",
+            index_etapa=0,
+            herramientas=[],
+            tecnologias_junto_herramientas=[
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de diseño de UI/UX",
+                    tecnologias_ids=[122]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de prototipado",
+                    tecnologias_ids=[122]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de wireframing",
+                    tecnologias_ids=[122]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de diseño de prototipos interactivos",
+                    tecnologias_ids=[122]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de diseño gráfico",
+                    tecnologias_ids=[122]
+                )
+            ]
+        ),
+        StageResult(
+            etapa="Implementación del backend",
+            index_etapa=1,
+            herramientas=[],
+            tecnologias_junto_herramientas=[
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Lenguaje de programación backend",
+                    tecnologias_ids=[34]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Framework de backend",
+                    tecnologias_ids=[34]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Servidor web",
+                    tecnologias_ids=[254]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de gestión de API",
+                    tecnologias_ids=[217]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de seguridad",
+                    tecnologias_ids=[134]
+                )
+            ]
+        ),
+        StageResult(
+            etapa="Implementación del frontend",
+            index_etapa=2,
+            herramientas=[],
+            tecnologias_junto_herramientas=[
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de diseño de UI/UX",
+                    tecnologias_ids=[122]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de estilado",
+                    tecnologias_ids=[41]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Framework de JavaScript",
+                    tecnologias_ids=[46]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de gestión de estado",
+                    tecnologias_ids=[481]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Editor de código",
+                    tecnologias_ids=[61]
+                )
+            ]
+        ),
+        StageResult(
+            etapa="Implementación de la Base de datos",
+            index_etapa=3,
+            herramientas=[],
+            tecnologias_junto_herramientas=[
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de gestión de base de datos relacional",
+                    tecnologias_ids=[84]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de integración de datos",
+                    tecnologias_ids=[494]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de seguridad de datos",
+                    tecnologias_ids=[84]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de administración de bases de datos",
+                    tecnologias_ids=[84]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de respaldo y recuperación de datos",
+                    tecnologias_ids=[376]
+                )
+            ]
+        ),
+        StageResult(
+            etapa="Aseguramiento de calidad",
+            index_etapa=4,
+            herramientas=[],
+            tecnologias_junto_herramientas=[
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de pruebas automatizadas",
+                    tecnologias_ids=[183]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de gestión de incidencias",
+                    tecnologias_ids=[481]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de análisis estático de código",
+                    tecnologias_ids=[174]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de pruebas de rendimiento",
+                    tecnologias_ids=[192]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de pruebas de interfaz de usuario",
+                    tecnologias_ids=[183]
+                )
+            ]
+        ),
+        StageResult(
+            etapa="Despliegue",
+            index_etapa=5,
+            herramientas=[],
+            tecnologias_junto_herramientas=[
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de gestión de incidencias",
+                    tecnologias_ids=[481]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de monitoreo de rendimiento",
+                    tecnologias_ids=[192]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de gestión de versiones",
+                    tecnologias_ids=[139]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de soporte técnico",
+                    tecnologias_ids=[481]
+                ),
+                HerramientaJuntoTecnologiasPropuestas(
+                    herramienta="Herramienta de monitoreo de seguridad",
+                    tecnologias_ids=[169]
+                )
+            ]
+        )
+    ]
+    datos_licitacion = DatosLicitacion(
+        licitacion="",
+        categoria_proyecto=categoria_proyecto,
+        requisitos_adicionales=[],
+        requisitos_etapas=requisitos_etapas,
+        etapas_proyecto=["Diseño", "Implementación del backend", "Implementación del frontend", "Implementación de la Base de datos", "Aseguramiento de calidad", "Despliegue"]
+    )
+
+    start_equipo_graph(datos_licitacion)
     return 'Ejecutado'
 
 

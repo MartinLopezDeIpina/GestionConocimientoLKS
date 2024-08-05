@@ -8,7 +8,8 @@ from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nod
 from LLM.llm_utils import LLM_utils
 from LLM.llm_utils.add_modify_messages_to_chatprompttemplate_decorator import get_modified_messages_chat_prompt_template
 
-llm = LLM_utils.get_model()
+# Ponerle tempreatura alta para que no salgan siempre las mismas opciones a la hora de generar las opciones en el árbol LATS
+llm = LLM_utils.get_model(temperatura=1)
 structured_llm_agente_selector = llm.with_structured_output(PropuestaProyecto)
 
 system = """

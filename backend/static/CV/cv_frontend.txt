@@ -1,0 +1,83 @@
+Curriculum Vitae
+Datos Personales
+
+Nombre: Juan Pérez
+
+Dirección: Calle Falsa 123, Ciudad, País
+
+Teléfono: +34 123 456 789
+
+Correo Electrónico: juan.perez@email.com
+
+LinkedIn: linkedin.com/in/juanperez
+
+GitHub: github.com/juanperez
+Perfil Profesional
+
+Desarrollador Frontend Senior con 10 años de experiencia en la creación y mantenimiento de aplicaciones web de alta calidad. Experto en HTML, CSS, JavaScript y frameworks modernos como React y Angular. Hábil en el diseño de interfaces de usuario intuitivas y en la implementación de prácticas de desarrollo ágil. Apasionado por la mejora continua y la entrega de soluciones tecnológicas innovadoras.
+Experiencia Profesional
+
+Desarrollador Frontend Senior
+Tech Solutions, Madrid, España
+Enero 2019 - Presente
+
+    Liderar el desarrollo frontend de proyectos críticos, garantizando la implementación de código limpio y eficiente.
+    Colaborar con equipos de diseño y backend para crear experiencias de usuario coherentes y atractivas.
+    Implementar y mantener aplicaciones web usando React y Redux.
+    Optimizar el rendimiento de las aplicaciones para asegurar tiempos de carga rápidos y una experiencia de usuario fluida.
+    Mentorizar a desarrolladores junior y realizar revisiones de código para asegurar la calidad del proyecto.
+
+Desarrollador Frontend
+Web Innovators, Barcelona, España
+Junio 2014 - Diciembre 2018
+
+    Desarrollar interfaces de usuario dinámicas y responsivas utilizando Angular.
+    Trabajar en estrecha colaboración con el equipo de diseño para transformar maquetas en interfaces funcionales.
+    Implementar pruebas unitarias y de integración para asegurar la robustez del código.
+    Participar en reuniones de planificación y revisión de sprint, contribuyendo a la mejora continua del proceso de desarrollo.
+
+Desarrollador Web Junior
+Creative Devs, Valencia, España
+Enero 2010 - Mayo 2014
+
+    Crear y mantener sitios web corporativos y de comercio electrónico utilizando HTML, CSS y JavaScript.
+    Colaborar con diseñadores gráficos para implementar interfaces atractivas y funcionales.
+    Realizar pruebas de usabilidad y optimizar el rendimiento del sitio web.
+    Apoyar en la migración de sitios web legacy a tecnologías modernas.
+
+Educación
+
+Máster en Desarrollo Web y Móvil
+Universidad de Tecnología, Madrid, España
+2012 - 2013
+
+Grado en Ingeniería Informática
+Universidad de Valencia, Valencia, España
+2006 - 2010
+Habilidades
+
+    Lenguajes de Programación: HTML, CSS, JavaScript, TypeScript
+    Frameworks y Librerías: React, Angular, Vue.js, Redux, jQuery
+    Herramientas de Desarrollo: Git, Webpack, Babel, NPM, Yarn
+    Metodologías: Desarrollo Ágil (Scrum, Kanban), TDD (Desarrollo Dirigido por Pruebas)
+    Otras Habilidades: SEO, Accesibilidad Web, Diseño Responsivo, RESTful APIs
+
+Proyectos Destacados
+
+Sistema de Gestión de Clientes (React, Redux)
+
+    Lideré el desarrollo frontend de un sistema de gestión de clientes utilizado por más de 10,000 usuarios.
+    Implementé funcionalidades avanzadas como búsqueda en tiempo real y gráficos interactivos.
+
+Plataforma de e-Learning (Angular)
+
+    Diseñé y desarrollé la interfaz de una plataforma de aprendizaje en línea, mejorando la experiencia de usuario y aumentando la retención de estudiantes en un 25%.
+
+Idiomas
+
+    Español: Nativo
+    Inglés: Avanzado (C1)
+
+Referencias
+
+Disponible bajo petición.

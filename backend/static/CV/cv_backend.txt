@@ -1,0 +1,82 @@
+Curriculum Vitae
+Datos Personales
+
+Nombre: María González
+
+Dirección: Calle Principal 456, Ciudad, País
+
+Teléfono: +34 987 654 321
+
+Correo Electrónico: maria.gonzalez@email.com
+
+LinkedIn: linkedin.com/in/mariagonzalez
+
+GitHub: github.com/mariagonzalez
+Perfil Profesional
+
+Desarrolladora Backend Senior con más de 10 años de experiencia en el diseño, desarrollo y mantenimiento de sistemas robustos y escalables. Especializada en la implementación de APIs RESTful y la integración de bases de datos SQL y NoSQL. Amplia experiencia en la optimización de rendimiento y la seguridad de aplicaciones empresariales. Apasionada por resolver problemas complejos y mejorar continuamente los procesos de desarrollo.
+Experiencia Profesional
+
+Desarrolladora Backend Senior
+Tech Solutions, Madrid, España
+Enero 2018 - Presente
+
+    Diseñar y desarrollar APIs RESTful utilizando Node.js, Express y MongoDB para varios proyectos críticos.
+    Colaborar estrechamente con equipos frontend para definir interfaces de API claras y eficientes.
+    Implementar prácticas de seguridad como JWT y OAuth2 para proteger servicios web sensibles.
+    Optimizar consultas SQL y NoSQL para mejorar el rendimiento de aplicaciones de alta carga.
+    Mentorizar a desarrolladores junior y liderar revisiones de código para asegurar la calidad del software.
+
+Desarrolladora Backend
+DataTech, Barcelona, España
+Junio 2014 - Diciembre 2017
+
+    Desarrollar y mantener sistemas de gestión de contenido usando PHP y MySQL.
+    Diseñar e implementar soluciones para la integración de sistemas de terceros a través de APIs.
+    Participar activamente en el diseño y la optimización de bases de datos relacionales.
+    Realizar pruebas de integración y despliegues automatizados utilizando herramientas como Jenkins.
+
+Desarrolladora Web Junior
+Innovative Software, Valencia, España
+Enero 2010 - Mayo 2013
+
+    Desarrollar aplicaciones web utilizando PHP, JavaScript y frameworks como Laravel.
+    Colaborar con equipos multidisciplinarios para implementar funcionalidades complejas.
+    Mantener y mejorar sitios web existentes, asegurando la escalabilidad y el rendimiento.
+
+Educación
+
+Máster en Ingeniería de Software
+Universidad Politécnica de Madrid, Madrid, España
+2011 - 2013
+
+Grado en Ingeniería Informática
+Universidad de Valencia, Valencia, España
+2006 - 2010
+Habilidades
+
+    Lenguajes de Programación: JavaScript (Node.js), PHP, Python
+    Frameworks y Librerías: Express.js, Laravel, Django
+    Bases de Datos: MongoDB, MySQL, PostgreSQL, Redis
+    Herramientas y Tecnologías: Git, Docker, RESTful APIs, JWT, OAuth2
+    Metodologías: Desarrollo Ágil (Scrum, Kanban), DevOps
+
+Proyectos Destacados
+
+Sistema de Gestión de Pedidos (Node.js, MongoDB)
+
+    Desarrollé una API RESTful para un sistema de gestión de pedidos que manejaba más de 100,000 transacciones diarias.
+    Implementé autenticación JWT y optimicé consultas MongoDB para mejorar la escalabilidad y el rendimiento.
+
+Plataforma de Gestión de Contenido (PHP, MySQL)
+
+    Lideré el desarrollo backend de una plataforma de gestión de contenido que mejoró la eficiencia operativa en un 30% mediante automatización de procesos.
+
+Idiomas
+
+    Español: Nativo
+    Inglés: Avanzado (C1)
+
+Referencias
+
+Disponibles bajo solicitud.

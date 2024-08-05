@@ -107,6 +107,7 @@ I have experience with Java, Python, C++, and Node.
         good_examples_prompt = FewShotChatMessagePromptTemplate(
             examples=good_examples,
             example_prompt=good_examples_prompt_template,
+            input_variables=[]
         )
 
         system_prompt = PromptTemplate(

@@ -54,8 +54,7 @@ def generate_initial_response(state: TreeState) -> dict:
 # for a single input to sample actions from the environment
 async def generate_candidates(datos_licitacion: DatosLicitacion, messages: list[BaseMessage], config: RunnableConfig, modificaciones_a_realizar: Modificacion = None, mensajes_modificacion: list[BaseMessage] = None):
     #De default venía a 5
-    # TODO: ponerlo a 5, 1 para debuguear
-    n = config["configurable"].get("N", 1)
+    n = config["configurable"].get("N", 3)
 
     tasks = [generate_candidate_async(datos_licitacion, messages, modificaciones_a_realizar, mensajes_modificacion) for _ in range(n)]
     candidates = await asyncio.gather(*tasks)
@@ -83,8 +82,7 @@ def expand(state: TreeState, config: RunnableConfig):
     messages = best_candidate.get_trajectory()
     datos_licitacion = state["datos_licitacion"]
     # Generate N candidates from the single child candidate
-    # TODO: Ponerle temperatura al llm para que no devuelva siempre lo mismo aquí.h
-    # TODO: No funciona concurrencia
+    # TODO: No funciona concurrencia, se hace sequencial
     new_candidates = asyncio.run(
         generate_candidates(
             datos_licitacion=datos_licitacion,
