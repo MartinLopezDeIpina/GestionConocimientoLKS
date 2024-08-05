@@ -10,7 +10,6 @@ import utils
 from database import db
 
 
-@dataclass
 class NodoArbol(db.Model):
     nodoID = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(250), nullable=False)
