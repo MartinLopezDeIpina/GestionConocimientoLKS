@@ -144,7 +144,7 @@ def create_user_personal_tree_from_json(json, email):
     for nodo in nodos_conocimiento:
         nodos_dependencia = get_nodos_de_los_que_depende_nodo(nodo)
         for nodo_dependencia in nodos_dependencia:
-            if nodo_dependencia not in nodo_conocimiento_completo:
+            if nodo_dependencia.nodoID not in [nodo.nodoID for nodo in nodo_conocimiento_completo]:
                 nodo_conocimiento_completo.append(nodo_dependencia)
 
     persist_user_personal_tree_db(nodo_conocimiento_completo, email)

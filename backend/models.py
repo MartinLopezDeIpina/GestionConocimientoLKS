@@ -10,6 +10,9 @@ import utils
 from database import db
 
 
+# dataclass hace que se pueda serializar el objeto de forma automática.
+# Gracias a esto se pueden guardar objetos de tipo NodoArbol en la memoria de un grafo para hacer un breakpoint
+@dataclass
 class NodoArbol(db.Model):
     nodoID = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(250), nullable=False)

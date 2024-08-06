@@ -89,8 +89,10 @@ def node_elegir_trabajadores(state: State):
         job_id = job_ids[c]
         assignments[job_id] = user_id
         fulfilled_skills[job_id] = list(set(jobs[job_id]) & set(users[user_id]))
-        
-    print(assignments)
+
+    datos_equipo.composicion_trabajadores = assignments
+
+    return {"datos_equipo": datos_equipo}
 
 
 def get_usuarios_skills_dict():

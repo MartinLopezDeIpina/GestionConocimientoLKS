@@ -6,9 +6,10 @@ import utils
 from LLM.DB.chromaTools import chromaTools
 from LLM.DB.modelTools import modelTools
 from LLM.equipo_graph.equipo_graph import start_equipo_graph
+from LLM.licitacion_equipo_graph import invoke_licitacion_equipo_graph
 from LLM.licitacion_graph.DatosLicitacion import DatosLicitacion
 from LLM.LLMHandler import LLMHandler
-from LLM.licitacion_graph.LicitacionGraph import test_start_licitacion_graph, State, start_licitacion_graph
+from LLM.licitacion_graph.LicitacionGraph import start_licitacion_graph
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.agente_selector_tecnologias import \
     invoke_seleccionar_tecnologias
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.subgrafo_generacion_lodo_lats import \
@@ -115,7 +116,7 @@ def test_graph():
     file_path = os.path.join(current_app.static_folder, 'licitation', 'l1' + '.txt')
     licitacion = utils.read_data_from_file(file_path)
     requisitos_adicionales = []
-    test_start_licitacion_graph(licitacion, requisitos_adicionales)
+    start_licitacion_graph(licitacion, requisitos_adicionales)
     return 'Ejecutado'
 
 
@@ -512,6 +513,16 @@ def test_equipo_graph():
     )
 
     start_equipo_graph(datos_licitacion)
+    return 'Ejecutado'
+
+
+@llm_blueprint.route('test_licitacion_equipo_graph')
+def test_licitacion_equipo_graph():
+    file_path = os.path.join(current_app.static_folder, 'licitation', 'l1' + '.txt')
+    licitacion = utils.read_data_from_file(file_path)
+    requisitos_adicionales = []
+
+    resultado = invoke_licitacion_equipo_graph(licitacion, requisitos_adicionales)
     return 'Ejecutado'
 
 

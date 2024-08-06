@@ -93,7 +93,7 @@ def conditional_modificacion_a_realizar(state: State):
     return next_step
 
 
-async def start_licitacion_graph(licitacion, requisitos_adicionales):
+def start_licitacion_graph(licitacion, requisitos_adicionales):
     workflow = StateGraph(State)
 
     workflow.add_node("proyect_definer_model", invoke_proyect_definer_model)
@@ -161,6 +161,3 @@ async def start_licitacion_graph(licitacion, requisitos_adicionales):
 
     return result
 
-
-def test_start_licitacion_graph(licitacion, requisitos_adicionales):
-    asyncio.run(start_licitacion_graph(licitacion=licitacion, requisitos_adicionales=requisitos_adicionales))

@@ -6,11 +6,11 @@ from LLM.licitacion_graph.DatosLicitacion import DatosLicitacion
 from LLM.licitacion_graph.subgrafo_definir_conocimientos.subgrafo_generacion_nodo_lats.clases_para_lats import \
     PropuestaProyecto
 from LLM.llm_utils import LLM_utils
+from LLM.llm_utils.RetryGraph_decorator import bind_validator_with_retries
 from LLM.llm_utils.add_modify_messages_to_chatprompttemplate_decorator import get_modified_messages_chat_prompt_template
 
 # Ponerle tempreatura alta para que no salgan siempre las mismas opciones a la hora de generar las opciones en el árbol LATS
 llm = LLM_utils.get_model(temperatura=1)
-structured_llm_agente_selector = llm.with_structured_output(PropuestaProyecto)
 
 system = """
 Eres un agente especializado en seleccionar las tecnologías más adecuadas para un proyecto software de tipo {categoria_proyecto}. 
@@ -64,8 +64,11 @@ def invoke_seleccionar_tecnologias(datos_licitacion: DatosLicitacion, mensajes_f
         current_prompt.messages.append(MessagesPlaceholder(variable_name="mensajes_feedback"))
         prompt_dict["mensajes_feedback"] = mensajes_feedback
 
-
-    current_agent = current_prompt | structured_llm_agente_selector.with_config(run_name="AgentSelector")
+    current_agent = current_prompt | bind_validator_with_retries(
+        llm=llm.with_config(run_name="AgentSelector"),
+        tools=[PropuestaProyecto],
+        tool_choice="any"
+    )
 
     proyecto = current_agent.invoke(prompt_dict)
     return proyecto
