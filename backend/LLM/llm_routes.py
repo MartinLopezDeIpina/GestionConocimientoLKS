@@ -5,6 +5,7 @@ from flask import Blueprint, current_app, jsonify
 import utils
 from LLM.DB.chromaTools import chromaTools
 from LLM.DB.modelTools import modelTools
+from LLM.equipo_graph.DatosEquipo import DatosEquipo
 from LLM.equipo_graph.equipo_graph import start_equipo_graph
 from LLM.licitacion_equipo_graph import invoke_licitacion_equipo_graph
 from LLM.licitacion_graph.DatosLicitacion import DatosLicitacion
@@ -543,7 +544,10 @@ def test_equipo_graph():
         etapas_proyecto=["Diseño", "Implementación del backend", "Implementación del frontend", "Implementación de la Base de datos", "Aseguramiento de calidad", "Despliegue"]
     )
 
-    start_equipo_graph(datos_licitacion)
+    result = start_equipo_graph(datos_licitacion)
+    datos_equipo = result["datos_equipo"]
+    datos_equipo_str = datos_equipo.get_resultado_final_str()
+    print(datos_equipo_str)
     return 'Ejecutado'
 
 
@@ -554,6 +558,14 @@ def test_licitacion_equipo_graph():
     requisitos_adicionales = []
 
     resultado = invoke_licitacion_equipo_graph(licitacion, requisitos_adicionales)
+    datos_equipo = resultado["datos_equipo"]
+
+    if not isinstance(datos_equipo, DatosEquipo):
+        datos_equipo = datos_equipo["datos_equipo"]
+
+    datos_equipo_str = datos_equipo.get_resultado_final_str()
+    print(datos_equipo_str)
+
     return 'Ejecutado'
 
 

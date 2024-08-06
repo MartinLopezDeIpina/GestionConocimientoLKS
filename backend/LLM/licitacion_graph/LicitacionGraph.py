@@ -136,7 +136,6 @@ def start_licitacion_graph(licitacion, requisitos_adicionales):
 
     while True:
         # Si se ejecuta el grafo por primera vez (no ha habido ningún human-in-the-loop) pasarle el initial state
-
         graph_result = graph.invoke(initial_state if not result else None, config=config)
         result = graph_result["datos_licitacion"]
 

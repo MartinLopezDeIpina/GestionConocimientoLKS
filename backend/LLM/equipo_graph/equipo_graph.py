@@ -68,7 +68,7 @@ def node_elegir_trabajadores(state: State):
     users = get_usuarios_skills_dict()
     jobs = datos_equipo.tecnologias_por_puesto
 
-    cost_matrix = np.zeros((len(users), len(jobs)))
+    cost_matrix = np.zeros((len(users), len(job_ids)))
 
     for i, user_id in enumerate(user_ids):
         for j, job_id in enumerate(job_ids):
@@ -82,13 +82,15 @@ def node_elegir_trabajadores(state: State):
 
     # Create the assignments and fulfilled skills dictionaries
     assignments = {}
-    fulfilled_skills = {}
 
     for r, c in zip(row_ind, col_ind):
         user_id = user_ids[r]
         job_id = job_ids[c]
-        assignments[job_id] = user_id
-        fulfilled_skills[job_id] = list(set(jobs[job_id]) & set(users[user_id]))
+
+        if job_id in assignments:
+            assignments[job_id] = assignments[job_id] + [user_id]
+        else:
+            assignments[job_id] = [user_id]
 
     datos_equipo.composicion_trabajadores = assignments
 
