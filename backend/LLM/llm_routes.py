@@ -286,43 +286,74 @@ def test_lats():
     categoria_proyecto = 'Desarrollo de aplicación web'
     etapas_proyecto = ['Diseño', 'Implementación del Frontend', 'Implementación del backend', 'Despliegue']
 
-    t_figma = NodoArbol.query.filter_by(nombre="Figma").first()
-    t_UML = NodoArbol.query.filter_by(nombre="UML").first()
-    t_react = NodoArbol.query.filter_by(nombre="ReactJS").first()
-    t_angular = NodoArbol.query.filter_by(nombre="Angular").first()
-    t_vue = NodoArbol.query.filter_by(nombre="Vue.js").first()
-    t_spring = NodoArbol.query.filter_by(nombre="Spring Boot").first()
-    t_node = NodoArbol.query.filter_by(nombre="Node.js").first()
-    t_jsf = NodoArbol.query.filter_by(nombre="JSF").first()
-    t_mysql = NodoArbol.query.filter_by(nombre="MySQL").first()
-    t_mongo = NodoArbol.query.filter_by(nombre="Mongo DB").first()
-    t_docker = NodoArbol.query.filter_by(nombre="Docker").first()
-    t_kubernetes = NodoArbol.query.filter_by(nombre="Kubernetes").first()
+    t_figma = NodoArbol.query.filter_by(nombre="Figma").first().nodoID
+    t_UML = NodoArbol.query.filter_by(nombre="UML").first().nodoID
+    t_react = NodoArbol.query.filter_by(nombre="ReactJs").first().nodoID
+    t_angular = NodoArbol.query.filter_by(nombre="Angular").first().nodoID
+    t_vue = NodoArbol.query.filter_by(nombre="Vue.js").first().nodoID
+    t_spring = NodoArbol.query.filter_by(nombre="Spring Boot").first().nodoID
+    t_node = NodoArbol.query.filter_by(nombre="Node.js").first().nodoID
+    t_jsf = NodoArbol.query.filter_by(nombre="JSF").first().nodoID
+    t_mysql = NodoArbol.query.filter_by(nombre="MySQL").first().nodoID
+    t_mongo = NodoArbol.query.filter_by(nombre="Mongo DB").first().nodoID
+    t_docker = NodoArbol.query.filter_by(nombre="Docker").first().nodoID
+    t_kubernetes = NodoArbol.query.filter_by(nombre="Kubernetes").first().nodoID
 
-    stage_result_diseno = StageResult('Diseño',
-                                      0,
-                                      ['Herramienta de diseño',
-                                       'Herramienta de prototipado'],
-                                      [
-                                          HerramientaJuntoTecnologiasPropuestas(herramienta='Herramienta de diseño', tecnologias=[t_figma, t_UML]),
-                                          HerramientaJuntoTecnologiasPropuestas(herramienta='Herramienta de prototipado', tecnologias=[t_figma, t_UML])
-                                      ]
-                                      )
-    stage_result_frontend = StageResult('Implementación del frontend', 2, ['Framework frontend'],
-                                        [HerramientaJuntoTecnologiasPropuestas(
-                                            herramienta='Framework frontend', tecnologias=[t_react, t_angular, t_vue])
-                                        ])
-    stage_result_backend = StageResult('Implementación del backend', 3, ['Framework backend', 'Base de datos'],
-                                        [
-                                            HerramientaJuntoTecnologiasPropuestas(
-                                             herramienta='Framework backend', tecnologias=[t_spring, t_node, t_jsf]),
-                                            HerramientaJuntoTecnologiasPropuestas(
-                                                herramienta='Base de datos', tecnologias=[t_mysql, t_mongo])
-                                        ])
-    stage_result_despliegue = StageResult('Despliegue', 4, ['Contenedores'],
-                                         [HerramientaJuntoTecnologiasPropuestas(
-                                             herramienta='Contenedores', tecnologias=[t_docker, t_kubernetes])
-                                         ])
+    stage_result_diseno = StageResult(
+        etapa='Diseño',
+        index_etapa=0,
+        herramientas=['Herramienta de diseño', 'Herramienta de prototipado'],
+        tecnologias_junto_herramientas=[
+            HerramientaJuntoTecnologiasPropuestas(
+                herramienta='Herramienta de diseño',
+                tecnologias_ids=[t_figma, t_UML]
+            ),
+            HerramientaJuntoTecnologiasPropuestas(
+                herramienta='Herramienta de prototipado',
+                tecnologias_ids=[t_figma, t_UML]
+            )
+        ]
+    )
+
+    stage_result_frontend = StageResult(
+        etapa='Implementación del frontend',
+        index_etapa=2,
+        herramientas=['Framework frontend'],
+        tecnologias_junto_herramientas=[
+            HerramientaJuntoTecnologiasPropuestas(
+                herramienta='Framework frontend',
+                tecnologias_ids=[t_react, t_angular, t_vue]
+            )
+        ]
+    )
+
+    stage_result_backend = StageResult(
+        etapa='Implementación del backend',
+        index_etapa=3,
+        herramientas=['Framework backend', 'Base de datos'],
+        tecnologias_junto_herramientas=[
+            HerramientaJuntoTecnologiasPropuestas(
+                herramienta='Framework backend',
+                tecnologias_ids=[t_spring, t_node, t_jsf]
+            ),
+            HerramientaJuntoTecnologiasPropuestas(
+                herramienta='Base de datos',
+                tecnologias_ids=[t_mysql, t_mongo]
+            )
+        ]
+    )
+
+    stage_result_despliegue = StageResult(
+        etapa='Despliegue',
+        index_etapa=4,
+        herramientas=['Contenedores'],
+        tecnologias_junto_herramientas=[
+            HerramientaJuntoTecnologiasPropuestas(
+                herramienta='Contenedores',
+                tecnologias_ids=[t_docker, t_kubernetes]
+            )
+        ]
+    )
 
     stage_results = [stage_result_diseno, stage_result_frontend, stage_result_backend, stage_result_despliegue]
 
@@ -333,7 +364,7 @@ def test_lats():
                                        requisitos_etapas=stage_results
                                        )
 
-    resultado = invoke_knowledge_graph(datos_licitacion)
+    resultado = invoke_knowledge_graph(datos_licitacion, None, [])
     return 'Ejecutado'
 
 

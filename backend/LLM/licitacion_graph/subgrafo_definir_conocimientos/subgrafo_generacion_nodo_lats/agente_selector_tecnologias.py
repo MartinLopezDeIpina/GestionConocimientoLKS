@@ -70,5 +70,9 @@ def invoke_seleccionar_tecnologias(datos_licitacion: DatosLicitacion, mensajes_f
         tool_choice="any"
     )
 
-    proyecto = current_agent.invoke(prompt_dict)
+    proyecto_ai_message = current_agent.invoke(prompt_dict)
+    proyecto_dict = proyecto_ai_message.tool_calls[0]["args"]
+    proyecto = PropuestaProyecto(
+        etapas_proyecto=proyecto_dict["etapas_proyecto"]
+    )
     return proyecto
