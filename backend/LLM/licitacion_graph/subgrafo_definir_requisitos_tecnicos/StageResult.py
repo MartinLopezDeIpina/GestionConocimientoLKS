@@ -25,6 +25,8 @@ class StageResult(BaseModel):
             for tecnologia in tecnologias_h["tecnologias_ids"]:
                 if tecnologia:
                     nodo = NodoArbol.query.get(tecnologia)
-                    nodo_dict = {"nodoID": nodo.nodoID, "nombre": nodo.nombre}
-                    result += f"\t-{nodo_dict}\n"
+                    # Si el LLM ha devuelto un nodo que no existe en la base de datos sin el check da NullPointerExcepction
+                    if nodo:
+                        nodo_dict = {"nodoID": nodo.nodoID, "nombre": nodo.nombre}
+                        result += f"\t-{nodo_dict}\n"
         return result
