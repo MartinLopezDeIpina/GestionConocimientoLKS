@@ -242,3 +242,19 @@ El funcionamiento abstracto del grafo es el siguiente:
 - Dada la propuesta software y la cantidad de trabajadores, un agente Zero Shot genera unos puestos de trabajo (roles) para completar este proyecto.
 - Otro agente Zero Shot clasifica los conocimientos del proyecto para cada puesto (un conocimiento puede aparecer en varios puestos)
 - Finalmente, se realiza un problema de optimización para maximizar la cantidad de conocimientos suplidos por los usuarios. Teniendo por un lado los usuarios, con una lista de conocimientos cada uno, y por otro lado los puestos, con una lista de conocimientos también, se utiliza la función "linear_sum_assignment" de la librería "scipy.optimize" para maximizar el objetivo mencionado y elegir los usuarios.
+- ## Bases de datos vectoriales
+Se ha creado una llamada a modelos de lenguaje para ver la utilidad de la estrategia RAG en la gestión del conocimiento.
+
+Es posible utilizar Milvus o Chroma para esto. En caso de utilizar Milvus, la aplicación escuchará a la base de datos en el puerto 19530, mientras que en el caso de Chroma en el 8000. Las pruebas se han realizado lanzando las bases de datos en Docker. Para cambiar de base de datos hay que indicar en el constructor de "backend/LLM/DB/modelTools.py" la variable vectorDB a chromaTools() o milvusTools(), para las funcionalidades desarrolladas cambiar de base de datos no tiene ninguna diferencia.
+
+Con la petición http "llm/add_vector_files" se cargan algunos datos de ejemplo en la base de datos. Los ficheros embebidos son Jsons que representan una métrica para medir el conocimiento de un usuario en una escala del 1 al 5. Se cargan en chunks por conocimiento. El fichero con los datos de ejemplo se encuentra en "backend/static/data/0/proficency.json"
+
+Con la petición http "llm/get_knowledge_level/<cv_file>/<skills_file>" se puede obtener el nivel de conocimiento estimado de un usuario en los conocimientos proporcionados basándose en el currículum proporcionado y en las métricas disponibles en la base de datos. Como enviar una métrica por conocimiento sería restrictivamente caro, se realiza una búsqueda semántica del currículum en la base de datos, obteniendo así las métricas más importantes para el curriculum proporcionado. Con estas métricas un modelo de lenguaje valora el nivel de los skills proporcionados.
+
+Un ejemplo sería: "localhost:5000/llm/get_knowledge_level/cv1/skills2", que utiliza cv1.txt y skills2.json del directorio static.
+
+Adicionalmente se ha creado la ruta http "llm/handle_knowledge_metric_reaact/<input_data>" que utilizando un agente ReAct (explicado en la sección de LangGraph) prefabricado de LangChain genera una métrica parecida a las añadidas a la base de datos para el conocimiento indicado. De esta forma, si queremos una métrica para AWS, podríamos ejecutar: 
+""localhost:5000/llm/handle_knowledge_metric_reaact/AWS"
+
+Por lo tanto, sería posible automatizar la creación de métricas y valoración de conocimientos encadenando las estrategias comentadas.
+
