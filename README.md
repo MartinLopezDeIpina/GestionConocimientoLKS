@@ -38,6 +38,7 @@ nmake /F Makefile.win install
 
 ### Paquetes necesarios
 Es necesario tener instalado python3.12.3, en otras versiones las librerías Pydantic, LangChain y Chroma dan conflictos.
+
 Instalar los paquetes necesarios  en un entorno virtual:
 
 ````bash
@@ -69,6 +70,7 @@ flask db migrate
 ````
 
 Añadir import pgvector a la versión de la migración:
+
 Por ejemplo, si el resultado de flask db migrate es "INFO  [alembic.runtime.migration] Running upgrade 1fd16dd13b52 -> dea9462d1738, empty message"
 Entonces añadir en el fichero backend\migrations\versions\1fd16dd13b52.py: 
 ````
@@ -117,6 +119,7 @@ npm install
 ````
 ### Variables de entorno
 Es necesario indicar en el fichero /frontend/.env las variables necesarias.
+
 El cliente de google es el mismo que el indicado en el backend.
 
 Para ello se ha añadido un fichero de ejemplo en /frontend/.env.example:
@@ -148,6 +151,7 @@ Se pueden añadir directamente ejecutando una petición a la api del backend:
 localhost:5000/api/add_csv
 ````
 Esto añadirá unos 500 conocimientos de ejemplo.
+
 Puede tardar varios minutos, ya que por cada nodo se genera y almacena un embedding con la ruta del nodo.
 
 > En caso de eliminar el nodo raíz, añadir otra raíz que no tenga el identificador '1' podría dar problemas. Se pueden reiniciar los identificadores desde el cliente de la base de datos.
