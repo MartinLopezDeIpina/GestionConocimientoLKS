@@ -66,6 +66,7 @@ def init_routes(app):
 
                     # Update the last node at the current depth level
                     last_node_at_depth[i] = nodo
+        return 'CSV added'
 
     @app.route('/api/delete')
     def delete_tree():
