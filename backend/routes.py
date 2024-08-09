@@ -17,7 +17,7 @@ app = Flask(__name__)
 
 def init_routes(app):
 
-    @app.route('/eliminarBD')
+    @app.route('/api/eliminarBD')
     def eliminarBD():
         db.drop_all()
         return 'Base de datos eliminada'
