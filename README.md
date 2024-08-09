@@ -1,15 +1,11 @@
-# Guía de instalación
-
 Este documento contiene los pasos necesarios para ejecutar localmente la aplicación web.
+También se incluye una explicación sobre las funcionalidades básicas de la aplicación.
 
 El Backend está compuesto por Flask y una base de datos PostgreSQL.
-
 El Frontend utiliza Astro como Framework principal, combinado con componentes de React.
-
 Adicionalmente el backend puede acceder a las bases de datos vectoriales Chroma o Milvus.
 
-  
-
+# Guía de instalación
 ## Instalación del backend
 ### Instalación de base de datos PostgreSQL
 Instalar postgradesql 16.4 desde el instalador: 
