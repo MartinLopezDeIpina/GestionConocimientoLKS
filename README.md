@@ -3,12 +3,12 @@ También se incluye una explicación sobre las funcionalidades básicas de la ap
 
 El Backend está compuesto por Flask y una base de datos PostgreSQL.
 El Frontend utiliza Astro como Framework principal, combinado con componentes de React.
-Adicionalmente el backend puede acceder a las bases de datos vectoriales Chroma o Milvus.
+Adicionalmente, el backend puede acceder a las bases de datos vectoriales Chroma o Milvus.
 
 # Guía de instalación
 ## Instalación del backend
 ### Instalación de base de datos PostgreSQL
-Instalar postgradesql 16.4 desde el instalador: 
+Instalar PostgreSQL 16.4 desde el instalador: 
 https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
 
 Cambiar contraseña del usuario postgres:
@@ -21,7 +21,7 @@ ALTER USER postgres with encrypted password '123';
 Instalar visual studio con herramientas: 
 [https://learn.microsoft.com/en-us/cpp/build/vscpp-step-0-installation?view=msvc-170](https://learn.microsoft.com/en-us/cpp/build/vscpp-step-0-installation?view=msvc-170)
 
-Poner herramientas en viariables de entorno: 
+Poner herramientas en variables de entorno: 
 ````
 call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
 ````
@@ -174,7 +174,7 @@ En esta sección se muestra el árbol de conocimientos de la empresa.
 
 Se pueden añadir / eliminar / modificar los nombres de los conocimientos. También se pueden cambiar de lugar arrastrándolos desde la parte izquierda.
 
-También se pueden buscar los nodos por nombre, se tienen en cuenta las máyúsculas.
+También se pueden buscar los nodos por nombre, se tienen en cuenta las mayúsculas.
 
 ## Arbol personal
 En esta sección se muestra un subárbol que representa el conocimiento del usuario.
@@ -189,9 +189,9 @@ Los nodos que se añaden o eliminan en esta sección se modificarán solo en el 
 ## Home
 En esta sección se puede subir el currículum del usuario para extraer sus conocimientos.
 
-Tras cargar el CV en forma de texto  o PDF, se le manda el currículum a un modelo de lenguaje, quien determina cuáles de los conocimientos de la empresa tiene el usuario. Después se añaden los conociemientos al subárbol del usuario.
+Tras cargar el CV en forma de texto  o PDF, se le manda el currículum a un modelo de lenguaje, quien determina cuáles de los conocimientos de la empresa tiene el usuario. Después se añaden los conocimientos al subárbol del usuario.
 
-En el directorio "backend\static\CV" hay varios currículums generados por ChatGPT para hacer pruebas.
+En el directorio "backend\static\CV" hay varios currículos generados por ChatGPT para hacer pruebas.
 
 ## Grafos LangGraph
 
@@ -257,4 +257,3 @@ Adicionalmente se ha creado la ruta http "llm/handle_knowledge_metric_reaact/<in
 ""localhost:5000/llm/handle_knowledge_metric_reaact/AWS"
 
 Por lo tanto, sería posible automatizar la creación de métricas y valoración de conocimientos encadenando las estrategias comentadas.
-
