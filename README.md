@@ -242,7 +242,7 @@ El funcionamiento abstracto del grafo es el siguiente:
 - Dada la propuesta software y la cantidad de trabajadores, un agente Zero Shot genera unos puestos de trabajo (roles) para completar este proyecto.
 - Otro agente Zero Shot clasifica los conocimientos del proyecto para cada puesto (un conocimiento puede aparecer en varios puestos)
 - Finalmente, se realiza un problema de optimización para maximizar la cantidad de conocimientos suplidos por los usuarios. Teniendo por un lado los usuarios, con una lista de conocimientos cada uno, y por otro lado los puestos, con una lista de conocimientos también, se utiliza la función "linear_sum_assignment" de la librería "scipy.optimize" para maximizar el objetivo mencionado y elegir los usuarios.
-- ## Bases de datos vectoriales
+## Bases de datos vectoriales
 Se ha creado una llamada a modelos de lenguaje para ver la utilidad de la estrategia RAG en la gestión del conocimiento.
 
 Es posible utilizar Milvus o Chroma para esto. En caso de utilizar Milvus, la aplicación escuchará a la base de datos en el puerto 19530, mientras que en el caso de Chroma en el 8000. Las pruebas se han realizado lanzando las bases de datos en Docker. Para cambiar de base de datos hay que indicar en el constructor de "backend/LLM/DB/modelTools.py" la variable vectorDB a chromaTools() o milvusTools(), para las funcionalidades desarrolladas cambiar de base de datos no tiene ninguna diferencia.
