@@ -1,4 +1,5 @@
 ---
 import TreeCall from "./TreeCall"
+const URL = import.meta.env.BACKEND_URL;
 ---
-<TreeCall client:only BACKEND_URL="http://localhost:5000" isPersonalTree={false} />
+<TreeCall client:only BACKEND_URL={URL} isPersonalTree={false} />
